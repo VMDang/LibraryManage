@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Library Manage'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -229,4 +229,7 @@ return [
 
     ],
 
+    'avatarDefaultMale' => 'themes/dist/img/avatar.png',
+    'avatarDefaultFemale' => 'themes/dist/img/avatar2.png',
+    'datetimepicketFormat' => 'DD/MM/YYYY',
 ];
