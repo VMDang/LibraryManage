@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +32,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $infoUser = DB::table('users')
+                ->where('email', '=', $request->input('email'))
+                ->get(['image', 'name']);
+
+        $request->session()->put('inforUser', $infoUser[0]);
+
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

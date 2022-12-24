@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield('title-page')
-
+    <link rel="icon" href="{{asset("img/LibraryLogo.png")}}" type="image/x-icon" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
@@ -55,6 +55,7 @@
 
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset("themes/dist/js/demo.js")}}"></script>
+<script src="{{asset("js/base.js")}}"></script>
 <script type="text/javascript">
     const BASE_URL = '{{url('')}}';
     const datetimepicketFormat = '{{config('app.datetimepicketFormat')}}';
