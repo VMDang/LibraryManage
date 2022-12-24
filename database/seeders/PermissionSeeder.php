@@ -10,7 +10,7 @@ class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * Default 6 permissions are All(CRUD), Create, Read, Update, Delete and Report
+     * Default 6 permissions are All(CRUD), Create, View(Read), Update, Delete and Report
      * Only admin can add other roles or edit status role current
      *
      * @return void
@@ -29,7 +29,7 @@ class PermissionSeeder extends Seeder
                 'created_at' => Carbon::now()
             ],
             [
-                'name' => 'read',
+                'name' => 'view',
                 'created_by' => 1,
                 'created_at' => Carbon::now()
             ],
