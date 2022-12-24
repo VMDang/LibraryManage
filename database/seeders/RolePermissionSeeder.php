@@ -10,9 +10,9 @@ class RolePermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * Admin has all permissions Book, Account, System and Account Mod&User:Update role, delete
-     * Moderator has permission Book:all, Account:all, System:report and Account User:Delete
-     * User has permission Book:readonly, Account:all, System:report
+     * Admin has all permissions Other Object(Category, Location, Feedback,...), Account, System and Account Mod&User:Update role, delete
+     * Moderator has permission OtherObject:all, Account:all, System:report and Account User:Delete
+     * User has permission OtherObject:readonly, Account:all, System:report
      *
      * @return void
      */
@@ -22,8 +22,8 @@ class RolePermissionSeeder extends Seeder
             [
                 'role_id'         => 1,
                 'permission_id'   => 1,
-                'object'          => 'Book',
-                'code_action'     => 'ALL_BOOK',
+                'object'          => 'Other Object',
+                'code_action'     => 'ALL_OTHER',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
@@ -53,7 +53,7 @@ class RolePermissionSeeder extends Seeder
             ],
             [
                 'role_id'         => 1,
-                'permission_id'   => 4,
+                'permission_id'   => 5,
                 'object'          => 'Account Mod',
                 'code_action'     => 'DEL_MOD',
                 'created_by'      => 1,
@@ -70,16 +70,16 @@ class RolePermissionSeeder extends Seeder
             [
                 'role_id'         => 1,
                 'permission_id'   => 5,
-                'object'          => 'Account Mod',
-                'code_action'     => 'DELETE_USER',
+                'object'          => 'Account User',
+                'code_action'     => 'DEL_USER',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
             [
                 'role_id'         => 2,
                 'permission_id'   => 1,
-                'object'          => 'Book',
-                'code_action'     => 'ALL_BOOK',
+                'object'          => 'Other Object',
+                'code_action'     => 'ALL_OTHER',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
@@ -104,6 +104,22 @@ class RolePermissionSeeder extends Seeder
                 'permission_id'   => 6,
                 'object'          => 'System',
                 'code_action'     => 'REPORT_SYSTEM',
+                'created_by'      => 1,
+                'created_at'      => Carbon::now()
+            ],
+            [
+                'role_id'         => 3,
+                'permission_id'   => 3,
+                'object'          => 'Other Object',
+                'code_action'     => 'VIEW_OTHER',
+                'created_by'      => 1,
+                'created_at'      => Carbon::now()
+            ],
+            [
+                'role_id'         => 3,
+                'permission_id'   => 1,
+                'object'          => 'Account me',
+                'code_action'     => 'ALL_ACC',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],

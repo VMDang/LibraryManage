@@ -17,8 +17,8 @@ class CreateRolesPermissionsTable extends Migration
             $table->id();
             $table->integer('role_id');
             $table->integer('permission_id');
-            $table->string('object');
-            $table->string('code_action')->comment('UPPER_CASE');
+            $table->string('object', 255);
+            $table->string('code_action', 255)->comment('UPPER_CASE');
             $table->tinyInteger('status')->default(1)->comment('1 is active, 0 is inactive');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
