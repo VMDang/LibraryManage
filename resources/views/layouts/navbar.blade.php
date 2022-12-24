@@ -124,15 +124,45 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                    <i class="fas fa-expand-arrows-alt"></i>
+            <!--Action Dropdown Menu-->
+            <li class="nav-item dropdown" id="action-menu">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-caret-down white"></i>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
-                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a class="dropdown-item" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt mr-2"></i> Toàn màn hình
+                    </a>
+                    <a class="dropdown-item" data-widget="control-sidebar" data-slide="true" href="" role="button">
+                        <i class="fas fa-th-large mr-2"></i> Tùy chỉnh giao diện
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-user-edit" style="margin-right: 4px"></i> Thông tin cá nhân
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-key mr-2"></i> Đổi mật khẩu
+                    </a>
+                    <a href="{{route('verification.notice')}}" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> Xác thực email
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-question-circle mr-2 white"></i> Trợ giúp và hỗ trợ
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-info-circle mr-2 white"></i> Phản hồi và góp ý
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{route('logout')}}" class="dropdown-item" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                    <div class="dropdown-divider"></div>
+                </div>
             </li>
         </ul>
     </nav>
