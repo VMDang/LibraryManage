@@ -46,32 +46,16 @@ class RolePermissionSeeder extends Seeder
             [
                 'role_id'         => 1,
                 'permission_id'   => 4,
-                'object'          => 'Account Mod',
-                'code_action'     => 'UPDATE_MOD',
+                'object'          => 'Other User Account',
+                'code_action'     => 'UPDATE_OTHER_ACC',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
             [
                 'role_id'         => 1,
                 'permission_id'   => 5,
-                'object'          => 'Account Mod',
-                'code_action'     => 'DEL_MOD',
-                'created_by'      => 1,
-                'created_at'      => Carbon::now()
-            ],
-            [
-                'role_id'         => 1,
-                'permission_id'   => 4,
-                'object'          => 'Account User',
-                'code_action'     => 'UPDATE_USER',
-                'created_by'      => 1,
-                'created_at'      => Carbon::now()
-            ],
-            [
-                'role_id'         => 1,
-                'permission_id'   => 5,
-                'object'          => 'Account User',
-                'code_action'     => 'DEL_USER',
+                'object'          => 'Other User Account',
+                'code_action'     => 'DEL_OTHER_ACC',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
@@ -94,8 +78,8 @@ class RolePermissionSeeder extends Seeder
             [
                 'role_id'         => 2,
                 'permission_id'   => 5,
-                'object'          => 'Account User',
-                'code_action'     => 'DEL_USER',
+                'object'          => 'Other User Account',
+                'code_action'     => 'DEL_OTHER_ACC',
                 'created_by'      => 1,
                 'created_at'      => Carbon::now()
             ],
