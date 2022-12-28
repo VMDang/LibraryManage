@@ -140,7 +140,7 @@
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-user-edit" style="margin-right: 4px"></i> Thông tin cá nhân
                     </a>
-                    <a href="#" class="dropdown-item">
+                    <a href="{{route('password.change')}}" class="dropdown-item">
                         <i class="fas fa-key mr-2"></i> Đổi mật khẩu
                     </a>
                     <a href="{{route('verification.notice')}}" class="dropdown-item">
