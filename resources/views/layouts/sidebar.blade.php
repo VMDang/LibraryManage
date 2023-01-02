@@ -1,7 +1,7 @@
 @extends('layouts.navbar')
 
 @section('sidebar')
-    <?php $inforUser = session()->get('inforUser')?>
+    <?php if (!empty($userFlash)) $user = $userFlash[0] ?>
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
@@ -14,10 +14,10 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{asset($inforUser->image)}}" class="img-circle elevation-2" alt="User Avatar" style="width: 33.6px; height: 33.6px">
+                    <img src="{{asset($user->image)}}" class="img-circle elevation-2" alt="User Avatar" style="width: 33.6px; height: 33.6px">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{$inforUser->name}}</a>
+                    <a href="{{route('user.profile', ['id' => $user->id ,'name' => $user->name ])}}" class="d-block">{{$user->name}}</a>
                 </div>
             </div>
 

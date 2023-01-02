@@ -75,12 +75,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        $infoUser = DB::table('users')
-            ->where('email', '=', $request->input('email'))
-            ->get(['image', 'name']);
-
-        $request->session()->put('inforUser', $infoUser[0]);
-
         return redirect(RouteServiceProvider::HOME);
     }
 
