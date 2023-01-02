@@ -8,7 +8,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Home</a>
+                <a href="{{route('home')}}" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -137,7 +137,7 @@
                         <i class="fas fa-th-large mr-2"></i> Tùy chỉnh giao diện
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a href="{{route('user.profile')}}" class="dropdown-item">
                         <i class="fas fa-user-edit" style="margin-right: 4px"></i> Thông tin cá nhân
                     </a>
                     <a href="{{route('password.change')}}" class="dropdown-item">
