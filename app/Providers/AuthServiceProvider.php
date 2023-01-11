@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use function Symfony\Component\String\u;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,10 @@ class AuthServiceProvider extends ServiceProvider
         /**
          * Check logged-in user is Admin, Mod, User
          */
-        Gate::define('isAdmin', function (User $user){
+        Gate::define('isAdmin', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
             return DB::table('users', 'u')
                 ->join('roles as r', 'r.id', '=', 'u.role_id')
                 ->where([
@@ -39,7 +43,10 @@ class AuthServiceProvider extends ServiceProvider
                 ])->exists();
         });
 
-        Gate::define('isMod', function (User $user){
+        Gate::define('isMod', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
             return DB::table('users', 'u')
                 ->join('roles as r', 'r.id', '=', 'u.role_id')
                 ->where([
@@ -48,7 +55,10 @@ class AuthServiceProvider extends ServiceProvider
                 ])->exists();
         });
 
-        Gate::define('isUser', function (User $user){
+        Gate::define('isUser', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
             return DB::table('users', 'u')
                 ->join('roles as r', 'r.id', '=', 'u.role_id')
                 ->where([
@@ -74,7 +84,10 @@ class AuthServiceProvider extends ServiceProvider
         /**
          * Check logged-in user has permission: update role or delete account other user
          */
-        Gate::define('UPDATE_OTHER_ACC', function (User $user){
+        Gate::define('UPDATE_OTHER_ACC', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
             return DB::table('users', 'u')
                 ->join('roles as r', 'u.role_id', '=', 'r.id')
                 ->join('roles_permissions as rp', 'r.id', '=', 'rp.role_id')
@@ -88,7 +101,10 @@ class AuthServiceProvider extends ServiceProvider
                 ])->exists();
         });
 
-        Gate::define('DEL_OTHER_ACC', function (User $user){
+        Gate::define('DEL_OTHER_ACC', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
             return DB::table('users', 'u')
                 ->join('roles as r', 'u.role_id', '=', 'r.id')
                 ->join('roles_permissions as rp', 'r.id', '=', 'rp.role_id')
@@ -100,6 +116,18 @@ class AuthServiceProvider extends ServiceProvider
                     ['rp.status', '=', 1],
                     ['rp.code_action', '=', 'DEL_OTHER_ACC'],
                 ])->exists();
+        });
+
+        Gate::define('Locked', function (User $me, User $user = null){
+            if (empty($user)) {
+                $user = $me;
+            }
+           return DB::table('users')
+                    ->where([
+                        ['users.id', '=' , $user->id],
+                        ['users.status', '=', 0],
+                    ])
+                    ->exists();
         });
     }
 }

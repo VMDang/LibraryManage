@@ -52,10 +52,7 @@ function setOptionSelectedDisable(id, text) {
 
 try {
     //show notify message
-    function notifyMessage(title = 'Lỗi!', message = '', type = 'error', timeout = 5000) {
-        if (!timeout) {
-            timeout = 5000;
-        }
+    function notifyMessage(title = 'Lỗi!', message = '', type = 'error', timeout = 4000) {
 
         if (['success', 'info', 'warning', 'error'].indexOf(type) > -1) {
             Swal.fire({
@@ -77,6 +74,62 @@ try {
             timer: timeout
         });
         return;
+    }
+
+
+
+    function confirmAlert(title = 'Lỗi!', message = '', type = 'error', uri, data, timeout = 4000) {
+        if ( isEmptyValues(uri) || isEmptyValues(data)){
+            notifyMessage('Lỗi!', 'Không có dữ liệu được chọn', 'error');
+            return;
+        }
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: true
+        });
+
+        if (['success', 'info', 'warning', 'error'].indexOf(type) > -1){
+            swalWithBootstrapButtons.fire({
+                title: title,
+                text: message,
+                icon: type,
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận!',
+                cancelButtonText: 'Không, hủy!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    callAjaxPost(BASE_URL + uri, data).done(function (res) {
+                        checkErrorResAjax(res);
+
+                        swalWithBootstrapButtons.fire({
+                            title: 'Đã xác nhận',
+                            text: res.msg,
+                            icon: 'success',
+                        });
+
+                        setTimeout(function(){
+                            location.reload();
+                        }, 3000);
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire({
+                        title: 'Đã hủy',
+                        text: 'Xác nhận hành động không thành công',
+                        icon: 'error',
+                        timer: timeout
+                    })
+                }
+            });
+            return
+        }else notifyMessage();
     }
 
     // scrollTo element
@@ -168,6 +221,8 @@ try {
             return;
         }
     }
+
+
 } catch(err) {
     console.log(err);
 }

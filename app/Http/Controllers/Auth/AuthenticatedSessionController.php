@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
+
+        $user = User::find(Auth::id());
+        if (Gate::check('Locked', $user)) {
+            Auth::logout();
+            abort(403, 'Tài khoản của bạn tạm thời bị khóa, vui lòng liên hệ quản trị viên để lấy lại');
+        }
 
         $request->session()->regenerate();
 
