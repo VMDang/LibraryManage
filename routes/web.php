@@ -26,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/profile/{id?}', [UserController::class, 'profile'])->where('id', '[0-9]+')->name('user.profile');
         Route::post('/updateUserAjax', [UserController::class, 'updateUserAjax'])->name('user.update');
+        Route::post('/recoverAccountAjax', [UserController::class, 'recoverAccountAjax']);
+        Route::post('/lockAccountAjax', [UserController::class, 'lockAccountAjax']);
+        Route::post('/deleteAccountAjax', [UserController::class, 'deleteAccountAjax']);
+        Route::post('/updateRoleAjax', [UserController::class, 'updateRoleAjax']);
     });
 });
 

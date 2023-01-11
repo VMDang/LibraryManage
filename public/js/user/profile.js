@@ -60,4 +60,43 @@ $(document).ready(function () {
             $(element).removeClass('is-invalid');
         }
     });
+
+    $('#btnRecoverAccount').on('click', function (e) {
+        e.preventDefault();
+        let data = {
+            id: $(this).attr('data-id')
+        };
+        let uri = '/user/recoverAccountAjax';
+        confirmAlert('Xác nhận', 'Bạn có chắc chắn muỗn khôi phục tài khoản này không?', 'warning', uri, data);
+    });
+
+    $('#btnLockAccount').on('click', function (e) {
+        e.preventDefault();
+        let data = {
+            id: $(this).attr('data-id')
+        };
+        let uri = '/user/lockAccountAjax';
+        confirmAlert('Xác nhận', 'Bạn có chắc chắn muốn khóa tài khoản này không?', 'warning', uri, data);
+    });
+
+    $('#btnDeleteAccount').on('click', function (e) {
+        e.preventDefault();
+        let data = {
+            id: $(this).attr('data-id')
+        };
+        let uri = '/user/deleteAccountAjax';
+        confirmAlert('Xóa tài khoản', 'Hành động này không thể khôi phục!', 'warning', uri, data);
+    });
+
+
+    $('.btn-change-role').on('click', function (e) {
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        let data = {
+            id: $(this).attr('data-id'),
+            role_id : $(this).attr('value'),
+        };
+        let uri = '/user/updateRoleAjax';
+        confirmAlert('Cập nhật vai trò', 'Bạn có chắc chắn muốn cấp quyền cho người dùng này?', 'warning', uri, data);
+    })
 })

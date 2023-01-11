@@ -20,5 +20,8 @@
         "postcss": "^8.4.6",
         "resolve-url-loader": "^3.1.0",
         "tailwindcss": "^3.0.18"
+    },
+    "dependencies": {
+        "@sweetalert2/themes": "^5.0.15"
     }
 }

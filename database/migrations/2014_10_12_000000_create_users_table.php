@@ -25,11 +25,12 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('address')->nullable();
             $table->string('password');
-            $table->tinyInteger('status')->default(1)->comment('1 is exist, 0 is deleted');
+            $table->tinyInteger('status')->default(1)->comment('1 is normal, 0 is locked');
             $table->integer('deleted_by')->nullable();
             $table->integer('updated_role_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
