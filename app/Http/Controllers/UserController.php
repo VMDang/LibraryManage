@@ -21,7 +21,11 @@ class UserController extends Controller
      */
     public function profile($id = null) {
         $user = User::find($id);
-
+        $users = User::onlyTrashed()->get('image');
+        foreach ($users as $user) {
+            echo $user->image;
+        }
+        die();
         if (empty($user)){
             $user = Auth::user();
         }

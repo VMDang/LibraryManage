@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+//        'App\Console\Commands\UserCommand',
     ];
 
     /**
@@ -24,7 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        /*  Run command to action
+            php artisan schedule:run
+            php artisan schedule:work
+         */
+         $schedule->command('model:prune', ['--model' => User::class])
+             ->monthly()
+             ->description('Prune all account has been soft deleted monthly')
+             ->runInBackground();
     }
 
     /**
