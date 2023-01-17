@@ -170,4 +170,25 @@ class UserController extends Controller
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
     }
+
+
+    /**
+     * Show all users in system
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\View\View
+     */
+    public function list() {
+        $users = User::all(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+
+        $usersTrashed = User::onlyTrashed()
+                        ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'deleted_by', 'deleted_at']);
+
+        $admins = User::where('role_id', '=', 1)
+                    ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+
+        $mods = User::where('role_id', '=', 2)
+            ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+
+        return view('users.list', compact('users', 'usersTrashed', 'admins', 'mods'));
+    }
 }
