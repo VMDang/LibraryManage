@@ -113,7 +113,10 @@ class UserController extends Controller
                 $user->deleted_by = Auth::id();
                 $user->save();
 
-                return BaseHelper::ajaxResponse('Khóa tài khoản thành công', true);
+                if ($user->id == Auth::id()){
+                    return Auth::logout();
+                }else
+                    return BaseHelper::ajaxResponse('Khóa tài khoản thành công', true);
             }else
                 return BaseHelper::ajaxResponse('Bạn không có quyền thực hiện hành động này', false);
         }catch (\Exception $e) {
@@ -173,12 +176,45 @@ class UserController extends Controller
 
 
     /**
-     * Show all users in system
+     * Show and filter all users in system
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\View\View
      */
-    public function list() {
-        $users = User::all(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+    public function list(Request $request) {
+        $filters = $request->all();
+
+        if ($request->isMethod('POST')) {
+            $query = User::query()->where('role_id', '=', 3);
+
+            foreach ($filters as $key => $value) {
+                if ($value != '' && $value != NULL) {
+                    switch ($key) {
+                        case 'name':
+                            $query->where('name', 'LIKE', '%' . $value . '%');
+                            break;
+                        case 'phone':
+                            $query->where('phone', 'LIKE', '%' . $value . '%');
+                            break;
+                        case 'email':
+                            $query->where('email', 'LIKE', '%' . $value . '%');
+                            break;
+                        case 'gender':
+                            $query->where('gender', '=', $value);
+                            break;
+                        case 'yearOfBirth':
+                            $query->where('birthday', 'LIKE', $value . '%');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            $users = $query->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+
+        } else {
+            $users = User::where('role_id', '=', 3)
+                ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
+        }
 
         $usersTrashed = User::onlyTrashed()
                         ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'deleted_by', 'deleted_at']);
@@ -189,6 +225,6 @@ class UserController extends Controller
         $mods = User::where('role_id', '=', 2)
             ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
 
-        return view('users.list', compact('users', 'usersTrashed', 'admins', 'mods'));
+        return view('users.list', compact('users', 'usersTrashed', 'admins', 'mods', 'filters'));
     }
 }
