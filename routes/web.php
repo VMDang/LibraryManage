@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/lockAccountAjax', [UserController::class, 'lockAccountAjax']);
         Route::post('/deleteAccountAjax', [UserController::class, 'deleteAccountAjax']);
         Route::post('/updateRoleAjax', [UserController::class, 'updateRoleAjax']);
-        Route::get('/list', [UserController::class, 'list'])->name('user.list');
+        Route::match(['post', 'get'],'/list', [UserController::class, 'list'])->name('user.list');
     });
 });
 
