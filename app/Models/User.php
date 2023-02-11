@@ -43,6 +43,32 @@ class User extends Authenticatable
 
 
     /**
+     * Get the prunable model query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function prunable()
+    {
+        return static::where('deleted_at', '<=', now());
+    }
+
+    /**
+     * Delete avatar user in folder Storage (local).
+     *
+     * @return void
+     */
+    protected function pruning()
+    {
+        $users = User::onlyTrashed()->get('image');
+        foreach ($users as $user) {
+            $path = 'public/avatars/' . Str::afterLast($user->image, '/');
+            if (Storage::exists($path)) {
+                Storage::delete($path);
+            }
+        }
+    }
+
+    /**
      *  Send notification use Notifiable Trait
      *
      * @param $token
