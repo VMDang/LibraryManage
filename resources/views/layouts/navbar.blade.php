@@ -143,9 +143,6 @@
                     <a href="{{route('password.change')}}" class="dropdown-item">
                         <i class="fas fa-key mr-2"></i> Đổi mật khẩu
                     </a>
-                    <a href="{{route('verification.notice')}}" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> Xác thực email
-                    </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-question-circle mr-2 white"></i> Trợ giúp và hỗ trợ

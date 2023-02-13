@@ -6,13 +6,14 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
 use function Symfony\Component\String\u;
 
 class ResetPassword extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Notifiable;
 
     /**
      * The password reset token.
@@ -121,13 +122,9 @@ class ResetPassword extends Notification implements ShouldQueue
      */
     public function toDatabase($notifiable)
     {
-        $user = User::where('email', $notifiable->getEmailForPasswordReset())->get('name');
-
         return [
             'subject' => 'Thông báo đặt lại mật khẩu',
-            'name' => $user[0]->name,
-            'email' => $notifiable->getEmailForPasswordReset(),
-            'url'   => $this->resetUrl($notifiable),
+            'token'   => $this->token,
         ];
     }
 

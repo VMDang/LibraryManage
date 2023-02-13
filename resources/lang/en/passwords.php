@@ -20,7 +20,7 @@ return [
 //    'throttled' => 'Please wait before retrying.',
     'throttled' => 'Hãy thử lại sau ít phút.',
 //    'token' => 'This password reset token is invalid.',
-    'token' => 'Token lấy lại mật khẩu không hợp lệ',
+    'token' => 'Đường link lấy lại mật khẩu không hợp lệ. Vui lòng sử dụng đường link mới nhất chúng tôi gửi cho bạn',
 //    'user' => "We can't find a user with that email address.",
     'user' => "Tài khoản đã bị khóa hoặc bạn email chưa được đăng kí tài khoản",
 
