@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Library Manage'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ViewServiceProvider::class,
 
     ],
 
@@ -229,4 +230,11 @@ return [
 
     ],
 
+    'avatarDefaultMale'     => 'themes/dist/img/avatar.png',
+    'avatarDefaultFemale'   => 'themes/dist/img/avatar2.png',
+    'datetimepickerFormat'  => 'DD/MM/YYYY',
+
+    'messageSaveSuccess' => 'Lưu dữ liệu thành công!',
+    'messageGetSuccess'  => 'Lấy dữ liệu thành công!',
+    'messageSaveError'   => 'Có lỗi trong quá trình xử lý dữ liệu! Vui lòng thử lại sau!',
 ];
