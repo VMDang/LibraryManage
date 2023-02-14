@@ -83,6 +83,20 @@ class UserSeeder extends Seeder
                 'status'  => 1,
                 'created_at' => Carbon::now()
             ],
+            [
+                'role_id' => 1,
+                'name' => 'Tester',
+                'image' => config('app.avatarDefaultFemale'),
+                'gender' => 0,
+                'birthday' => '2000-01-01',
+                'email' => 'tester@gmail.com',
+                'email_verified_at' => Carbon::now(),
+                'phone' => '+81092684',
+                'address' => 'Japan',
+                'password'  => Hash::make('tester@1234'),
+                'status'  => 1,
+                'created_at' => Carbon::now()
+            ],
         ]);
     }
 }
