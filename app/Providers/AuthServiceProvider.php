@@ -67,7 +67,7 @@ class AuthServiceProvider extends ServiceProvider
                 ])->exists();
         });
 
-        Gate::define('All_ACC', function (User $user){
+        Gate::define('ALL_ACC', function (User $user){
             return DB::table('users', 'u')
                 ->join('roles as r', 'u.role_id', '=', 'r.id')
                 ->join('roles_permissions as rp', 'r.id', '=', 'rp.role_id')
