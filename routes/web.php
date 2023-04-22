@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::middleware('auth')->group(function () {
        });
    });
 
+   Route::resource('books', BookController::class)
+       ->except(['create', 'edit']);
+
+   Route::controller(BookController::class)->group(function (){
+       Route::prefix('/books')->group(function (){
+
+       });
+   });
 
 });
 
