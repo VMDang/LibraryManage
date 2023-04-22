@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use function Symfony\Component\String\u;
@@ -128,6 +130,16 @@ class AuthServiceProvider extends ServiceProvider
                         ['users.status', '=', 0],
                     ])
                     ->exists();
+        });
+
+        VerifyEmail::toMailUsing(function ($notification, $url) {
+            return (new MailMessage())
+                ->from('LibraryManage@mail.com', 'Library Manage')
+                ->subject("Thông báo xác thực email")
+                ->greeting('Xin chào !')
+                ->line("Vui lòng nhấp vào nút bên dưới để xác minh địa chỉ email của bạn.")
+                ->action("Xác thực email", $url)
+                ->line("Nếu bạn không tạo tài khoản, vui lòng bỏ qua email này và không cần thực hiện thêm hành động nào.");
         });
     }
 }
