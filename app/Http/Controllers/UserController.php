@@ -64,10 +64,13 @@ class UserController extends Controller
             $user->gender = $request->gender;
             $user->phone = $request->phone;
             $user->address = $request->address;
+
             $user->save();
         }
+
             BaseHelper::ajaxResponse(config('app.messageSaveSuccess'),true, $user);
         }catch (\Exception $exception){
+            print_r($exception);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
     }
