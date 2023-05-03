@@ -36,14 +36,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
        });
    });
 
-   Route::resource('books', BookController::class)
-       ->except(['create', 'edit']);
+//    Route::resource('books', BookController::class)
+//        ->except(['create', 'edit']);
 
-   Route::controller(BookController::class)->group(function (){
-       Route::prefix('/books')->group(function (){
+//    Route::controller(BookController::class)->group(function (){
+//        Route::prefix('/books')->group(function (){
 
-       });
-   });
+//        });
+//    });
+    Route::resource("/books", BookController::class);
 
 });
 

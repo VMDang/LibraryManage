@@ -1,5 +1,4 @@
 @extends("layouts.footer")
-
 @section('title-page')
     <title> List User | Library Manage</title>
 @endsection
