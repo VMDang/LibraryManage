@@ -17,12 +17,12 @@ class CreateBooksTable extends Migration
             $table->id();
             $table->integer('category_id')->default(0);
             $table->integer('shelf_id')->default(0);
-            $table->string('title', 255);
-            $table->text('preview_content');
-            $table->string('file_book', 255);
+            $table->string('name', 255);
+            $table->text('preview_content')->nullable();
+            $table->string('file_book', 255)->nullable();
             $table->string('author', 255);
-            $table->string('publisher', 255);
-            $table->date('date_publication');
+            $table->string('publisher', 255)->nullable();
+            $table->date('date_publication')->nullable();
             $table->integer('cost')->default(0);
             $table->tinyInteger('number', false, true)->default(0);
             $table->tinyInteger('status')->default(1);

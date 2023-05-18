@@ -98,6 +98,37 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Mượn Sách
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('books.index')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('borrow.create')}}" class="nav-link">
+                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <p>Tạo yêu cầu</p>
+                                </a>
+                            </li>
+                            @cannot('isUser')
+                                <li class="nav-item">
+                                    <a href="{{route('borrow.approve')}}" class="nav-link">
+                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <p>Phê duyệt yêu cầu</p>
+                                    </a>
+                                </li>
+                            @endcannot
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

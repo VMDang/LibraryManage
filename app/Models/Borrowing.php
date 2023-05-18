@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Book extends Model
+class Borrowing extends Model
 {
     use HasFactory;
 
@@ -16,8 +16,7 @@ class Book extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id', 'shelf_id', 'name', 'preview_content', 'file_book',
-        'author', 'publisher', 'date_publication', 'cost', 'number', 'status',
-        'created_by', 'updated_by', 'created_at', 'updated_at',
+        'id', 'user_id', 'book_id', 'status', 'borrow_date',
+        'due_date', 'appoved_by', 'created_at', 'updated_at'
     ];
 }
