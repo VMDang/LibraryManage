@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ReturnBookController;     
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        });
    });
-
+   
+   Route::controller(ReturnBookController::class)->group(function (){
+     Route::prefix('/return')->group(function (){
+           Route::get('/create','create')->name('return.create');
+           Route::get('/approve','approve')->name('return.approve');
+           Route::post('/create','store')->name('return.store');
+    });
+});
 });
 
 require __DIR__.'/auth.php';
