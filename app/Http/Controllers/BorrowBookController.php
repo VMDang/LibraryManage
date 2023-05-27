@@ -19,17 +19,18 @@ class BorrowBookController extends Controller
     {
         $user = Auth::user();
         $books = Book::all();
-        $borrowing = Borrowing::all();
+
 
         return view("borrowbooks.create", compact('user', 'books') );
     }
     public function approve()
     {
-        return view("borrowbooks.approve");
+        $borrowings = Borrowing::all();
+        return view("borrowbooks.approve", compact('borrowings'));
     }
 
     /**
-     * 
+     *
      * @param mixed $name
      */
     public function store(Request $request)

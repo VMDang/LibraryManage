@@ -15,10 +15,10 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all('id', 'category_id', 'shelf_id', 'title', 'preview_content',
+        $books = Book::all('id', 'category_id', 'shelf_id', 'name', 'preview_content',
         'author', 'publisher', 'date_publication', 'cost', 'number');
-        echo 'return view books.list';
-        die();
+
+
         return view('books.list', compact($books));
     }
 
