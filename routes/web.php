@@ -24,26 +24,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('home');
     })->name('home');
 
-   Route::controller(UserController::class)->group(function (){
-       Route::prefix('/user')->group(function () {
-           Route::get('/profile/{id?}',  'profile')->where('id', '[0-9]+')->name('user.profile');
-           Route::post('/updateUserAjax','updateUserAjax')->name('user.update');
-           Route::post('/recoverAccountAjax','recoverAccountAjax');
-           Route::post('/lockAccountAjax','lockAccountAjax');
-           Route::post('/deleteAccountAjax','deleteAccountAjax');
-           Route::post('/updateRoleAjax','updateRoleAjax');
-           Route::match(['post', 'get'],'/list','list')->name('user.list');
-       });
-   });
+    Route::controller(UserController::class)->group(function (){
+        Route::prefix('/user')->group(function () {
+            Route::get('/profile/{id?}',  'profile')->where('id', '[0-9]+')->name('user.profile');
+            Route::post('/updateUserAjax','updateUserAjax')->name('user.update');
+            Route::post('/recoverAccountAjax','recoverAccountAjax');
+            Route::post('/lockAccountAjax','lockAccountAjax');
+            Route::post('/deleteAccountAjax','deleteAccountAjax');
+            Route::post('/updateRoleAjax','updateRoleAjax');
+            Route::match(['post', 'get'],'/list','list')->name('user.list');
+        });
+    });
 
-   Route::resource('books', BookController::class)
-       ->except(['create', 'edit']);
+    Route::resource('books', BookController::class)
+        ->except(['create', 'edit']);
 
-   Route::controller(BookController::class)->group(function (){
-       Route::prefix('/books')->group(function (){
+    Route::controller(BookController::class)->group(function (){
+        Route::prefix('/books')->group(function (){
 
-       });
-   });
+        });
+    });
 
 });
 
