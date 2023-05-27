@@ -114,7 +114,7 @@
 
                             <h5>Lời nhắn gửi đến người kiểm duyệt</h5>
                             <div class="form-group">
-                                <textarea class="form-control" style="width: 100%;" name="message"></textarea>
+                                <textarea class="form-control" style="width: 100%;" name="message_user"></textarea>
                                 <!-- /.form-group -->
                             </div>
                             <div class="card-footer" style="text-align: center;">

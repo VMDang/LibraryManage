@@ -25,7 +25,7 @@
 
     <script src="/jquery.js"></script>
 <script src="/build/jquery.datetimepicker.full.min.js"></script>
-<!-- 
+<!--
 </script>
     <script>
         $(document).ready(function() {
@@ -96,8 +96,8 @@
                                 <div class="form-group">
                                     <label for="gender">Giới tính</label>
                                     <input id="gender" class="form-control" required style="background-color:white ; color:black;" value="{{ $user->gender ? 'Nam' : 'Nữ'}}" readonly >
-                                       
-                                    
+
+
                                 </div>
                                 <!-- /.form-group -->
                                 <!-- Date -->
@@ -118,16 +118,16 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="book">Tên sách</label>
-                                    
-                                    <input  class="form-control" style="background-color:white; color: black" value="{{$book->title}}" readonly>
 
-                        
+                                    <input  class="form-control" style="background-color:white; color: black" value="{{$book->name}}" readonly>
+
+
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="author" >Tác giả</label>
                                   <input class="form-control" style="background-color:white; color: black" value="{{$book->author}}" readonly>
-                                    
+
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
@@ -135,7 +135,7 @@
                                     <input type="text" class="form-control select2" id="bookId" placeholder="Tầng 1, phòng 1, kệ 1" style="background-color:white ; color:black;" readonly>
                                 </div>
                                 <!-- /.form-group -->
-                                
+
                     </div>
                             <!-- /.col -->
                         </div>
@@ -146,14 +146,14 @@
                             <textarea class="form-control" name="message_user" placeholder="Bạn đọc gửi góp ý tại đây"  style="width: 100% ; background-color:white ; color:black;"></textarea>
                             <!-- /.form-group -->
                         </div>
-                        
+
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer" style="text-align: center;">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                     </form>
-                    
+
                 </div>
                 <!-- /.card -->
             </div>
