@@ -42,6 +42,7 @@
                                         <tr>
                                             <td>{{$borrowing->id}}</td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -129,7 +130,7 @@
                                         </div>
                                 </div>
 
-                                <div>
+                            <div>
                                     <div class="form-group">
                                           <label>Ngày mượn</label>
                                           <input  type="text" class="form-control" id="myID" placeholder="Auto">

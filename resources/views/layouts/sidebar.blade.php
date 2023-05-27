@@ -38,8 +38,8 @@
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="{{route('home')}}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
@@ -99,29 +99,29 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" style="background-color : SteelBlue">
-                            <i class="nav-icon fas fa-book" ></i>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
                             <p>
-                                Trả sách
-                                <i class="fas fa-angle-left right" ></i>
+                                Mượn Sách
+                                <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="" class="nav-link" >
+                                <a href="{{route('books.index')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Lịch sử</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('return.create')}}" class="nav-link">
+                                <a href="{{route('borrow.create')}}" class="nav-link">
                                     <i class="fas fa-book-reader nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
-                                    <a href="{{route('return.approve')}}" class="nav-link">
+                                    <a href="{{route('borrow.approve')}}" class="nav-link">
                                         <i class="fas fa-book-reader nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
@@ -130,7 +130,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" style="background-color : SteelBlue">
+                        <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-book" ></i>
                             <p>
                                 Trả sách
@@ -139,7 +139,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="" class="nav-link" >
+                                <a href="#" class="nav-link" >
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Lịch sử</p>
                                 </a>
