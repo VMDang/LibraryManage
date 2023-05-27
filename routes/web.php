@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\ReturnBookController;     
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +46,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
        Route::prefix('/books')->group(function (){
 
        });
+   });
+
+   Route::controller(BorrowBookController::class)->group(function (){
+        Route::prefix('/borrow')->group(function(){
+            Route::get('/create', 'create')->name('borrow.create');
+            Route::post('/create', 'store')->name('borrow.store'); 
+            Route::get('/approve', 'approve')->name('borrow.approve');
+        });
    });
    
    Route::controller(ReturnBookController::class)->group(function (){

@@ -129,6 +129,37 @@
                             @endcannot
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" style="background-color : SteelBlue">
+                            <i class="nav-icon fas fa-book" ></i>
+                            <p>
+                                Trả sách
+                                <i class="fas fa-angle-left right" ></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="" class="nav-link" >
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('return.create')}}" class="nav-link">
+                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <p>Tạo yêu cầu</p>
+                                </a>
+                            </li>
+                            @cannot('isUser')
+                                <li class="nav-item">
+                                    <a href="{{route('return.approve')}}" class="nav-link">
+                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <p>Phê duyệt yêu cầu</p>
+                                    </a>
+                                </li>
+                            @endcannot
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
