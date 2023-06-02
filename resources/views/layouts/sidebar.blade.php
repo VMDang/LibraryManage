@@ -108,7 +108,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('books.index')}}" class="nav-link">
+                                <a href="{{route('borrow.history')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Lịch sử</p>
                                 </a>
