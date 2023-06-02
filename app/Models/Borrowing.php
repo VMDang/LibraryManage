@@ -23,6 +23,7 @@ class Borrowing extends Model
     /**
      * Get the user that owns the borrowing.
      */
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
