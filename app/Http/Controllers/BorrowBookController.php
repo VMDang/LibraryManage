@@ -25,7 +25,8 @@ class BorrowBookController extends Controller
     }
     public function approve()
     {
-        
+        $user = Auth::user();
+        $borrowings = Borrowing::with('user', 'book')->get();
         return view("borrowbooks.approve", compact('user', 'borrowings'));
     }
 
