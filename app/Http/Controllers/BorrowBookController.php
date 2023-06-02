@@ -25,8 +25,8 @@ class BorrowBookController extends Controller
     }
     public function approve()
     {
-        $borrowings = Borrowing::all();
-        return view("borrowbooks.approve", compact('borrowings'));
+        
+        return view("borrowbooks.approve", compact('user', 'borrowings'));
     }
 
     /**
@@ -46,5 +46,11 @@ class BorrowBookController extends Controller
             print($e);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
+    }
+
+    public function history(){
+        $user = Auth::user();
+        $borrowings = Borrowing::with('user', 'book')->get();
+        return view('borrowbooks.history', compact('user', 'borrowings'));
     }
 }

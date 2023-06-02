@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/create', 'create')->name('borrow.create');
             Route::post('/create', 'store')->name('borrow.store'); 
             Route::get('/approve', 'approve')->name('borrow.approve');
+            Route::get('/history', 'history')->name('borrow.history');
         });
    });
    
