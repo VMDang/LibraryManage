@@ -19,6 +19,11 @@ class Borrowing extends Model
         'id', 'user_id', 'book_id', 'status', 'borrow_date',
         'due_date', 'appoved_by', 'created_at', 'updated_at'
     ];
+
+    /**
+     * Get the user that owns the borrowing.
+     */
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
