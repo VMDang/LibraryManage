@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
-
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,7 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
        });
    });
-
+   Route::controller(CategoryController::class)->group(function (){
+        Route::prefix('/category')->group(function () {
+            Route::get('/list',  'show')->name('category.list');
+        });
+    });
 });
 
 require __DIR__.'/auth.php';
