@@ -13,7 +13,7 @@
     <script src="{{asset('js/book/borrowing.js')}}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        flatpickr("#borrow_date");
+        flatpickr("#date_borrow");
         flatpickr("#due_date");
     </script>
 @endsection
@@ -33,23 +33,30 @@
                                 <table id="tableListBorrowers" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
+                                            <th>Thời gian tạo</th>
                                             <th>Họ tên</th>
                                             <th>Email</th>
                                             <th>Tên sách</th>
                                             <th>Trạng thái</th>
-                                            <th>Lời nhắn từ người mượn</th>
+                                            <th>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($borrowings as $index => $borrowing)
                                         <tr class="view-form" data-toggle="modal" data-target="#borrowing-click" data-index="{{$index}}">
-                                            <td>{{$borrowing->id}}</td>
+                                            <td>{{$borrowing->created_at}}</td>
                                             <td>{{$borrowing->user->name}}</td>
                                             <td>{{$borrowing->user->email}}</td>
                                             <td>{{$borrowing->book->name}}</td>
                                             <td><?php echo $borrowing->status ? '<span style="color:green;">Đã duyệt</span>' : '<span style="color:red;">Chưa duyệt</span>' ?></td>
-                                            <td>{{$borrowing->message_user}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-success btnDetail"
+                                                    data-id="{{$borrowing->id}}"
+                                                    data-toggle="popover" data-trigger="hover" data-placement="bottom"
+                                                    data-content="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -61,89 +68,139 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="modal fade" id="borrowing-click">
-                    <div class="modal-dialog">
-                        <div class="modal-content bg-secondary">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Phiếu mượn sách</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                <div class="modal fade" id="modalApprove">
+                <div class="modal-dialog modal-lg" style="width: 85%; max-width: 90%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modalApproveTitle">Modal default</h4>
+                            <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form class="form-horizontal" method="post" action="{{route('borrow.approve')}}">
+                            @csrf
+                            <div class="modal-body">
+                                <input type="hidden" id="id" class="form-control" name="id">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="name" id="">Họ và Tên</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="name" id="name" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="gender">Giới tính</label>
+                                            <div class="form-group col-lg-9" style="height: 38px;">
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="radio" id="gender1" name="gender" value="1" checked>
+                                                    <label for="gender1" style="margin-right: 10px">
+                                                        Nam
+                                                    </label>
+                                                </div>
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="radio" id="gender2" name="gender" value="0">
+                                                    <label for="gender2">
+                                                        Nữ
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label for="birthday" class="col-sm-3">Ngày sinh</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="birthday" id="birthday" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="email">Email</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="email" name="email" id="email" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="status">Trạng thái</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="status" id="status" class="form-control" checked readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class=" row">
+                                            <label class="col-lg-3 col-form-label" for="message_user">Lời nhắn từ người dùng</label>
+                                            <div class="form-group col-lg-9">
+                                                <textarea class="form-control" style="width: 100%;" id="message_user" name="message_user" readonly></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="book">Tên sách</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="bookname" id="bookname" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="author">Tác giả</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="author" id="author" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="col-lg-3 col-form-label" for="location">Vị trí</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="text" name="location" id="location" class="form-control" value="Tầng 1 Phòng 1 Kệ 1" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class=" row">
+                                            <label class="col-lg-3 col-form-label" for="date_borrow">Ngày mượn</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="date" name="date_borrow" id="date_borrow" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class=" row">
+                                            <label class="col-lg-3 col-form-label" for="due_date">Hạn trả</label>
+                                            <div class="form-group col-lg-9">
+                                                <input type="date" name="due_date" id="due_date" class="form-control">
+                                            </div>
+                                        </div>            
+                                        
+                                        <div class=" row">
+                                            <label class="col-lg-3 col-form-label" for="message_approver">Lời nhắn đến người dùng</label>
+                                            <div class="form-group col-lg-9">
+                                                <textarea class="form-control" style="width: 100%;" name="message_approver" id="message_approver"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Đóng
+                                </button>
+                                
+                                <button type="submit" class="btn btn-primary" id="btnDeni"><i class="fas fa-save"></i>
+                                    Từ chối
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="btnSave"><i class="fas fa-save"></i>
+                                    Phê duyệt
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" method="post" action="">
-                                    @csrf
-                                    <input type="hidden" id="book-id" name="book_id" value="">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="fullname">Họ tên</label>
-                                                <input type="text" id="fullname" class="form-control" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="gender">Giới tính</label>
-                                                <input type="text" class="form-control" id="gender" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <!-- Date -->
-                                            <div class="form-group">
-                                              <label for="birthday">Ngày sinh</label>
-                                              <input type="text" class="form-control" id="birthday" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control" id="email" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="bookname">Tên sách</label>
-                                                <input type="text" class="form-control" id="bookname" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="author">Tác giả</label>
-                                                <input type="text" class="form-control" id="author" value="" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="location">Vị trí</label>
-                                                <input type="text" class="form-control" id="location" value="Tầng 1 - Phòng 1 - Kệ 1" readonly>
-                                            </div>
-                                            <!-- /.form-group -->
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
+                        </form>
 
-                                            <h5>Lời nhắn gửi đến người dùng</h5>
-                                            <div class="form-group">
-                                                <textarea class="form-control" style="width: 100%;"></textarea>
-                                                <!-- /.form-group -->
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="borrow_date">Ngày mượn</label>
-                                                <input  type="text" class="form-control" id="borrow_date" placeholder="YYYY-MM-DD">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="due_date">Đến ngày</label>
-                                                <input  type="text" class="form-control" id="due_date" placeholder="YYYY-MM-DD">
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Từ chối</button>
-                                        <button type="button" class="btn btn-outline-light">Phê duyệt</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
                 </div>
                 <!-- /.modal -->
             </div>
