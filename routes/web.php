@@ -39,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
-    Route::resource('books', BookController::class)
+    Route::resource('books', BookController::class) 
         ->except(['create', 'edit']);
 
     Route::controller(BookController::class)->group(function (){
@@ -54,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/create', 'store')->name('borrow.store'); 
             Route::get('/approve', 'approve')->name('borrow.approve');
             Route::get('/history', 'history')->name('borrow.history');
+            Route::get('/approve/getBorrowingOfInfoAjax/{id}', 'getBorrowingOfInfoAjax');
+            Route::post('/approve/approveBorrowingAjax', 'approveBorrowingAjax');
         });
    });
    
