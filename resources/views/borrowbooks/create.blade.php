@@ -14,19 +14,9 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>
-    <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{asset('js/book/borrowing.js')}}" defer></script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-            //Date picker
-            $('#reservationdate').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true
-            });
-        });
-    </script>
+{{--    <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>--}}
+{{--    <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script>--}}
+    <script src="{{asset('js/borrow/create.js')}}" defer></script>
 @endsection
 
 @section('content')
@@ -95,6 +85,15 @@
                                                 <option data-id="{{$book->id}}" data-author="{{$book->author}}">{{$book->name}}</option>
                                             @endforeach
                                         </select>
+                                        @if ($errors->any())
+                                            {{--                                        <div class="form-control">--}}
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            {{--                                        </div>--}}
+                                        @endif
                                     </div>
                                     <!-- /.form-group -->
                                     <div class="form-group">
@@ -118,12 +117,12 @@
                                 <!-- /.form-group -->
                             </div>
                             <div class="card-footer" style="text-align: center;">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Gửi yêu cầu</button>
                             </div>
                         </form>
                     </div>
                     <!-- /.card-body -->
-                    
+
                 </div>
                 <!-- /.card -->
             </div>
