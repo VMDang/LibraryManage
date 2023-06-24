@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\BorrowBookController;
-use App\Http\Controllers\ReturnBookController;
 use App\Http\Controllers\ShelfController;
+use App\Http\Controllers\BorrowBookController;
+use App\Http\Controllers\ReturnBookController;     
+
 
 
 /*
@@ -41,7 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
-    Route::resource('books', BookController::class)
+
+    Route::resource('books', BookController::class) 
         ->except(['create', 'edit']);
 
     Route::controller(BookController::class)->group(function (){
@@ -56,15 +58,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/create', 'store')->name('borrow.store'); 
             Route::get('/approve', 'approve')->name('borrow.approve');
             Route::get('/history', 'history')->name('borrow.history');
+            Route::get('/approve/getBorrowingOfInfoAjax/{id}', 'getBorrowingOfInfoAjax');
+            Route::post('/approve/approveBorrowingAjax', 'approveBorrowingAjax');
         });
    });
-   Route::resource('books', BookController::class)
-       ->except(['create', 'edit']);
-
-   Route::controller(BookController::class)->group(function (){
-       Route::prefix('/books')->group(function (){
-
-       });
+   
+   Route::controller(ReturnBookController::class)->group(function (){
+     Route::prefix('/return')->group(function (){
+           Route::get('/create','create')->name('return.create');
+           Route::get('/approve','approve')->name('return.approve');
+           Route::post('/create','store')->name('return.store');
+    });
    });
    Route::controller(CategoryController::class)->group(function (){
         Route::prefix('/category')->group(function () {
@@ -80,14 +84,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/add', 'store')->name('shelf.store'); 
         });
     });
-   Route::controller(ReturnBookController::class)->group(function (){
-     Route::prefix('/return')->group(function (){
-           Route::get('/create','create')->name('return.create');
-           Route::get('/approve','approve')->name('return.approve');
-           Route::post('/create','store')->name('return.store');
-    });
-});
-
 });
 
 require __DIR__.'/auth.php';

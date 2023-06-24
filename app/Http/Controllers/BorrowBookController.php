@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Borrowing;
 use App\Models\Book;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class BorrowBookController extends Controller
 {
@@ -22,13 +24,17 @@ class BorrowBookController extends Controller
         $books = Book::all();
 
 
-        return view("borrowbooks.create", compact('user', 'books') );
+        return view("borrowbooks.create", compact('user', 'books'));
     }
     public function approve()
-    {
-        $user = Auth::user();
-        $borrowings = Borrowing::with('user', 'book')->get();
-        return view("borrowbooks.approve", compact('user', 'borrowings'));
+    {   
+        if(Gate::any(['isAdmin', 'isMod'])){
+            $user = Auth::user();
+            $borrowings = Borrowing::with('user', 'book')->get();
+            return view("borrowbooks.approve", compact('user', 'borrowings'));
+        }else{
+            abort(403, 'Bạn không có quyền truy cập trang này.');
+        }
     }
 
     /**
@@ -50,27 +56,49 @@ class BorrowBookController extends Controller
         }
     }
 
-    // public function update(Request $request, $borrowing_id)
-    // {
-    //     $borrowing = Borrowing::find($borrowing_id);
-    //     $borrowing->borrow_date = $request->borrow_date;
-    //     $borrowing->due_date = $request->due_date;
-    //     $borrowing->approved_by = $request->approved_by;
-    //     $borrowing->message_approver = $request->message_approver;
-    //     $borrowing->status = $request->status;
-    //     try{
-    //         $borrowing->save();
-    //         return redirect()->route('borrow.approve');
-    //     }catch(\Exception $e){
-    //         print($e);
-    //         BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
-    //     }
-    // }
-
     public function history(){
         $user = Auth::user();
         $borrowings = Borrowing::with('user', 'book')->get();
         return view('borrowbooks.history', compact('user', 'borrowings'));
+    }
+
+    public function getBorrowingOfInfoAjax($id){
+        try{
+            $borrowInfo = DB::table('borrowings')   
+                    ->join('users', 'borrowings.user_id', '=', 'users.id')
+                    ->join('books', 'borrowings.book_id', '=', 'books.id')
+                    ->where('borrowings.id', $id)
+                    ->get(['users.name', 'users.gender', 'users.birthday', 'users.email', 'books.name', 'books.author', 'borrowings.*']);
+            BaseHelper::ajaxResponse(config('app.messageGetSuccess'), true, $borrowInfo[0]);
+        }catch(\Exception $e){
+            print($e);
+            BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+        }   
+    }
+
+    public function approveBorrowingAjax(Request $request){
+        try{
+            $this->checkRequestAjax($request);
+            $user = Auth::user();
+            $borrowing = Borrowing::find($request->id);
+            if ($request->date_borrow == null) {
+                $borrowing->status = 1;
+                $borrowing->approved_by = $user->name;
+            }else{
+                $borrowing->status = 1;
+                $borrowing->approved_by = $user->name;
+                $borrowing->borrow_date = $request->date_borrow;
+                $borrowing->due_date = $request->due_date;
+            }
+            $borrowing->message_approver = $request->message_approver;
+
+            $borrowing->save();
+
+            return redirect()->route('borrow.approve');
+        }catch(\Exception $e){
+            print($e);
+            BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+        }
     }
 
 }

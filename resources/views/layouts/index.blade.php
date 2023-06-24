@@ -40,7 +40,7 @@
     
     @yield('style')
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
     <!-- Preloader -->
