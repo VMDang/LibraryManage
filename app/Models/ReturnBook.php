@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Book extends Model
+class ReturnBook extends Model
 {
     use HasFactory;
-
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+    
+    
     protected $fillable = [
-        'category_id', 'shelf_id', 'name', 'preview_content', 'file_book',
-        'author', 'publisher', 'date_publication', 'cost', 'number', 'status',
-        'created_by', 'updated_by', 'created_at', 'updated_at',
-    ];
+        'borrow_id','date_return','status','approve_status','approved_by','created_at','updated_at',
+      
+   ];
 }

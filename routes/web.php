@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BorrowBookController;
+use App\Http\Controllers\ReturnBookController;
+use App\Http\Controllers\ShelfController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,18 +29,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('home');
     })->name('home');
 
-   Route::controller(UserController::class)->group(function (){
-       Route::prefix('/user')->group(function () {
-           Route::get('/profile/{id?}',  'profile')->where('id', '[0-9]+')->name('user.profile');
-           Route::post('/updateUserAjax','updateUserAjax')->name('user.update');
-           Route::post('/recoverAccountAjax','recoverAccountAjax');
-           Route::post('/lockAccountAjax','lockAccountAjax');
-           Route::post('/deleteAccountAjax','deleteAccountAjax');
-           Route::post('/updateRoleAjax','updateRoleAjax');
-           Route::match(['post', 'get'],'/list','list')->name('user.list');
-       });
-   });
+    Route::controller(UserController::class)->group(function (){
+        Route::prefix('/user')->group(function () {
+            Route::get('/profile/{id?}',  'profile')->where('id', '[0-9]+')->name('user.profile');
+            Route::post('/updateUserAjax','updateUserAjax')->name('user.update');
+            Route::post('/recoverAccountAjax','recoverAccountAjax');
+            Route::post('/lockAccountAjax','lockAccountAjax');
+            Route::post('/deleteAccountAjax','deleteAccountAjax');
+            Route::post('/updateRoleAjax','updateRoleAjax');
+            Route::match(['post', 'get'],'/list','list')->name('user.list');
+        });
+    });
 
+    Route::resource('books', BookController::class)
+        ->except(['create', 'edit']);
+
+    Route::controller(BookController::class)->group(function (){
+        Route::prefix('/books')->group(function (){
+
+        });
+    });
+
+   Route::controller(BorrowBookController::class)->group(function (){
+        Route::prefix('/borrow')->group(function(){
+            Route::get('/create', 'create')->name('borrow.create');
+            Route::post('/create', 'store')->name('borrow.store'); 
+            Route::get('/approve', 'approve')->name('borrow.approve');
+            Route::get('/history', 'history')->name('borrow.history');
+        });
+   });
    Route::resource('books', BookController::class)
        ->except(['create', 'edit']);
 
@@ -46,9 +68,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
    });
    Route::controller(CategoryController::class)->group(function (){
         Route::prefix('/category')->group(function () {
-            Route::get('/list',  'show')->name('category.list');
+            Route::get('/list',  'showList')->name('category.list');
+            Route::get('/add',  'addCategory')->name('category.add');
+            Route::post('/add', 'store')->name('category.store'); 
         });
     });
+    Route::controller(ShelfController::class)->group(function (){
+        Route::prefix('/shelf')->group(function () {
+            Route::get('/list',  'showList')->name('shelf.list');
+            Route::get('/add',  'addShelf')->name('shelf.add');
+            Route::post('/add', 'store')->name('shelf.store'); 
+        });
+    });
+   Route::controller(ReturnBookController::class)->group(function (){
+     Route::prefix('/return')->group(function (){
+           Route::get('/create','create')->name('return.create');
+           Route::get('/approve','approve')->name('return.approve');
+           Route::post('/create','store')->name('return.store');
+    });
+});
+
 });
 
 require __DIR__.'/auth.php';

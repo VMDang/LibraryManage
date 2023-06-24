@@ -35,8 +35,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset("themes/dist/css/adminlte.min.css")}}">
     <!-- CSRF Token -->
+    
     <meta name="csrf_token" content="{{ csrf_token() }}" />
-
+    
     @yield('style')
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed">
@@ -114,6 +115,7 @@
     const datetimepickerFormat = '{{config('app.datetimepickerFormat')}}';
     let currentMaxDate = '{{date("d/m/Y")}}';
 </script>
+
 @yield('script')
 </body>
 </html>

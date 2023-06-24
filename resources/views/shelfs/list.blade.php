@@ -1,7 +1,7 @@
 @extends("layouts.footer")
 
 @section('title-page')
-    <title> Categories </title>
+    <title> Shelfs </title>
 @endsection
 
 @section('style')
@@ -28,11 +28,11 @@
     $('.open-books-modal').on('click', function(e) {
         e.preventDefault();
 
-        var categoryName = $(this).data('category-name');
+        var shelfID = $(this).data('shelf-id');
         var bookList = $(this).data('book-list');
 
         // Hiển thị tên của category trong modal
-        $('#modalCategoryName').text($(this).closest('tr').find('td:nth-child(2)').text());
+        $('#modalShelfID').text($(this).closest('tr').find('td:nth-child(2)').text());
 
         // Hiển thị danh sách sách trong modal
         var modalBookList = $('#modalBookList');
@@ -41,7 +41,7 @@
         bookList.forEach(function(book) {
             var row = $('<tr>');
             row.append('<td>' + book.name + '</td>');
-            row.append('<td>' + book.shelf_id + '</td>');
+            row.append('<td>' + book.category_id + '</td>');
             row.append('<td>' + book.preview_content + '</td>');
             row.append('<td>' + book.file_book + '</td>');
             row.append('<td>' + book.author + '</td>');
@@ -76,13 +76,13 @@
         <div class="row mb-2">
           <div class="col-sm-6"> 
             <div class="card-header">
-                <h2 class="card-title">Danh sách thể loại</h3>
+                <h2 class="card-title">Danh sách vị trí </h3>
             </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                <li class="breadcrumb-item active">thêm một thể loại</li>
+                <li class="breadcrumb-item active">danh sách vị trí</li>
             </ol>
           </div>
         </div>
@@ -101,21 +101,19 @@
                   <thead>
                       <tr>
                           <th>ID</th>
-                          <th>Name</th>
-                          <th>Description</th>
+                          <th>Location</th>
                           <th>Status</th>
                           <th>Books</th>
                       </tr>
                   </thead>
                   <tbody>
-                      @foreach($allCategories as $category)
+                      @foreach($allShelfs as $shelf)
                       <tr>
-                          <td>{{ $category->id }}</td>
-                          <td>{{ $category->name }}</td>
-                          <td>{{ $category->description }}</td>
-                          <td>{{ $category->status }}</td>
+                          <td>{{ $shelf->id }}</td>
+                          <td>{{ $shelf->location  }}</td>
+                          <td>{{ $shelf->status === 0 ? "Đầy" : "Còn trống" }}</td>
                           <td>
-                              <a class="open-books-modal" href="#" data-category-name="{{ $category->name }}" data-book-list="{{ $booksByCategory[$category->id] }}">View Books</a>
+                              <a class="open-books-modal" href="#" data-shelf-id="{{ $shelf->id }}" data-book-list="{{ $booksByShelf[$shelf->id] }}">View Books</a>
                           </td>
                       </tr>
                       @endforeach
@@ -126,12 +124,12 @@
         </div>  
           <!-- Books Modal -->
           <div id="booksModal" class="white-popup mfp-hide">
-            <h2>Books for Category: <span id="modalCategoryName"></span></h2>
+            <h2>Books for shelf: <span id="modalShelfID"></span></h2>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Shelf ID</th>
+                        <th>Categories</th>
                         <th>Preview Content</th>
                         <th>File Book</th>
                         <th>Author</th>

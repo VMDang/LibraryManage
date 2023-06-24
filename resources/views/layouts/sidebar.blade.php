@@ -38,8 +38,8 @@
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="{{route('home')}}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
@@ -102,13 +102,112 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
                             <p>
-                                Thể Loại
+
+                                Mượn Sách
+
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('category.list')}}" class="nav-link">
+                                <a href="{{route('borrow.history')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('borrow.create')}}" class="nav-link">
+                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <p>Tạo yêu cầu</p>
+                                </a>
+                            </li>
+                            @cannot('isUser')
+                                <li class="nav-item">
+                                    <a href="{{route('borrow.approve')}}" class="nav-link">
+                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <p>Phê duyệt yêu cầu</p>
+                                    </a>
+                                </li>
+                            @endcannot
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book" ></i>
+                            <p>
+                                Trả sách
+                                <i class="fas fa-angle-left right" ></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" >
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('return.create')}}" class="nav-link">
+                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <p>Tạo yêu cầu</p>
+                                </a>
+                            </li>
+                            @cannot('isUser')
+                                <li class="nav-item">
+                                    <a href="{{route('return.approve')}}" class="nav-link">
+                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <p>Phê duyệt yêu cầu</p>
+                                    </a>
+                                </li>
+                            @endcannot
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Thể Loại
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('category.list')}}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Danh sách</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @cannot('isUser')
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('category.add')}}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Thêm</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('category.list')}}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Sửa</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endcannot
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Vị trí 
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('shelf.list')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Danh sách</p>
                                 </a>
@@ -117,14 +216,22 @@
                     @cannot('isUser')
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('category.list')}}" class="nav-link">
+                                <a href="{{route('shelf.add')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Thêm</p>
                                 </a>
                             </li>
                         </ul>
+                        {{-- <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('category.list')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Sửa</p>
+                                </a>
+                            </li>
+                        </ul> --}}
                     @endcannot
-                    </li>
+                </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
