@@ -41,6 +41,10 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 align-baseline" style="margin-right: 116px" href="{{ route('register') }}">
+                    {{ __('Đăng ký')}}
+                </a>
+
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Quên mật khẩu?') }}
