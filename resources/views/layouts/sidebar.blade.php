@@ -162,11 +162,13 @@
                     </li>
                     <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                                <ion-icon name="albums" class = "nav-icon fas"></ion-icon>
                                 <p>
                                     Thể Loại
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left center right"></i>
                                 </p>
+                               
+                                
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
@@ -197,7 +199,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
+                            <ion-icon name="location" class = "nav-icon fas"></ion-icon>
                             <p>
                                 Vị trí 
                                 <i class="fas fa-angle-left right"></i>
