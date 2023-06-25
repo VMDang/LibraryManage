@@ -40,7 +40,7 @@
     
     @yield('style')
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">">
 <div class="wrapper">
 
     <!-- Preloader -->
@@ -72,6 +72,7 @@
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{{asset("themes/plugins/jquery/jquery.min.js")}}"></script>
+<script src="{{asset("themes/plugins/jquery-ui/jquery-ui.min.js")}}"></script>
 <!-- Bootstrap -->
 <script src="{{asset("themes/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- ChartJS -->

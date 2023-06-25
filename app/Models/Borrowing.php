@@ -16,7 +16,7 @@ class Borrowing extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'user_id', 'book_id', 'status', 'borrow_date',
+        'id', 'user_id', 'book_id', 'status', 'message_user', 'message_approver', 'borrow_date',
         'due_date', 'appoved_by', 'created_at', 'updated_at'
     ];
 
