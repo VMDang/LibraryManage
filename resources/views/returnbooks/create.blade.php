@@ -25,30 +25,16 @@
 
     <script src="/jquery.js"></script>
 <script src="/build/jquery.datetimepicker.full.min.js"></script>
-<!--
-</script>
+<script>
+        flatpickr("#myID");
+    </script>
     <script>
         $(document).ready(function() {
-            $('.select2').select2();
-            //Date picker
-            $('#birthdayDate').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true
+            $('#select-book-id').on('change', function() {
+                var author = $(this).find(':selected').data('author');
+                $('#input-author').val(author);
             });
-            $('#birthdayDate .input-group-prepend button').click(function () {
-            $('#birthdayDate').datepicker('show');
         });
-
-        });
-    //     $(document).ready(function () {
-    //     $('#birthdayDate').datepicker({
-    //         format: 'dd/mm/yyyy',
-    //         autoclose: true
-    //     });
-    // });
-    </script> -->
-    <script>
-        flatpickr("#myID");
     </script>
 @endsection
 
@@ -83,7 +69,7 @@
                     <form class="form-returnbook" action="{{route('return.store')}}" method="POST"
                                 id="form-id" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="borrow_id" value="{{$borrow_id}}">
+                    <input type="hidden" name="borrow_id" >
 
                     <div class="card-body">
                         <div class="row">
@@ -118,17 +104,22 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="book">Tên sách</label>
-
-                                    <input  class="form-control" style="background-color:white; color: black" value="{{$book->name}}" readonly>
-
-
+                                    <select class="form-control select2" id="select-book-id" style="width: 100%;" name="book_id">
+                                        <option value="0" selected="selected">Tên sách</option>
+                                        @foreach($returnInfo as $info)
+                                            <option value="{{$info->book_id}}" data-author="{{$info->author}}">{{$info->book_name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <!-- /.form-group -->
+
                                 <div class="form-group">
-                                    <label for="author" >Tác giả</label>
-                                  <input class="form-control" style="background-color:white; color: black" value="{{$book->author}}" readonly>
-
+                                    <label for="author">Tác giả</label>
+                                    <input class="form-control" id="input-author" type="text"   >
                                 </div>
+
+                               
+                                <!-- /.form-group -->
+                                
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label>Vị trí</label>

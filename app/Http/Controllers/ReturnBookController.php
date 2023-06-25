@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
 use BaseHelper;
-
+use Illuminate\Support\Facades\DB;
 class ReturnBookController extends Controller
 {
      /**
@@ -15,19 +15,33 @@ class ReturnBookController extends Controller
      *@return  \Illuminate\Http\Response
       */
       
-    public function create()
+      public function create()
       {
-        // $id_tmp = 2;
-        // $user_tmp = User::find($id_tmp);
-        $borrow_id = 1;
-        $user = Auth::user();
-        $book_id = 1;      
-        $book = Book::find($book_id);
-        // dd($book);
-        
-      return view("returnbooks.create" , compact('user' ,'book', 'borrow_id'));
-        
-
+          $user = Auth::user();
+      
+          $returnInfo = DB::table('borrowings')
+              ->join('books', 'borrowings.book_id', '=', 'books.id')
+              ->join('users', 'borrowings.user_id', '=', 'users.id')
+              ->leftJoin('return_books', 'borrowings.id', '=', 'return_books.borrow_id')
+              ->where('users.id', '=', Auth::id())
+              ->select(
+                  'users.name as user_name',
+                  'users.email',
+                  'return_books.borrow_id',
+                  'return_books.message_user',
+                  'return_books.message_mod',
+                  'books.name as book_name',
+                  'books.author',
+                  'books.category_id',
+                  'books.id as book_id',
+                  'borrowings.message_user AS borrowing_message_user',
+                  'borrowings.message_approver',
+                  'borrowings.borrow_date'
+              )
+              ->get();
+            
+          $books = $returnInfo->pluck('book_name', 'book_id');
+        return view("returnbooks.create", compact('user', 'books', 'returnInfo'));
       }
 
     public function approve()
