@@ -10,12 +10,8 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('js/book/borrowing.js')}}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        flatpickr("#date_borrow");
-        flatpickr("#due_date");
-    </script>
+    <script src="{{asset('js/borrow/borrowing.js')}}" defer></script>
 @endsection
 
 @section('content')
@@ -44,11 +40,19 @@
                                     <tbody>
                                         @foreach($borrowings as $index => $borrowing)
                                         <tr class="view-form" data-toggle="modal" data-target="#borrowing-click" data-index="{{$index}}">
-                                            <td>{{$borrowing->created_at}}</td>
+                                            <td>{{date('H:m:s d/m/Y', strtotime($borrowing->created_at))}}</td>
                                             <td>{{$borrowing->user->name}}</td>
                                             <td>{{$borrowing->user->email}}</td>
                                             <td>{{$borrowing->book->name}}</td>
-                                            <td><?php echo $borrowing->status ? '<span style="color:green;">Đã duyệt</span>' : '<span style="color:red;">Chưa duyệt</span>' ?></td>
+                                            <td>
+                                                @if($borrowing->status == 0)
+                                                    <span style="color: blue;">Chưa duyệt</span>
+                                                @elseif($borrowing->status == 1)
+                                                    <span style="color:green;">Đồng ý</span>
+                                                @elseif($borrowing->status == 2)
+                                                    <span style="color:red;">Từ chối</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-outline-success btnDetail"
                                                     data-id="{{$borrowing->id}}"
@@ -72,7 +76,7 @@
                 <div class="modal-dialog modal-lg" style="width: 85%; max-width: 90%;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modalApproveTitle">Modal default</h4>
+                            <h4 class="modal-title" id="modalApproveTitle">Phê duyệt yêu cầu mượn sách</h4>
                             <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -112,7 +116,7 @@
                                         <div class="row">
                                             <label for="birthday" class="col-sm-3">Ngày sinh</label>
                                             <div class="form-group col-lg-9">
-                                                <input type="text" name="birthday" id="birthday" class="form-control" readonly>
+                                                <input type="text" name="birthday" id="birthday" class="form-control" disabled>
                                             </div>
                                         </div>
 
@@ -160,9 +164,9 @@
                                         </div>
 
                                         <div class=" row">
-                                            <label class="col-lg-3 col-form-label" for="date_borrow">Ngày mượn</label>
+                                            <label class="col-lg-3 col-form-label" for="borrow_date">Ngày mượn</label>
                                             <div class="form-group col-lg-9">
-                                                <input type="date" name="date_borrow" id="date_borrow" class="form-control">
+                                                <input type="date" name="borrow_date" id="borrow_date" class="form-control">
                                             </div>
                                         </div>
 
@@ -171,23 +175,23 @@
                                             <div class="form-group col-lg-9">
                                                 <input type="date" name="due_date" id="due_date" class="form-control">
                                             </div>
-                                        </div>            
-                                        
+                                        </div>
+
                                         <div class=" row">
                                             <label class="col-lg-3 col-form-label" for="message_approver">Lời nhắn đến người dùng</label>
                                             <div class="form-group col-lg-9">
                                                 <textarea class="form-control" style="width: 100%;" name="message_approver" id="message_approver"></textarea>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Đóng
                                 </button>
-                                
-                                <button type="submit" class="btn btn-primary" id="btnDeni"><i class="fas fa-save"></i>
+
+                                <button type="submit" class="btn btn-danger" id="btnDeni"><i class="fas fa-handshake-slash"></i>
                                     Từ chối
                                 </button>
                                 <button type="submit" class="btn btn-primary" id="btnSave"><i class="fas fa-save"></i>
@@ -203,7 +207,6 @@
             </div>
                 </div>
                 <!-- /.modal -->
-            </div>
         </section>
     </div>
 @endsection
