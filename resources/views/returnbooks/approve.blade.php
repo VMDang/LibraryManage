@@ -32,9 +32,8 @@
                     $('#location').val('Tầng 1 Phòng 1 Kệ 1');
                     $('#borrow_date').val(info[index].borrow_date);
                     $('#date_return').val(info[index].date_return);
-                    $('#message_approver').val(info[index].message_approver);
-    
-                    // Hiển thị modal
+                    $('#message_mod').val(info[index].message_mod);
+                     // Hiển thị modal
                     $('#modalApprove').modal('show');
                 });
     
@@ -44,10 +43,7 @@
                 });
             });
         </script>
-        
-        
-       
-    @endsection
+@endsection
 
     @section('content')
         <div class="content-wrapper">
@@ -213,9 +209,9 @@
                                             </div>
 
                                             <div class=" row">
-                                                <label class="col-lg-3 col-form-label" for="message_approver">Lời nhắn đến người dùng</label>
+                                                <label class="col-lg-3 col-form-label" for="message_mod">Lời nhắn đến người dùng</label>
                                                 <div class="form-group col-lg-9">
-                                                    <textarea class="form-control" style="width: 100%;" name="message_approver" id="message_approver"></textarea>
+                                                    <textarea class="form-control" style="width: 100%;" name="message_mod" id="message_mod"></textarea>
                                                 </div>
                                             </div>
 

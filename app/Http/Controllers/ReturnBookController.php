@@ -114,13 +114,19 @@ class ReturnBookController extends Controller
             $returnBook->date_return = $request->input('date_return');
             $returnBook->message_mod = $request->input('message_mod');
             $returnBook->approve_status = 1; // Cập nhật trạng thái phê duyệt
-            
-            $returnBook->save();
 
+            // if ($request->has('approve_btn')) {
+            //     $returnBook->approve_status = 1; // Cập nhật trạng thái phê duyệt
+            // } elseif ($request->has('decline_btn')) {
+            //     $returnBook->approve_status = 2; // Cập nhật trạng thái từ chối
+            // }
+
+            $returnBook->save();
+              
             // Thực hiện các xử lý khác nếu cần
         });
+    //    dd($request);
        
-
         return redirect()->route('return.approve')->with('success', 'Lưu thành công');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
