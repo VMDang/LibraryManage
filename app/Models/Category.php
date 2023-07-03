@@ -17,5 +17,9 @@ class Category extends Model
         'id', 'name', 'depcription', 'status',
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
+<<<<<<< HEAD
    
+=======
+
+>>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
 }

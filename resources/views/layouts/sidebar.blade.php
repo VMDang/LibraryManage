@@ -150,6 +150,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+<<<<<<< HEAD
                         <a href="{{route('history.history')}}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
@@ -157,6 +158,71 @@
                             </p>
                         </a>
                     </li>
+=======
+                            <a href="#" class="nav-link" id="categorySidebar">
+                                <ion-icon name="albums" class = "nav-icon fas"></ion-icon>
+                                <p>
+                                    Thể Loại
+                                    <i class="fas fa-angle-left center right"></i>
+                                </p>
+                               
+                                
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('category.list')}}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Danh sách</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @cannot('isUser')
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{route('category.add')}}" class="nav-link">
+                                        <i class="fas fa-list nav-icon"></i>
+                                        <p>Thêm</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endcannot
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="locationSidebar">
+                            <ion-icon name="location" class = "nav-icon fas"></ion-icon>
+                            <p>
+                                Vị trí 
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('shelf.list')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                        </ul>
+                    @cannot('isUser')
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('shelf.add')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Thêm</p>
+                                </a>
+                            </li>
+                        </ul>
+                        {{-- <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('category.list')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Sửa</p>
+                                </a>
+                            </li>
+                        </ul> --}}
+                    @endcannot
+                </li>
+>>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
