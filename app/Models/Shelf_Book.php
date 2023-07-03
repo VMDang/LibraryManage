@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReturnBook extends Model
+class Shelf_Book extends Model
 {
     use HasFactory;
     /**
@@ -13,14 +13,10 @@ class ReturnBook extends Model
      *
      * @var array
      */
-    
-    
+    protected $table = 'shelfs_books';
     protected $fillable = [
-        'borrow_id','date_return','status','approve_status','approved_by','created_at','updated_at',
-      
-   ];
-   public function borrow_id()
-   {
-       return $this->belongsTo(Borrowing::class, 'borrow_id');
-   }
+        'id', 'shelf_id', 'book_id',
+        'created_by', 'updated_by', 'created_at', 'updated_at',
+    ];
+
 }

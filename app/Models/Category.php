@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReturnBook extends Model
+class Category extends Model
 {
     use HasFactory;
     /**
@@ -13,14 +13,9 @@ class ReturnBook extends Model
      *
      * @var array
      */
-    
-    
     protected $fillable = [
-        'borrow_id','date_return','status','approve_status','approved_by','created_at','updated_at',
-      
-   ];
-   public function borrow_id()
-   {
-       return $this->belongsTo(Borrowing::class, 'borrow_id');
-   }
+        'id', 'name', 'depcription', 'status',
+        'created_by', 'updated_by', 'created_at', 'updated_at',
+    ];
+
 }
