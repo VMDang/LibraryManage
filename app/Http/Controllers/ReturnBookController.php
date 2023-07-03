@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
 use BaseHelper;
-
+use Illuminate\Support\Facades\DB;
 class ReturnBookController extends Controller
 {
      /**
@@ -15,45 +15,113 @@ class ReturnBookController extends Controller
      *@return  \Illuminate\Http\Response
       */
       
-    public function create()
+      public function create()
       {
-        // $id_tmp = 2;
-        // $user_tmp = User::find($id_tmp);
-        $borrow_id = 1;
-        $user = Auth::user();
-        $book_id = 1;      
-        $book = Book::find($book_id);
-        // dd($book);
-        
-      return view("returnbooks.create" , compact('user' ,'book', 'borrow_id'));
-        
-
+          $user = Auth::user();
+      
+          $returnInfo = DB::table('borrowings')
+              ->join('books', 'borrowings.book_id', '=', 'books.id')
+              ->join('users', 'borrowings.user_id', '=', 'users.id')
+              ->leftJoin('return_books', 'borrowings.id', '=', 'return_books.borrow_id')
+              ->where('users.id', '=', Auth::id())
+              ->select(
+                  'users.name as user_name',
+                  'users.email',
+                  'return_books.borrow_id',
+                  'return_books.message_user',
+                  'return_books.message_mod',
+                  'books.name as book_name',
+                  'books.author',
+                  'books.category_id',
+                  'books.id as book_id',
+                  'borrowings.message_user AS borrowing_message_user',
+                  'borrowings.message_approver',
+                  'borrowings.borrow_date',
+                  'borrowings.id as borrow_id',
+              )
+              ->get();
+              
+            
+          $books = $returnInfo->pluck('book_name', 'book_id');
+        return view("returnbooks.create", compact('user', 'books', 'returnInfo'));
       }
 
     public function approve()
       {
-        return view("returnbooks.approve");
-      }
+        $user = Auth::user();
+        $returnInfo = DB::table('borrowings')
+              ->join('books', 'borrowings.book_id', '=', 'books.id')
+              ->join('users', 'borrowings.user_id', '=', 'users.id')
+              ->leftJoin('return_books', 'borrowings.id', '=', 'return_books.borrow_id')
+              ->where('users.id', '=', Auth::id())
+              ->select(
+                  'users.name as user_name',
+                  'users.birthday as birthday', 
+                  'users.email as user_email',
+                  'return_books.borrow_id',
+                  'return_books.message_user',
+                  'return_books.message_mod',
+                  'return_books.created_at',
+                  'return_books.approve_status as approve_status',
+                  'return_books.id',
+                  'books.name as book_name',
+                  'books.author',
+                  'books.category_id',
+                  'books.id as book_id',
+                  'borrowings.message_user AS borrowing_message_user',
+                  'borrowings.message_approver',
+                  'borrowings.borrow_date as borrow_date',
+                  'borrowings.id as borrow_id',
+                  
+              )
+              ->get();
+              $books = $returnInfo->pluck('book_name', 'book_id');
+              return view("returnbooks.approve", compact('user', 'books', 'returnInfo'));
+            }
     
-    public function store(Request $request)
-      {
+            public function store(Request $request)
+            {
+             
         
-        $ReturnBook                  = new ReturnBook;
-        $ReturnBook->borrow_id       = $request->borrow_id;
-        $ReturnBook->message_user    = $request->message_user;
+            if (!$request->has('book-name')) {
+                return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
+            }
+                $Returnbook = new ReturnBook;
+                $Returnbook->borrow_id = $request->input('borrow_id');
+                $Returnbook->message_user = $request->input('message_user');
+               
+                try {
+                    $Returnbook->save();
+                    return redirect()->route('return.create')->with('success', 'Lưu thành công');
+                  } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
+                }
+            }
+            
+            
+    
+    public function approveStore(Request $request)
+{
+    try {
+        DB::transaction(function () use ($request) {
+            $returnBook = ReturnBook::findOrFail($request->input('id'));
+            $returnBook->date_return = $request->input('date_return');
+            $returnBook->message_mod = $request->input('message_mod');
+            $returnBook->approve_status = $request->input('approve_status'); // Lấy giá trị từ input
+            $returnBook->save();
 
-        try {
-          $ReturnBook->save();
-          //  BaseHelper::ajaxResponse(config('app.messageSaveSuccess'),true);
-          return redirect()->route('user.profile');
-          
-        } catch (\Exception $exception) {
-            print_r($exception);
-            BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
-        }
-        
-      }
-      
+            // Thực hiện các xử lý khác nếu cần
+        });
+
+        return redirect()->route('return.approve')->with('success', 'Lưu thành công');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
+    }
+}
+
 
     
+
+
+
 }
