@@ -59,7 +59,7 @@
                             <h3 class="card-title">Tìm kiếm sách</h3>
                         </div>
                         <form action="" method="post" id="formFilterBook">
-                            @csrf 
+                            @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-3">
@@ -107,7 +107,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 
+
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -138,7 +138,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill"
                                            href="#tab-all-users-not-delete" role="tab"
-                                           aria-controls="custom-tabs-one-home" aria-selected="true">Sách 
+                                           aria-controls="custom-tabs-one-home" aria-selected="true">Sách
                                         </a>
                                     </li>
                                 </ul>
@@ -176,24 +176,24 @@
                                                     <td>{{$book->cost}}</td>
                                                     <td>
                                                         @if($book->status==1)
-                                                           Có thể mượn 
+                                                           Có thể mượn
                                                         @else
-                                                           Hết 
-                                                        @endif 
+                                                           Hết
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-default"><a
-                                                                    href="{{route('viewbook.detail', [$book->id, $book->name])}}">Xem
-                                                                    
-                                                                    chi tiết</a></button></td>
-                                                    </td>                
+                                                            <button type="button" class="btn btn-default"><a href="{{route('viewbook.detail', [$book->id, $book->name])}}">
+                                                                    Xem chi tiết</a></button>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             @endforeach
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -202,7 +202,7 @@
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
-                
+
             </div>
             <!-- /.container-fluid -->
         </section>

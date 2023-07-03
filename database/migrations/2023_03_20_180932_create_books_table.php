@@ -15,8 +15,6 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_id')->default(0);
-            $table->integer('shelf_id')->default(0);
             $table->string('name', 255);
             $table->text('preview_content')->nullable();
             $table->string('file_book', 255)->nullable();
