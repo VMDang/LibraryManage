@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Shelf_Book extends Model
 {
     use HasFactory;
     /**
@@ -13,13 +13,17 @@ class Category extends Model
      *
      * @var array
      */
+    protected $table = 'shelfs_books';
     protected $fillable = [
-        'id', 'name', 'depcription', 'status',
+        'id', 'shelf_id', 'book_id',
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
-<<<<<<< HEAD
-   
-=======
-
->>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
+    public function book()
+    {
+        return $this->belongsTo(Book::class, 'book_id');
+    }
+    public function shelf()
+    {
+        return $this->belongsTo(Shelf::class, 'shelf_id');
+    }
 }

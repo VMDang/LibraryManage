@@ -7,9 +7,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\ReturnBookController;
+<<<<<<< HEAD
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\ViewBookController;
+=======
 
 
 
+>>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/create', 'create')->name('borrow.create');
             Route::post('/create', 'store')->name('borrow.store');
             Route::get('/approve', 'approve')->name('borrow.approve');
-            Route::get('/history', 'history')->name('borrow.history');
+        
             Route::get('/approve/getBorrowingOfInfoAjax/{id}', 'getBorrowingOfInfoAjax');
             Route::post('/approve/approveBorrowingAjax', 'approveBorrowingAjax');
         });
@@ -69,6 +74,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
     });
+<<<<<<< HEAD
+});
+    Route::controller(HistoryController::class)->group(function (){
+        Route::get('/history', 'history')->name('history.history');
+    
+});
+    Route::controller(ViewBookController::class)->group(function (){
+       Route::get('/viewbook', 'create')->name('viewbook.create');
+       Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('viewbook.detail');
+
+});
+=======
    });
    Route::controller(CategoryController::class)->group(function (){
         Route::prefix('/category')->group(function () {
@@ -90,6 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/add', 'store')->name('shelf.store'); 
         });
     });
+>>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
 });
 
 require __DIR__.'/auth.php';

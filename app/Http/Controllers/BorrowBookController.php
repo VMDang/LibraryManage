@@ -65,11 +65,7 @@ class BorrowBookController extends Controller
         }
     }
 
-    public function history(){
-        $user = Auth::user();
-        $borrowings = Borrowing::with('user', 'book')->get();
-        return view('borrowbooks.history', compact('user', 'borrowings'));
-    }
+    
 
     public function getBorrowingOfInfoAjax($id){
         try{

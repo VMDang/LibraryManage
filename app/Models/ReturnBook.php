@@ -19,4 +19,8 @@ class ReturnBook extends Model
         'borrow_id','date_return','status','approve_status','approved_by','created_at','updated_at',
       
    ];
+   public function borrow_id()
+   {
+       return $this->belongsTo(Borrowing::class, 'borrow_id');
+   }
 }

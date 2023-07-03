@@ -79,7 +79,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('books.index')}}" class="nav-link">
+                                <a href="{{route('viewbook.create')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Danh sách</p>
                                 </a>
@@ -108,12 +108,6 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('borrow.history')}}" class="nav-link">
-                                    <i class="fas fa-list nav-icon"></i>
-                                    <p>Lịch sử</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{route('borrow.create')}}" class="nav-link">
                                     <i class="fas fa-file-export nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
@@ -138,12 +132,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" >
-                                    <i class="fas fa-list nav-icon"></i>
-                                    <p>Lịch sử</p>
-                                </a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a href="{{route('return.create')}}" class="nav-link">
                                     <i class="fas fa-book-reader nav-icon"></i>
@@ -161,6 +150,15 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+<<<<<<< HEAD
+                        <a href="{{route('history.history')}}" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Lịch sử mượn trả 
+                            </p>
+                        </a>
+                    </li>
+=======
                             <a href="#" class="nav-link" id="categorySidebar">
                                 <ion-icon name="albums" class = "nav-icon fas"></ion-icon>
                                 <p>
@@ -224,6 +222,7 @@
                         </ul> --}}
                     @endcannot
                 </li>
+>>>>>>> 43f457e7d921d5358d8c438abda2df53eae3a71e
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
