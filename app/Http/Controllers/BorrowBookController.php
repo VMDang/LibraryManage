@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shelf_Book;
 use BaseHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -23,9 +24,9 @@ class BorrowBookController extends Controller
     {
         $user = Auth::user();
         $books = Book::all();
-
-
-        return view("borrowbooks.create", compact('user', 'books'));
+        $shelf_books = Shelf_Book::with('book', 'shelf')->get();
+        $book_id = 1;
+        return view("borrowbooks.create", compact('user', 'books', 'shelf_books', 'book_id'));
     }
     public function approve()
     {
@@ -103,12 +104,17 @@ class BorrowBookController extends Controller
                 $borrowing->status = 1;
                 $borrowing->borrow_date =$this->changeFormatDateInput( $request->input('borrow_date'));
                 $borrowing->due_date = $this->changeFormatDateInput($request->input('due_date'));
+                $borrowing->book->number -= 1;
+                if($borrowing->book->number==0){
+                    $borrowing->book->status = 0;
+                } 
             }
 
             $borrowing->approved_by = Auth::id();
             $borrowing->message_approver = $request->message_approver;
 
             $borrowing->save();
+            $borrowing->book->save();
 
             BaseHelper::ajaxResponse(config('app.messageSaveSuccess'), true);
         }catch(\Exception $e){

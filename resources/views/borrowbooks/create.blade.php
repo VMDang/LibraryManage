@@ -83,6 +83,7 @@
                                             <option data-id="0" selected="selected">Tên sách</option>
                                             @foreach($books as $book)
                                                 <option data-id="{{$book->id}}" data-author="{{$book->author}}">{{$book->name}}</option>
+                                                $book_id = $book->id;
                                             @endforeach
                                         </select>
                                         @if ($errors->any())
@@ -101,9 +102,19 @@
                                         <input class="form-control" id="input-author" type="text" value="" readonly >
                                     </div>
                                     <!-- /.form-group -->
+                                    <input readonly id="book-id" name="book_id" value="{{$book_id}}">
                                     <div class="form-group">
-                                        <label>Vị trí</label>
-                                        <input type="text" class="form-control" id="quantity" value="Tầng 1 - Phòng 1 - Kệ 1" readonly />
+                                        <label for="location">Vị trí</label>
+                                        <select class="form-control select2" id="select-book-location"  style="width: 100%;" name="book-location">
+                                            <option data-id="0" selected="selected">Vị trí</option>
+                                            
+                                                @foreach($shelf_books as $shelf_book)
+                                                    @if( $book_id == $shelf_book->book->id )
+                                                        <option>{{$shelf_book->shelf->location}}</option>
+                                                    @endif
+                                                @endforeach
+                                            
+                                        </select>
                                     </div>
                                     <!-- /.form-group -->
                                 </div>
