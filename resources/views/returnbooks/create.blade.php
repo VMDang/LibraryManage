@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
-
+    
 
 @endsection
 
@@ -24,7 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="/jquery.js"></script>
     <script src="/build/jquery.datetimepicker.full.min.js"></script>
-<script>
+    <script>
         flatpickr("#myID");
     </script>
     
@@ -38,7 +38,9 @@
             document.getElementById('input-author').value = author;
             document.getElementById('input-borrow_id').value = borrowId;
         });
+\
     </script>
+    
 @endsection
 
 @section('content')
@@ -108,6 +110,7 @@
                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="book">Tên sách</label>
+
                                         <select class="form-control select2" id="select-book-id"  style="width: 100%;" name="book-name">
                                             <option data-id="0" selected="selected">Tên sách</option>
                                              @foreach($returnInfo as $info)
@@ -115,6 +118,7 @@
                                              @endforeach
 
                                         </select>
+
                                         @if ($errors->any())
                                             {{--<div class="form-control">--}}
                                             <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">

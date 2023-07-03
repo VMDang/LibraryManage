@@ -11,11 +11,14 @@
 
     @section('script')
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        {{-- <script src="{{asset('js/return/return.js')}}" defer></script> --}}
+
         <script>
             $(document).ready(function() {
                 $('.btnDetail').on('click', function() {
                     var index = $(this).closest('tr').data('index');
                     var info = @json($returnInfo);
+                   
     
                     // Gán thông tin từ danh sách vào modal
                     $('#id').val(info[index].id);
@@ -23,7 +26,15 @@
                     $('#gender' + info[index].gender).prop('checked', true);
                     $('#birthday').val(info[index].birthday);
                     $('#email').val(info[index].user_email);
-                    $('#approve_status').val(info[index].approve_status);
+                    // Cập nhật trạng thái trong modal
+                        if(info[index].approve_status == 0)
+                        $('#approve_status').val("Chưa duyệt");
+                        else if(info[index].approve_status == 1)
+                        $('#approve_status').val("Đồng ý");
+                        else if(info[index].approve_status == 2)
+                        $('#approve_status').val("Từ chối");
+                    
+                    
                     $('#message_user').val(info[index].message_user);
                     $('#bookname').val(info[index].book_name);
                     $('#author').val(info[index].author);
@@ -39,11 +50,53 @@
                     // Đóng modal
                     $('#modalApprove').modal('hide');
                 });
+             //Thêm sự kiện click cho các button
                 $('#btnDeni, #btnSave').on('click', function() {
-            var status = $(this).data('status');
-            $('#approve_status').val(status);
+                   var status = $(this).data('status');
+                   $('#approve_status').val(status);
+                  });
+
+                 //Cảnh báo nhập ngày trả trước khi phê duyệt
+                      $('#btnSave').on('click', function(event) {
+                     event.preventDefault();
+                          // Kiểm tra trạng thái của trường ngày trả
+                     var dateReturn = $('#date_return').val();
+                     if (dateReturn === '') {
+                         // Hiển thị thông báo cảnh báo
+                         $('#dateReturnError').show();
+                         return; // Dừng lại và không thực hiện phê duyệt
+                     } else {
+                         // Ẩn thông báo cảnh báo nếu ngày trả đã được nhập
+                         $('#dateReturnError').hide();
+                     }
+                     
+                     // Tiếp tục thực hiện phê duyệt
+                     var status = $(this).data('status');
+                     $('#approve_status').val(status);
+                     $('form').submit();
+                 });
+                 
+                 $('#btnDeni').on('click', function(event) {
+                 event.preventDefault();
+                 
+                 // Kiểm tra trạng thái của trường message_mod
+                 var messageMod = $('#message_mod').val();
+                 if (messageMod === '') {
+                     // Hiển thị thông báo cảnh báo lời nhắn đến người dùng
+                     $('#reasonError').show();
+                     return; // Dừng lại và không thực hiện phê duyệt
+                 } else {
+                     // Ẩn thông báo cảnh báo nếu lời nhắn đến người dùng đã được nhập
+                     $('#reasonError').hide();
+                 }
+                 
+                    // Tiếp tục thực hiện phê duyệt
+                    var status = $(this).data('status');
+                 $('#approve_status').val(status);
+                    $('form').submit();
                 });
-            });
+
+               });
         </script>
 @endsection
 
@@ -105,6 +158,7 @@
                         </div>
                     </div>
                     <!-- /.row -->
+                {{-- modal     --}}
                     <div class="modal fade" id="modalApprove">
                     <div class="modal-dialog modal-lg" style="width: 85%; max-width: 90%;">
                         <div class="modal-content">
@@ -162,8 +216,8 @@
                                             <div class="row">
                                                 <label class="col-lg-3 col-form-label" for="status">Trạng thái</label>
                                                 <div class="form-group col-lg-9">
-                                                    <input type="text" name="approve_status" id="approve_status" class="form-control" checked readonly>
-                                                </div>
+                                                    <input type="text" name="approve_status" id="approve_status" class="form-control"     readonly>
+                                             </div>
                                             </div>
 
                                             <div class=" row">
@@ -207,6 +261,8 @@
                                                 <label class="col-lg-3 col-form-label" for="due_date">Ngày Trả</label>
                                                 <div class="form-group col-lg-9">
                                                     <input type="date" name="date_return" id="date_return" class="form-control">
+                                                    <span id="dateReturnError" style="color: red; display: none;">Nhập ngày trả trước khi phê duyệt</span>
+
                                                 </div>
                                             </div>
 
@@ -214,6 +270,8 @@
                                                 <label class="col-lg-3 col-form-label" for="message_mod">Lời nhắn đến người dùng</label>
                                                 <div class="form-group col-lg-9">
                                                     <textarea class="form-control" style="width: 100%;" name="message_mod" id="message_mod"></textarea>
+                                                    <span id="reasonError" style="color: red; display: none;">Nhập lời nhắn/lý do đến người yêu cầu trước khi từ chối</span>
+
                                                 </div>
                                             </div>
 

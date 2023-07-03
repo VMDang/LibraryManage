@@ -112,7 +112,6 @@ class ReturnBookController extends Controller
             $returnBook->date_return = $request->input('date_return');
             $returnBook->message_mod = $request->input('message_mod');
             $returnBook->approve_status = $request->input('approve_status'); // Lấy giá trị từ input
-
             $returnBook->save();
 
             // Thực hiện các xử lý khác nếu cần
@@ -123,6 +122,7 @@ class ReturnBookController extends Controller
         return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
     }
 }
+
 
     
 

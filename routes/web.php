@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
            Route::post('/approve','approveStore')->name('return.approveStore');
+           Route::get('return/approve/success', 'ReturnBookController@approveSuccess')->name('return.approve.success');
 
         
     });
