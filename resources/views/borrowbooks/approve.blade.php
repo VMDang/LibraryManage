@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="modal fade" id="modalApprove">
+            <div class="modal fade" id="modalApprove">
                 <div class="modal-dialog modal-lg" style="width: 85%; max-width: 90%;">
                     <div class="modal-content">
                         <div class="modal-header">

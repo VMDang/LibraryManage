@@ -75,11 +75,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/list',  'showList')->name('category.list');
             Route::get('/add',  'addCategory')->name('category.add');
             Route::post('/add', 'store')->name('category.store'); 
+            Route::post('/list/search', 'search')->name('category.search'); 
+            Route::post('/list/delete', 'delete')->name('category.delete'); 
+            Route::post('/update', 'update')->name('category.update'); 
         });
     });
     Route::controller(ShelfController::class)->group(function (){
         Route::prefix('/shelf')->group(function () {
             Route::get('/list',  'showList')->name('shelf.list');
+            Route::post('/list/search',  'search')->name('shelf.search');
+            Route::post('/list/update',  'update')->name('shelf.update');
+            Route::post('/list/delete',  'delete')->name('shelf.delete');
             Route::get('/add',  'addShelf')->name('shelf.add');
             Route::post('/add', 'store')->name('shelf.store'); 
         });

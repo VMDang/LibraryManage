@@ -16,8 +16,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{asset('js/book/borrowing.js')}}" defer></script>
-    
+    <script src="{{asset('js/category/category.js')}}" defer></script>
+    <script>
+        $(document).ready(function() {
+        $('#categorySidebar').addClass('active');
+    });
+    </script>
 @endsection
 
 @section('content')

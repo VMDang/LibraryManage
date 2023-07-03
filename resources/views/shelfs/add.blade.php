@@ -17,6 +17,7 @@
     <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script>
+    
         function handleFloorChange(selectElement) {
             // Lấy giá trị floor được chọn
             var selectedFloor = selectElement.value;
@@ -36,8 +37,10 @@
                 roomSelect.appendChild(option);
             }
         }
+    
     </script>
     <script>
+   
         function handleRoomChange(selectElement) {
             // Lấy giá trị room được chọn
             var selectedRoom = selectElement.value;
@@ -60,18 +63,23 @@
         }
     </script>
     <script>
+        $(document).ready(function() {
+        $('#locationSidebar').addClass('active');
+    });
+    </script>
+    <script>
         function validateForm() {
-            var floorSelect = document.getElementById('floorSelect');
-            var roomSelect = document.getElementById('roomSelect');
-            var shelfSelect = document.getElementById('shelfSelect');
-            var inputName = document.getElementById('input-name');
-            var inputStatus = document.getElementById('input-status');
-            // Kiểm tra xem các trường đã được chọn hết hay chưa
-            if (floorSelect.value === '' || roomSelect.value === '' || shelfSelect.value === ''|| inputName.value === ''|| inputStatus.value === '') {
-                alert('Vui lòng chọn đầy đủ các trường!');
-                return false; // Ngăn form được submit
-            }
-            return true; // Cho phép form được submit
+        var floorSelect = document.getElementById('floorSelect');
+        var roomSelect = document.getElementById('roomSelect');
+        var shelfSelect = document.getElementById('shelfSelect');
+        var inputName = document.getElementById('input-name');
+        var inputStatus = document.getElementById('input-status');
+        // Kiểm tra xem các trường đã được chọn hết hay chưa
+        if (floorSelect.value === '' || roomSelect.value === '' || shelfSelect.value === ''|| inputName.value === ''|| inputStatus.value === '') {
+            alert('Vui lòng chọn đầy đủ các trường!');
+            return false; // Ngăn form được submit
+        }
+        return true; // Cho phép form được submit
         }
     </script>
 @endsection

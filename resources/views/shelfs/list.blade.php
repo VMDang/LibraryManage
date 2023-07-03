@@ -16,63 +16,71 @@
         border-radius: 15px; /* Border-radius là 15px */
         padding: 20px; /* Tùy chỉnh padding tùy theo nhu cầu */
       }
+      #updateModal {
+        background-color: rgba(255, 255, 255, 0.9); /* Màu nền trắng với độ mờ 90% */
+        color: rgba(101, 101, 101, 0.9);
+        max-width: 70%;
+        margin: auto;
+        border-radius: 15px; /* Border-radius là 15px */
+        padding: 20px; /* Tùy chỉnh padding tùy theo nhu cầu */
+      }
     </style>
 @endsection
 
 @section('script')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>  
+  <script>
+    function handleFloorChange(selectElement) {
+         // Lấy giá trị floor được chọn
+         var selectedFloor = selectElement.value;
+    
+        // Lấy danh sách phòng tương ứng với floor từ biến $rooms
+        var roomsInSelectedFloor = {!! json_encode($rooms) !!}[selectedFloor];
 
-<script>
-  $(document).ready(function() {
-    $('.open-books-modal').on('click', function(e) {
-        e.preventDefault();
+        // Cập nhật danh sách phòng trong dropdown Room
+        var roomSelect = document.getElementById('roomSelect');
+        roomSelect.innerHTML = '<option value="">-- Chọn phòng --</option>';
 
-        var shelfID = $(this).data('shelf-id');
-        var bookList = $(this).data('book-list');
-
-        // Hiển thị tên của category trong modal
-        $('#modalShelfID').text($(this).closest('tr').find('td:nth-child(2)').text());
-
-        // Hiển thị danh sách sách trong modal
-        var modalBookList = $('#modalBookList');
-        modalBookList.empty();
-
-        bookList.forEach(function(book) {
-            var row = $('<tr>');
-            row.append('<td>' + book.name + '</td>');
-            row.append('<td>' + book.category_id + '</td>');
-            row.append('<td>' + book.preview_content + '</td>');
-            row.append('<td>' + book.file_book + '</td>');
-            row.append('<td>' + book.author + '</td>');
-            row.append('<td>' + book.publisher + '</td>');
-            row.append('<td>' + book.date_publication + '</td>');
-            row.append('<td>' + book.cost + '</td>');
-            row.append('<td>' + book.number + '</td>');
-            row.append('<td>' + book.status + '</td>');
-
-            modalBookList.append(row);
-        });
-
-        // Mở modal sách
-        $.magnificPopup.open({
-            items: {
-                src: '#booksModal'
-            },
-            type: 'inline',
-            midClick: true,
-            closeBtnInside: true
-        });
-    });
-  });
+        // Thêm các option phòng vào dropdown Room
+        for (var room in roomsInSelectedFloor) {
+            var option = document.createElement('option');
+            option.value = room;
+            option.text = room;
+            roomSelect.appendChild(option);
+        }
+    }
 </script>
+<script>
+    function handleRoomChange(selectElement, rooms) {
+        // Lấy giá trị room được chọn
+        var selectedRoom = selectElement.value;
+        
+        // Lấy danh sách shelf tương ứng với room từ biến $rooms
+        var selectedFloor = document.getElementById('floorSelect').value;
+        var shelvesInSelectedRoom = {!! json_encode($rooms) !!}[selectedFloor][selectedRoom];
+
+        // Cập nhật danh sách shelf trong dropdown Shelf
+        var shelfSelect = document.getElementById('shelfSelect');
+        shelfSelect.innerHTML = '<option value="">-- Chọn kệ --</option>';
+
+        // Thêm các option shelf vào dropdown Shelf
+        for (var i = 0; i < shelvesInSelectedRoom.length; i++){
+            var option = document.createElement('option');
+            option.value = shelvesInSelectedRoom[i];
+            option.text = shelvesInSelectedRoom[i];
+            shelfSelect.appendChild(option);
+        }
+    }
+</script>
+<script src="{{asset('js/shelf/shelf.js')}}" defer></script>
 @endsection
 
 @section('content')
-<div class="content-wrapper">
-  <!--header-->
-  <section class="content-header">
-    <div class="container-fluid">
+  <div class="content-wrapper">
+    <!--header-->
+    <section class="content-header">
+      <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6"> 
             <div class="card-header">
@@ -86,70 +94,190 @@
             </ol>
           </div>
         </div>
-    </div>  
-  </section>  
-  <!--End header-->   
-  <!-- main content-->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped">
+      </div>  
+    </section>  
+    <!--End header-->  
+    <!--search+create-->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6"> 
+            @cannot('isUser')
+            <a href="{{route('shelf.add')}}" class=" btn btn-block btn-primary" style="max-width:130px; max-height:40px; margin-left : 30px; display: flex;" id="addBtn">
+              <ion-icon name="add" style="color: white; margin-top:5px;display: inline-block;" class="fa "></ion-icon>
+              <p style="display: inline-block; margin-top:1px;">Tạo vị trí</p>
+            </a>
+            @endcannot
+          </div>
+          <div class="col-sm-6 " >
+            <form class="form-horizontal" method="post" action="{{route('shelf.search')}}" style="margin-left: 100px;">
+              <div style="display: flex;">
+                <div class="card" style="display: inline-block;">
+                  <input class="form-control" id="input-shelf-search" type="text" name="name" value="Nhập mã vị trí">
+                </div>
+                <div class="card" style="text-align: center; margin-left : 10px; display: inline-block; max-height:20px;" >
+                  <button type="submit" class="btn btn-primary" style="display:flex;">
+                    <ion-icon name="search-outline" style="margin-top: 3px; margin-right: 4px;"></ion-icon>
+                    <div style="display: inline-block;">Search</div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>  
+    </section>  
+    <!--End search+create-->   
+    <!-- main content-->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Books</th>
+                            @cannot('isUser')
+                              <th>Hành động</th>
+                            @endcannot
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($allShelfs as $shelf)
+                        <tr>
+                            <td>{{ $shelf->id }}</td>
+                            <td>{{ $shelf->location  }}</td>
+                            <td>
+                              @if($shelf->status === 0)
+                                <span style="color: red;">Đầy</span>
+                              @else
+                                <span style="color:blue;">Còn trống</span>
+                              @endif
+                            </td>
+                            <td>
+                                <a class="open-books-modal" href="#" data-shelf-id="{{ $shelf->id }}" data-book-list="{{ $booksByShelf[$shelf->id] }}">View Books</a>
+                            </td>
+                            @cannot('isUser')
+                            <td style="width:120px;">
+                              <div style="display:flex;">
+                                <button type="button" class="btn btn-outline-success updateBtn" style="margin-right: 3px"
+                                data-shelf="{{ $shelf }}">
+                                <i class="fas fa-edit"></i>
+                                </button>
+                                <form method="post" action="{{route('shelf.delete')}}" >
+                                  @csrf
+                                  <input type="hidden" id="input-name" type="number" name="id" value="{{$shelf->id}}">
+                                  <button type="submit" class="btn btn-outline-danger deleteBtn" style="color: blue;">
+                                      <ion-icon name="trash" class="fas"></ion-icon> 
+                                  </button>
+                                </form>
+                              </div>
+                            </td>
+                            @endcannot
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>  
+            <!-- Books Modal -->
+            <div id="booksModal" class="white-popup mfp-hide">
+              <h2>Books for shelf: <span id="modalShelfID"></span></h2>
+              <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                          <th>ID</th>
-                          <th>Location</th>
+                          <th>Name</th>
+                          <th>Categories</th>
+                          <th>Preview Content</th>
+                          <th>File Book</th>
+                          <th>Author</th>
+                          <th>Publisher</th>
+                          <th>Date of Publication</th>
+                          <th>Cost</th>
+                          <th>Number</th>
                           <th>Status</th>
-                          <th>Books</th>
                       </tr>
                   </thead>
-                  <tbody>
-                      @foreach($allShelfs as $shelf)
-                      <tr>
-                          <td>{{ $shelf->id }}</td>
-                          <td>{{ $shelf->location  }}</td>
-                          <td>{{ $shelf->status === 0 ? "Đầy" : "Còn trống" }}</td>
-                          <td>
-                              <a class="open-books-modal" href="#" data-shelf-id="{{ $shelf->id }}" data-book-list="{{ $booksByShelf[$shelf->id] }}">View Books</a>
-                          </td>
-                      </tr>
-                      @endforeach
+                  <tbody id="modalBookList">
                   </tbody>
               </table>
-          </div>
-            <!-- /.card-body -->
-        </div>  
-          <!-- Books Modal -->
-          <div id="booksModal" class="white-popup mfp-hide">
-            <h2>Books for shelf: <span id="modalShelfID"></span></h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Categories</th>
-                        <th>Preview Content</th>
-                        <th>File Book</th>
-                        <th>Author</th>
-                        <th>Publisher</th>
-                        <th>Date of Publication</th>
-                        <th>Cost</th>
-                        <th>Number</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="modalBookList">
-                </tbody>
-            </table>
-          </div>
-          <!-- End Books Modal -->
+            </div>
+            <!-- End Books Modal -->
+            <!-- Update modal -->
+            <div id="updateModal" class="white-popup mfp-hide">
+              <h2>Sửa thể loại </h2>
+              <div class="card-body">
+                <form class="form-horizontal" onsubmit="return validateForm()" method="post" action="{{route('shelf.update')}}" >
+                  @csrf
+                  <div class="row">
+                      <!--cot 1-->
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="name">Mã vị trí</label>
+                              <input class="form-control" id="input-shelfID" type="text" name="shelfID" >
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="status">Trạng thái</label>
+                              <select class="form-control select2" id="statusSelectUpdate"  style="width: 100%;" name="status" >
+                                  <option value="">-- Chọn trạng thái --</option>
+                                  @foreach ($statusOption as $status )
+                                      <option value="{{ $status }}">{{ $status }}</option>
+                                  @endforeach
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <h5>Vị trí</h5>
+                  <div class="row" style="margin-top:30px;">
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="floor">Tầng</label>
+                              <select class="form-control select2" id="floorSelectUpdate"  style="width: 100%;" name="floor" onchange="handleFloorChange(this,$rooms)">
+                                  <option value="">-- Chọn tầng --</option>
+                                  @foreach ($rooms as $floor => $roomsInFloor)
+                                      <option value="{{ $floor }}">{{ $floor }}</option>
+                                  @endforeach
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="room">Room:</label>
+                              <select class="form-control select2" style="width: 100%;" id="roomSelectUpdate" name="room" onchange="handleRoomChange(this,$rooms)">
+                                  <option value="">-- Chọn phòng --</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <label for="shelf">Shelf:</label>
+                              <select class="form-control select2" style="width: 100%;" id="shelfSelectUpdate" name="shelf" >
+                                  <option value="">-- Chọn kệ --</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-footer" style="text-align: center;">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- ./Update modal-->
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!--End main content-->
-</div>
+    
+    </section>
+    <!--End main content-->
+  </div>
 @endsection

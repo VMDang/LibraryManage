@@ -34,14 +34,29 @@ class ShelfController extends Controller
     {
         $allShelfs = Shelf::all();
         $booksByShelf = [];
-
+        $statusOption = ['Đầy', 'Còn trống'];
+        $floors = ['Tầng 01', 'Tầng 02', 'Tầng 03', 'Tầng 04', 'Tầng 05', 'Tầng 06'];
+        $rooms = [];
+        foreach ($floors as $floor) {
+            $floorRooms = [];
+            for ($i = 1; $i <= 10; $i++) {
+                $roomNumber = 'Phòng ' . $i;
+                $shelves = [];
+                for ($j = 1; $j <= 10; $j++) {
+                    $shelfNumber = 'Kệ ' . $j;
+                    $shelves[] = $shelfNumber;
+                }
+                $floorRooms[$roomNumber] = $shelves;
+            }
+            $rooms[$floor] = $floorRooms;
+        }
         // Lặp qua từng category và lấy danh sách các book
         foreach ($allShelfs as $shelf) {
             $books = self::getAllBookByShelfID($shelf);
             $booksByShelf[$shelf->id] = $books;
         }
 
-        return view("shelfs.list", compact('allShelfs', 'booksByShelf'));
+        return view("shelfs.list", compact('allShelfs', 'booksByShelf','statusOption','rooms'));
     }
     public function addShelf()
     {   
@@ -79,5 +94,14 @@ class ShelfController extends Controller
             print($e);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
+    }
+    public function search(){
+        
+    }
+    public function update(){
+        
+    }
+    public function delete(){
+        
     }
 }

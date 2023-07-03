@@ -161,7 +161,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" id="categorySidebar">
                                 <ion-icon name="albums" class = "nav-icon fas"></ion-icon>
                                 <p>
                                     Thể Loại
@@ -187,18 +187,10 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{route('category.list')}}" class="nav-link">
-                                        <i class="fas fa-list nav-icon"></i>
-                                        <p>Sửa</p>
-                                    </a>
-                                </li>
-                            </ul>
                         @endcannot
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" id="locationSidebar">
                             <ion-icon name="location" class = "nav-icon fas"></ion-icon>
                             <p>
                                 Vị trí 
