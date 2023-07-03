@@ -79,30 +79,26 @@ class ReturnBookController extends Controller
               return view("returnbooks.approve", compact('user', 'books', 'returnInfo'));
             }
     
-    public function store(Request $request)
-    {
-      $message = [
-        'book-name.required' => 'Hãy chọn một cuốn sách',
-    ];
-
-    $validated = $request->validate([
-        'book-name' => 'required',
-    ], $message);
-
-    if (!$request->has('book-name')) {
-        return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
-    }
-        $Returnbook = new ReturnBook;
-        $Returnbook->borrow_id = $request->input('borrow_id');
-        $Returnbook->message_user = $request->input('message_user');
-       
-        try {
-            $Returnbook->save();
-            return redirect()->route('return.create')->with('success', 'Lưu thành công')->withInput($validated);
-          } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
-        }
-    }
+            public function store(Request $request)
+            {
+             
+        
+            if (!$request->has('book-name')) {
+                return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
+            }
+                $Returnbook = new ReturnBook;
+                $Returnbook->borrow_id = $request->input('borrow_id');
+                $Returnbook->message_user = $request->input('message_user');
+               
+                try {
+                    $Returnbook->save();
+                    return redirect()->route('return.create')->with('success', 'Lưu thành công');
+                  } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
+                }
+            }
+            
+            
     
     public function approveStore(Request $request)
 {
