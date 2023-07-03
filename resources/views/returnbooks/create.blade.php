@@ -22,21 +22,19 @@
     <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>
     <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
     <script src="/jquery.js"></script>
-<script src="/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="/build/jquery.datetimepicker.full.min.js"></script>
 <script>
         flatpickr("#myID");
     </script>
     
     <script>
-        // Sử dụng JavaScript để lắng nghe sự kiện khi chọn tên sách
+        // khi chọn tên sách
         document.getElementById('select-book-id').addEventListener('change', function() {
             var selectedOption = this.options[this.selectedIndex];
             var author = selectedOption.getAttribute('data-author');
             var borrowId = selectedOption.getAttribute('data-borrow_id');
-    
-            // Thay đổi giá trị của trường tác giả và borrow_id
+        // Thay đổi giá trị của trường tác giả và borrow_id
             document.getElementById('input-author').value = author;
             document.getElementById('input-borrow_id').value = borrowId;
         });
@@ -112,19 +110,19 @@
                                         <label for="book">Tên sách</label>
                                         <select class="form-control select2" id="select-book-id"  style="width: 100%;" name="book-name">
                                             <option data-id="0" selected="selected">Tên sách</option>
-                                            @foreach($returnInfo as $info)
-                    <option value="{{$info->book_id}}" data-borrow_id="{{$info->borrow_id}}" data-author="{{$info->author}}">{{$info->book_name}}</option>
-                @endforeach
+                                             @foreach($returnInfo as $info)
+                                              <option value="{{$info->book_id}}" data-borrow_id="{{$info->borrow_id}}" data-author="{{$info->author}}">{{$info->book_name}}</option>
+                                             @endforeach
 
                                         </select>
                                         @if ($errors->any())
-                                            {{--                                        <div class="form-control">--}}
+                                            {{--<div class="form-control">--}}
                                             <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
                                                 @foreach ($errors->all() as $error)
                                                     <li>{{ $error }}</li>
                                                 @endforeach
                                             </ul>
-                                            {{--                                        </div>--}}
+                                            {{--</div>--}}
                                         @endif
                                     </div>
                                     <!-- /.form-group -->

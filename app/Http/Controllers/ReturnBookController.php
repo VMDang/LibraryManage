@@ -70,7 +70,7 @@ class ReturnBookController extends Controller
                   'books.id as book_id',
                   'borrowings.message_user AS borrowing_message_user',
                   'borrowings.message_approver',
-                  'borrowings.borrow_date',
+                  'borrowings.borrow_date as borrow_date',
                   'borrowings.id as borrow_id',
                   
               )
@@ -104,34 +104,27 @@ class ReturnBookController extends Controller
         }
     }
     
-    public function approve_btn(Request $request)
+    public function approveStore(Request $request)
 {
-    
-
     try {
         DB::transaction(function () use ($request) {
             $returnBook = ReturnBook::findOrFail($request->input('id'));
             $returnBook->date_return = $request->input('date_return');
             $returnBook->message_mod = $request->input('message_mod');
-            $returnBook->approve_status = 1; // Cập nhật trạng thái phê duyệt
-
-            // if ($request->has('approve_btn')) {
-            //     $returnBook->approve_status = 1; // Cập nhật trạng thái phê duyệt
-            // } elseif ($request->has('decline_btn')) {
-            //     $returnBook->approve_status = 2; // Cập nhật trạng thái từ chối
-            // }
+            $returnBook->approve_status = $request->input('approve_status'); // Lấy giá trị từ input
 
             $returnBook->save();
-              
+
             // Thực hiện các xử lý khác nếu cần
         });
-    //    dd($request);
-       
+
         return redirect()->route('return.approve')->with('success', 'Lưu thành công');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Lỗi trong quá trình lưu dữ liệu');
     }
 }
+
+    
 
 
 

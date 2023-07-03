@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/create','create')->name('return.create');
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
-           Route::post('/approve','approve_btn')->name('return.approve_btn');
+           Route::post('/approve','approveStore')->name('return.approveStore');
 
         
     });

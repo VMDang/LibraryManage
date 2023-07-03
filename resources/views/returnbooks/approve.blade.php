@@ -11,8 +11,6 @@
 
     @section('script')
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-        {{-- <script src="{{asset('js/return/return.js')}}" defer></script> --}}
         <script>
             $(document).ready(function() {
                 $('.btnDetail').on('click', function() {
@@ -40,6 +38,10 @@
                 $('.closeModal').on('click', function() {
                     // Đóng modal
                     $('#modalApprove').modal('hide');
+                });
+                $('#btnDeni, #btnSave').on('click', function() {
+            var status = $(this).data('status');
+            $('#approve_status').val(status);
                 });
             });
         </script>
@@ -197,7 +199,7 @@
                                             <div class=" row">
                                                 <label class="col-lg-3 col-form-label" for="borrow_date">Ngày mượn</label>
                                                 <div class="form-group col-lg-9">
-                                                    <input type="date" name="borrow_date" id="borrow_date" class="form-control">
+                                                    <input type="date" name="borrow_date" id="borrow_date" class="form-control" readonly>
                                                 </div>
                                             </div>
 
@@ -222,12 +224,13 @@
                                     <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Đóng
                                     </button>
 
-                                    <button type="submit" class="btn btn-danger" id="btnDeni"><i class="fas fa-handshake-slash"></i>
-                                        Từ chối
+                                    <button type="submit" class="btn btn-danger" id="btnDeni" data-status="2">
+                                        <i class="fas fa-handshake-slash"></i> Từ chối
                                     </button>
-                                    <button type="submit" class="btn btn-primary" id="btnSave"><i class="fas fa-save"></i>
-                                        Phê duyệt
+                                    <button type="submit" class="btn btn-primary" id="btnSave" data-status="1">
+                                        <i class="fas fa-save"></i> Phê duyệt
                                     </button>
+                                    
                                 </div>
                             </form>
 
