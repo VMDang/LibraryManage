@@ -135,14 +135,14 @@
                             
                             <li class="nav-item">
                                 <a href="{{route('return.create')}}" class="nav-link">
-                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <i class="fas fa-file-export nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
                                     <a href="{{route('return.approve')}}" class="nav-link">
-                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <i class="fas fa-clipboard-check nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
                                 </li>

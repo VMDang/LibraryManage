@@ -42,9 +42,9 @@
                                         @foreach($borrowings as $index => $borrowing)
                                         <tr class="view-form" data-toggle="modal" data-target="#borrowing-click" data-index="{{$index}}">
                                             <td>{{date('H:m:s d/m/Y', strtotime($borrowing->created_at))}}</td>
-                                            <td>{{$borrowing->user->name}}</td>
-                                            <td>{{$borrowing->user->email}}</td>
-                                            <td>{{$borrowing->book->name}}</td>
+                                            <td>{{$borrowing->user->name ?? ''}}</td>
+                                            <td>{{$borrowing->user->email ?? ''}}</td>
+                                            <td>{{$borrowing->book->name ?? ''}}</td>
                                             <td>
                                                 @if($borrowing->status == 0)
                                                     <span style="color: blue;">Chưa duyệt</span>
