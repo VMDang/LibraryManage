@@ -85,7 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/list',  'showList')->name('shelf.list');
             Route::post('/list/search',  'search')->name('shelf.search');
             Route::post('/list/update',  'update')->name('shelf.update');
-            Route::post('/list/delete',  'delete')->name('shelf.delete');
+            Route::post('/list/delete',  'delete');
             Route::get('/add',  'addShelf')->name('shelf.add');
             Route::post('/add', 'store')->name('shelf.store'); 
         });

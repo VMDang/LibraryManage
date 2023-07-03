@@ -75,7 +75,7 @@
                                 <textarea class="form-control" style="width: 100%;min-height: 200px;" name="description"></textarea>
                             </div>
                             <div class="card-footer" style="text-align: center;">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
                         </form>
                     </div>

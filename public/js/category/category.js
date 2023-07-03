@@ -74,4 +74,12 @@ $(document).ready(function() {
     $('#input-category-search').on('click', function(e){
         $('#input-category-search').val("");
     })
+    $('.deleteBtn').on('click', function () {
+        let data = {
+            id: $(this).data('category')
+        };
+        let uri = '/category/list/delete';
+        confirmAlert('Xóa Thể loại', 'Hành động này không thể khôi phục!', 'warning', uri, data);
+    });
+        
 });

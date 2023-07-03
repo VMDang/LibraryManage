@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     $('.open-books-modal').on('click', function(e) {
         e.preventDefault();
@@ -51,46 +50,19 @@ $(document).ready(function() {
          var inputshelf = $('#shelfSelectUpdate');
  
         var status = shelf.status === 1 ? 'Còn trống' : 'Đầy';
-        var location = shelf.location.split(" - ");
-        var floorSelected = location[0];
-        var roomSelected = location[1];
-        var shelfSelected = location[2];
-        console.log(floorSelected, roomSelected, shelfSelected);
         inputId.val(shelf.id);
          
-         // Lấy tất cả các option trong phần tử select
+        //  // Lấy tất cả các option trong phần tử select
         var optionsStatus = inputStatus.find('option');
         // Lặp qua từng option và làm việc với chúng
         optionsStatus.each(function() {
             var text = $(this).text(); // Lấy nội dung hiển thị của option
             if(text === status) $(this).prop('selected',true);
         });
-
-        var optionsFloor = inputFloor.find('option');
-        // Lặp qua từng option và làm việc với chúng
-        optionsFloor.each(function() {
-            var text = $(this).text(); // Lấy nội dung hiển thị của option
-            if(text === floorSelected) $(this).prop('selected',true);
-        });
-        handleFloorChange(inputFloor);
-        var optionsRoom = inputRoom.find('option');
-        // Lặp qua từng option và làm việc với chúng
-        optionsRoom.each(function() {
-            var text = $(this).text(); // Lấy nội dung hiển thị của option
-            if(text === roomSelected) $(this).prop('selected',true);
-        });
-        handleRoomChange(inputRoom);
-        var optionsShelf = inputshelf.find('option');
-        // Lặp qua từng option và làm việc với chúng
-        optionsShelf.each(function() {
-            var text = $(this).text(); // Lấy nội dung hiển thị của option
-            if(text === shelfSelected) $(this).prop('selected',true);
-        });
-        
          // Mở modal sách
         $.magnificPopup.open({
             items: {
-                src: '#updateModal'
+                src: '#updateModalShelf'
             },
             type: 'inline',
             midClick: true,
@@ -99,24 +71,19 @@ $(document).ready(function() {
         
     });
    
+    $('.deleteBtn').on('click', function () {
+        let data = {
+            id: $(this).data('shelf')
+        };
+        let uri = '/shelf/list/delete';
+        confirmAlert('Xóa Vị Trí', 'Hành động này không thể khôi phục!', 'warning', uri, data);
+    });
         
     
     $('#input-shelf-search').on('click', function(e){
         $('#input-shelf-search').val("");
     })
 
-    function validateForm() {
-        var floorSelect = document.getElementById('floorSelect');
-        var roomSelect = document.getElementById('roomSelect');
-        var shelfSelect = document.getElementById('shelfSelect');
-        var inputName = document.getElementById('input-name');
-        var inputStatus = document.getElementById('input-status');
-        // Kiểm tra xem các trường đã được chọn hết hay chưa
-        if (floorSelect.value === '' || roomSelect.value === '' || shelfSelect.value === ''|| inputName.value === ''|| inputStatus.value === '') {
-            alert('Vui lòng chọn đầy đủ các trường!');
-            return false; // Ngăn form được submit
-        }
-        return true; // Cho phép form được submit
-    }
+    
     
 });

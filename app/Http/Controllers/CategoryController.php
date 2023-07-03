@@ -6,7 +6,6 @@ use BaseHelper;
 use App\Models\Category;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use App\Models\Books_Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 class CategoryController extends Controller
@@ -19,13 +18,9 @@ class CategoryController extends Controller
      */
     static function getAllBookByCategoryID(Category $category)
     {
-        // Lấy tất cả đối tượng Books_Category có category_id tương ứng với ID của Category
-        $Books_Category = Books_Category::where('category_id', $category->id)->get();
-
-        $bookIds = $Books_Category->pluck('book_id')->toArray();
-
-        // Lấy danh sách các đối tượng book dựa vào book_id
-        $books = Book::whereIn('id', $bookIds)->get();
+        $books = Book::join('books_categories', 'books.id', '=', 'books_categories.book_id')
+            ->where('books_categories.category_id', $category->id)
+            ->get();
 
         return $books;
     }
@@ -70,7 +65,9 @@ class CategoryController extends Controller
         $name = $request->input('name');
         $status = $request->input('status');
         $description = $request->input('description');
-
+        $currentDateTime = date_create();
+        $currentDateTimeString = date_format($currentDateTime, 'Y-m-d H:i:s');
+        $updateTimestamp = strtotime($currentDateTimeString); 
         // Lấy đối tượng category từ cơ sở dữ liệu bằng ID
         $category = Category::find($categoryId);
 
@@ -81,6 +78,7 @@ class CategoryController extends Controller
             $category->description = $description;
             $category->created_at = $category->created_at;
             $category->updated_by = Auth::id();
+            $category->updated_at = $updateTimestamp;
             // Lưu các thay đổi vào cơ sở dữ liệu
             try{
                 $category->save();
@@ -107,7 +105,8 @@ class CategoryController extends Controller
         
     }
     public function delete(Request $request){
-        $categoryId = $request->input('id');
+        $this->checkRequestAjax($request);
+        $categoryId = $request->id;
         $category = Category::find($categoryId);
         // Kiểm tra xem đối tượng tồn tại trong cơ sở dữ liệu hay không
         if (!$category) {
@@ -115,7 +114,7 @@ class CategoryController extends Controller
         }
         // Xóa đối tượng từ cơ sở dữ liệu
         $category->delete();
-        return redirect()->route('category.list');
+        return BaseHelper::ajaxResponse('Xóa shelf thành công' ,true);
 
     }
 }

@@ -85,7 +85,7 @@
                 <div class="card" style="text-align: center; margin-left : 10px; display: inline-block; max-height:20px;" >
                   <button type="submit" class="btn btn-primary" style="display:flex;">
                     <ion-icon name="search-outline" style="margin-top: 3px; margin-right: 4px;"></ion-icon>
-                    <div style="display: inline-block;">Search</div>
+                    <div style="display: inline-block;">Tìm kiếm</div>
                   </button>
                 </div>
               </div>
@@ -108,10 +108,10 @@
                   <thead>
                       <tr>
                           <th>ID</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Status</th>
-                          <th>Books</th>
+                          <th>Tên thể loại</th>
+                          <th>Mô tả</th>
+                          <th>Trạng thái</th>
+                          <th>Sách </th>
                           @cannot('isUser')
                             <th>Hành động</th>
                           @endcannot
@@ -125,7 +125,7 @@
                           <td>{{ $category->description }}</td>
                           <td>{{ $category->status }}</td>
                           <td>
-                              <a class="open-books-modal" href="#" data-category-name="{{ $category->name }}" data-book-list="{{ $booksByCategory[$category->id] }}">View Books</a>
+                              <a class="open-books-modal" href="#" data-category-name="{{ $category->name }}" data-book-list="{{ $booksByCategory[$category->id] }}">Xem sách</a>
                           </td>
                           @cannot('isUser')
                           <td style="width:120px;">
@@ -134,13 +134,9 @@
                               data-category="{{ $category }}">
                               <i class="fas fa-edit"></i>
                               </button>
-                              <form method="post" action="{{route('category.delete')}}" >
-                                @csrf
-                                <input type="hidden" id="input-name" type="number" name="id" value="{{$category->id}}">
-                                <button type="submit" class="btn btn-outline-danger deleteBtn" style="color: blue;">
-                                    <ion-icon name="trash" class="fas"></ion-icon> 
-                                </button>
-                              </form>
+                              <button type="button" class="btn btn-outline-danger deleteBtn" style="color: blue;" data-category = "{{ $category->id }}">
+                                  <ion-icon name="trash" class="fas"></ion-icon> 
+                              </button>
                             </div>
                           </td>
                           @endcannot
@@ -153,20 +149,20 @@
           
             <!-- Books Modal -->
             <div id="booksModal" class="white-popup mfp-hide">
-              <h2>Books for Category: <span id="modalCategoryName"></span></h2>
+              <h2>Danh sách các sách của thể loại: <span id="modalCategoryName"></span></h2>
               <table class="table table-bordered table-hover">
                   <thead>
                       <tr>
-                          <th>Name</th>
-                          <th>Shelf ID</th>
-                          <th>Preview Content</th>
-                          <th>File Book</th>
-                          <th>Author</th>
-                          <th>Publisher</th>
-                          <th>Date of Publication</th>
-                          <th>Cost</th>
-                          <th>Number</th>
-                          <th>Status</th>
+                          <th>Tên sách</th>
+                          <th>Mã vị trí</th>
+                          <th>Giới thiệu</th>
+                          <th>File sách</th>
+                          <th>Tác giả</th>
+                          <th>Nhà xuất bản</th>
+                          <th>Ngày xuất bản</th>
+                          <th>Giá</th>
+                          <th>Số lượng</th>
+                          <th>Trạng thái</th>
                       </tr>
                   </thead>
                   <tbody id="modalBookList">
@@ -202,7 +198,7 @@
                         <textarea id="input-description" class="form-control" style="width: 100%;min-height: 200px;" name="description"></textarea>
                     </div>
                     <div class="card-footer" style="text-align: center;">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </div>
                 </form>
               </div>

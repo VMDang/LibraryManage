@@ -6,9 +6,8 @@ use BaseHelper;
 use App\Models\Shelf;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use App\Models\Shelf_Book;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Session;
 class ShelfController extends Controller
 {
     /**
@@ -19,13 +18,9 @@ class ShelfController extends Controller
      */
     static function getAllBookByShelfID(Shelf $shelf)
     {
-        // Lấy tất cả đối tượng Books_Category có category_id tương ứng với ID của Category
-        $Books_Shelf = Shelf_Book::where('shelf_id', $shelf->id)->get();
-
-        $bookIds = $Books_Shelf->pluck('book_id')->toArray();
-
-        // Lấy danh sách các đối tượng book dựa vào book_id
-        $books = Book::whereIn('id', $bookIds)->get();
+        $books = Book::join('shelfs_books', 'books.id', '=', 'shelfs_books.book_id')
+            ->where('shelfs_books.shelf_id', $shelf->id)
+            ->get();
 
         return $books;
     }
@@ -98,10 +93,48 @@ class ShelfController extends Controller
     public function search(){
         
     }
-    public function update(){
+    public function update(Request $request){
+        $shelfId = $request->input('shelfID');
+        $status = $request->status === 'đầy' ? 0 : 1 ;
+        $location = $request->floor.' - '.$request->room.' - '.$request->shelf;
+        $currentDateTime = date_create();
+        $currentDateTimeString = date_format($currentDateTime, 'Y-m-d H:i:s');
+        $updateTimestamp = strtotime($currentDateTimeString); 
+        $shelf = Shelf::find($shelfId);
+        if($shelf){
+            $shelf->id = $shelfId;
+            $shelf->status = $status;
+            $shelf->location= $location;
+            $shelf->updated_by = Auth::id();
+            $shelf->updated_at = $updateTimestamp;
+            try{
+                $shelf->save();
+                return redirect()->route('shelf.list');
+            }catch(\Exception $e){
+                print($e);
+                BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+            }
+        }else{
+            // Xử lý khi không tìm thấy đối tượng shelf
+            $errorMessage = "Không tìm thấy đối tượng shelf.";
+
+            // Lưu thông báo thất bại vào session
+            Session::flash('error', $errorMessage); 
+            return redirect()->route('shelf.list');
         
+        }
+
     }
-    public function delete(){
-        
+    public function delete(Request $request){
+        $this->checkRequestAjax($request);
+        $ShelfId = $request->id;
+        $shelf = Shelf::find($ShelfId);
+        // Kiểm tra xem đối tượng tồn tại trong cơ sở dữ liệu hay không
+        if (!$shelf) {
+            return response()->json(['message' => 'Không tìm thấy đối tượng'], 404);
+        }
+        // Xóa đối tượng từ cơ sở dữ liệu
+        $shelf->delete();
+        return BaseHelper::ajaxResponse('Xóa shelf thành công' ,true);
     }
 }

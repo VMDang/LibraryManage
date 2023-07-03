@@ -150,7 +150,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="room">Room:</label>
+                                        <label for="room">Phòng</label>
                                         <select class="form-control select2" style="width: 100%;" id="roomSelect" name="room" onchange="handleRoomChange(this)">
                                             <option value="">-- Chọn phòng --</option>
                                         </select>
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="shelf">Shelf:</label>
+                                        <label for="shelf">Kệ</label>
                                         <select class="form-control select2" style="width: 100%;" id="shelfSelect" name="shelf" >
                                             <option value="">-- Chọn kệ --</option>
                                         </select>
@@ -166,7 +166,7 @@
                                 </div>
                             </div>
                             <div class="card-footer" style="text-align: center;">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
                             </div>
                         </form>
                     </div>
