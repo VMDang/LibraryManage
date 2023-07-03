@@ -72,6 +72,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
     Route::controller(ViewBookController::class)->group(function (){
        Route::get('/viewbook', 'create')->name('viewbook.create');
+       Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('viewbook.detail');
 
 });
 });

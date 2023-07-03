@@ -31,7 +31,6 @@
 @endsection
 
 @section('content')
-    <?php $years = range(strftime("%Y", time()), 1930); ?>
 
         <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -59,8 +58,8 @@
                         <div class="card-header">
                             <h3 class="card-title">Tìm kiếm sách</h3>
                         </div>
-                        <form action="" method="post" id="formFilterUser">
-                            @csrf
+                        <form action="" method="post" id="formFilterBook">
+                            @csrf 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-3">
@@ -89,7 +88,7 @@
                                                    style="text-align: right">Tác giả: </label>
                                             <div class="col-sm-9">
                                                 <input class="form-control" name="author" id="author"
-                                                       value="{{ isset($filters['email']) ? $filters['email'] : '' }}">
+                                                       value="{{ isset($filters['author']) ? $filters['author'] : '' }}">
                                             </div>
                                         </div>
                                     </div>
@@ -154,16 +153,44 @@
                                             <tr>
                                                 <th style="width: 3%">#</th>
                                                 <th style="width: 17%">Tên sách</th>
-                                                <th style="width: 20%">Tác giả </th>
-                                                <th style="width: 10%">Thể loại</th>
-                                                <th style="width: 20%">Vị trí </th>
+                                                <th style="width: 15%">Tác giả </th>
+                                                <th style="width: 20%">Thể loại</th>
                                                 <th style="width: 10%">Giá tiền</th>
                                                 <th style="width: 10%">Tình trạng</th>
                                                 <th style="width: 15%">Hành động</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            
+                                            @foreach($books as $index => $book)
+                                                <tr>
+                                                    <td>{{$index}}</td>
+                                                    <td>{{$book->name}}</td>
+                                                    <td>{{$book->author}}</td>
+                                                    <td>
+                                                    @foreach ($book_categories as $book_category)
+                                                        @if ($book_category->book_id == $book->id)
+                                                           {{ $book_category->category->name }}<br>
+                                                        @endif
+                                                    @endforeach
+                                                    </td>
+                                                    <td>{{$book->cost}}</td>
+                                                    <td>
+                                                        @if($book->status==1)
+                                                           Có thể mượn 
+                                                        @else
+                                                           Hết 
+                                                        @endif 
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default"><a
+                                                                    href="{{route('viewbook.detail', [$book->id, $book->name])}}">Xem
+                                                                    
+                                                                    chi tiết</a></button></td>
+                                                    </td>                
+                                                </tr>
+                                            @endforeach
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -175,6 +202,7 @@
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
+                
             </div>
             <!-- /.container-fluid -->
         </section>
