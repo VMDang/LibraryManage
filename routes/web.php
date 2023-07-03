@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\ReturnBookController;
+
 
 
 /*
@@ -39,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
+
     Route::resource('books', BookController::class) 
         ->except(['create', 'edit']);
 
@@ -65,7 +69,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
     });
-});
+   });
+   Route::controller(CategoryController::class)->group(function (){
+        Route::prefix('/category')->group(function () {
+            Route::get('/list',  'showList')->name('category.list');
+            Route::get('/add',  'addCategory')->name('category.add');
+            Route::post('/add', 'store')->name('category.store'); 
+            Route::post('/list/search', 'search')->name('category.search'); 
+            Route::post('/list/delete', 'delete')->name('category.delete'); 
+            Route::post('/update', 'update')->name('category.update'); 
+        });
+    });
+    Route::controller(ShelfController::class)->group(function (){
+        Route::prefix('/shelf')->group(function () {
+            Route::get('/list',  'showList')->name('shelf.list');
+            Route::post('/list/search',  'search')->name('shelf.search');
+            Route::post('/list/update',  'update')->name('shelf.update');
+            Route::post('/list/delete',  'delete');
+            Route::get('/add',  'addShelf')->name('shelf.add');
+            Route::post('/add', 'store')->name('shelf.store'); 
+        });
+    });
 });
 
 require __DIR__.'/auth.php';
