@@ -57,20 +57,17 @@
                         <div class="card">
                             <div class="card-body">
                                 <div style="padding-bottom:20px">
-                                <a href="{{ url('/books/create') }}" class="btn btn-success btn-sm" title="Add New Book">
-                                   Add New
-                                </a>
                                     
                                 </div>
                                 <table id="tableListUser" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>                                           
                                        <th>STT</th>
+                                       <th>Name</th>
                                        <th>Category</th>
-                                       <th>Shelf</th>
-                                       <th>Title</th>
+                                       <th>Shelf</th>        
                                        <th>Content</th>    
-                                       <th>File_Book</th>      
+                                       <th>Publisher</th> 
                                        <th>Author</th>                                       
                                        <th>Cost</th>      
                                        <th>Number</th>  
@@ -83,26 +80,26 @@
                                     @foreach($books as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->category_id }}</td>
-                                            <td>{{ $item->shelf_id }}</td>
-                                            <td>{{ $item->title }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->category }}</td>
+                                            <td>{{ $item->shelf }}</td>
                                             <td>{{ $item->preview_content }}</td>
                                             <td>{{ $item->file_book }}</td>
+                                            <td>{{ $item->publisher }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->cost}}</td>
                                             <td>{{ $item->number}}</td>
                                             @cannot('isUser')
                                             <td class='d-flex p-3 text-white'>
-                                                <a href="{{ url('/books/' . $item->id . '/edit') }}">
-                                                   <button class="btn btn-primary btn-sm mr-2"> Edit</button></a>             
-                                                <form method="POST" action="{{ url('/books' . '/' . $item->id) }}" accept-charset="UTF-8">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete books" onclick="return confirm("Confirm delete?")">
-                                                       Delete
-                                                    </button>
-                                                </form>
-                                            </td>
+                                              <a href="{{ url('/books/' . $item->id . '/edit') }}">
+                                                  <button class="btn btn-primary btn-sm mr-2">Edit</button>
+                                              </a>
+                                              <form method="POST" action="{{ route('books.destroy', $item->id) }}" accept-charset="UTF-8">
+                                                  {{ method_field('DELETE') }}
+                                                  {{ csrf_field() }}
+                                                  <button type="submit" class="btn btn-danger btn-sm" title="Delete book" onclick="return confirm('Confirm delete?')">Delete</button>
+                                              </form>
+                                          </td>
                                             @endcan
                                         </tr>
                                     @endforeach

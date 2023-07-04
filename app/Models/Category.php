@@ -17,4 +17,9 @@ class Category extends Model
         'id', 'name', 'depcription', 'status',
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
+
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'book_categories');
+    }
 }

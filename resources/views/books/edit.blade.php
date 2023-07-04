@@ -1,63 +1,111 @@
 @extends("layouts.footer")
 
 @section('title-page')
-    <title> Edit Books | Library Manage</title>
+    <title>Book Detail  | Library Manage</title>
 @endsection
 
-@section('style')
-    <link rel="stylesheet" href="{{ asset('themes/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
-    <style>
-        .dark-mode input:-webkit-autofill,
-        .dark-mode input:-webkit-autofill:hover,
-        .dark-mode input:-webkit-autofill:focus,
-        .dark-mode input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #343A40 inset !important;
-        }
-    </style>
-@endsection
 
-@section('script')
-    <script src="{{asset('themes/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/jszip/jszip.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/pdfmake/pdfmake.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/pdfmake/vfs_fonts.js')}}"></script>
-    <script src="{{asset('themes/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('themes/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-
-    <script src="{{asset('js/user/list.js')}}" defer></script>
-@endsection
 @section('content')
-<div class="ml-20" style="width:80% ; margin-left:20% ; margin-top:5%">
-  <div class="card-header">Edit Books</div>
-  <div class="card-body">
-       
-      <form action="{{ url('books/' .$books->id) }}" method="post" style="width:50%">
-        {!! csrf_field() !!}
-        @method("PATCH")
-        
-        <label>Category Id</label></br>
-        <input type="text" name="category_id" id="category_id" value="{{$books->category_id}}" class="form-control"></br>
-        <label>Shelf Id</label></br>
-        <input type="text" name="shelf_id" id="shelf_id" value="{{$books->shelf_id}}" class="form-control"></br>
-        <label>Title</label></br>
-        <input type="text" name="title" id="title" value="{{$books->title}}" class="form-control"></br>
-        <label>Preview Content</label></br>
-        <input type="text" name="preview_content" id="preview_content" value="{{$books->preview_content}}" class="form-control"></br>
-        <label>File Book</label></br>
-        <input type="text" name="file_book" id="file_book" value="{{$books->file_book}}" class="form-control"></br>
-        <label>Author</label></br>
-        <input type="text" name="author" id="author" value="{{$books->author}}" class="form-control"></br>
-        <label>Cost</label></br>
-        <input type="text" name="cost" id="cost" value="{{$books->cost}}" class="form-control"></br>
-        <label>Number</label></br>
-        <input type="text" name="number" id="number" value="{{$books->number}}" class="form-control"></br>
-        <input type="submit" value="Update" class="btn btn-success"></br>
-    </form>
-    
-  </div>
-</div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Thông tin sách</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{route('home')}}">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Thông tin sách</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section class="content">
+            <div class="container-fluid">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="card card-default">
+                    <div class="card-header" style="text-align: center;">
+                        <h3 class="card-title">Thông tin sách</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" action="{{route('books.update',['id' => $book->id])}}">
+                        @method('PUT')
+                            @csrf
+                            <input type="hidden" id="book-id" name="book_id" value="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fullName">Tên sách</label>
+                                        <input type="text" class="form-control" id="name" value="{{ $book->name}}" name="name">
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="gender">Tác giả</label>
+                                        <input class="form-control" type="text" id="author" value="{{ $book->author}}" name="author" >
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <!-- Date -->
+                                    <div class="form-group">
+                                      <label>Nhà xuất bản</label>
+                                      <input class="form-control" type="text" value="" name="publisher" value="{{ $book->publisher}}"  id="publisher">
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Ngày xuất bản</label>
+                                        <input type="text" class="form-control" id="date_publication" value="{{ $book->date_publication}}" name="date_publication">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shelf">Vị trí</label>
+                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelf" >
+                                            <option value="">-- Chọn vị trí --</option>
+                                            @foreach ($shelf_books as $shelf_book)
+                                                <!-- @if ($shelf_book->book_id == $book->id) -->
+                                                <option value="{{ $shelf_book->shelf->location }}">{{ $shelf_book->shelf->location }}</option>
+                                                <!-- @endif -->
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shelf">Thể loại</label>
+                                        <select class="form-control select2" style="width: 100%;" id="category" name="category" >
+                                            <option value="">-- Chọn thể loại --</option>
+                                            @foreach ($book_categories as $book_category)
+                                                <option value="{{ $book_category->category->name }}">{{ $book_category->category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <h5>Giới thiệu sách</h5>
+                            <div class="form-group">
+                                <textarea class="form-control" style="width: 100%;" name="preview_content" value="{{ $book->preview_content}}"></textarea>
+                                <!-- /.form-group -->
+                            </div>
+                            <div class="card-footer" style="text-align: center;">
+                                <button type="submit" class="btn btn-primary">Update Book</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                    
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
 @endsection

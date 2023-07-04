@@ -21,5 +21,14 @@ class Book extends Model
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
    
+    public function shelfs()
+    {
+        return $this->belongsToMany(Shelf::class, 'shelfs_books');
+    }
     
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'books_categories');
+    }
+
 }
