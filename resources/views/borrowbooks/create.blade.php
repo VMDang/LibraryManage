@@ -102,8 +102,10 @@
                                     </div>
                                     <!-- /.form-group -->
                                     <div class="form-group">
-                                        <label>Vị trí</label>
-                                        <input type="text" class="form-control" id="quantity" value="Tầng 1 - Phòng 1 - Kệ 1" readonly />
+                                        <label for="location">Vị trí</label>
+                                        <select class="form-control select2" id="select-book-location"  style="width: 100%;" name="book_location">
+
+                                        </select>
                                     </div>
                                     <!-- /.form-group -->
                                 </div>
