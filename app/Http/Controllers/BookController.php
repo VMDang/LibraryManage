@@ -2,24 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Book;
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
 
 class BookController extends Controller
 {
     /**
-     * Display a listing of the books.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $books = Book::all('id', 'category_id', 'shelf_id', 'name', 'preview_content',
-        'author', 'publisher', 'date_publication', 'cost', 'number');
-
-
-        return view('books.list', compact($books));
+        $books = Book::all();
+        return view ('books.list')->with('books', $books);
     }
 
     /**
@@ -27,64 +23,78 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         //
+        return view('books.create');
+        
+        
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBookRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBookRequest $request)
-    {
-        //
+    public function store(Request $request){
+        $input = $request->all();
+        Book::create($input);
+        return redirect('books')->with('flash_message', 'Student Addedd!'); 
     }
+
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Book  $book
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show($id)
     {
         //
+        // $book = Book::find($id);
+        // return view('s.show')->with('students', $student);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Book  $book
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit($id)
     {
-        //
+        $books = Book::find($id);
+        return view('books.edit')->with('books', $books);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBookRequest  $request
-     * @param  \App\Models\Book  $book
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(Request $request, $id)
     {
-        //
+        $books = Book::find($id);
+        $input = $request->all();
+        $books->update($input);
+        return redirect('books')->with('flash_message', 'Books Updated!');  
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Book  $book
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        //
+        Book::destroy($id);
+        return redirect('books')->with('flash_message', 'Books deleted!');  
     }
 }

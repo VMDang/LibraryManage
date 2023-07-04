@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
     });
 
+    Route::resource("/books", BookController::class);
 
     Route::resource('books', BookController::class)
         ->except(['create', 'edit']);
