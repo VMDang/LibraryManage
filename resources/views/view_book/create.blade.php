@@ -55,10 +55,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card-header">
+                        <!-- <div class="card-header">
                             <h3 class="card-title">Tìm kiếm sách</h3>
-                        </div>
-                        <form action="" method="post" id="formFilterBook">
+                        </div> -->
+                        <!-- <form action="" method="post" id="formFilterBook">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
                 </div>
             </div>
