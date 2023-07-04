@@ -17,6 +17,7 @@ class CreateBorrowingsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('book_id');
+            $table->string('location', 255);
             $table->tinyInteger('status')->default(0)->comment('1 is approved, 0 is not approved yet');
             $table->string('message_user', 255)->nullable();
             $table->string('message_approver', 255)->nullable();
