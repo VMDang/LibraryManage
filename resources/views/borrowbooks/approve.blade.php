@@ -159,7 +159,7 @@
                                         <div class="row">
                                             <label class="col-lg-3 col-form-label" for="location">Vị trí</label>
                                             <div class="form-group col-lg-9">
-                                                <input type="text" name="location" id="location" class="form-control" value="Tầng 1 Phòng 1 Kệ 1" readonly>
+                                                <input type="text" name="location" id="location" class="form-control" readonly>
                                             </div>
                                         </div>
 

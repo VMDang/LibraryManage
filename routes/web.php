@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::controller(BorrowBookController::class)->group(function (){
         Route::prefix('/borrow')->group(function(){
             Route::get('/create', 'create')->name('borrow.create');
+            Route::get('/create/updateIDforShowLocationAjax/{id}', 'updateIDforShowLocationAjax');
             Route::post('/create', 'store')->name('borrow.store');
             Route::get('/approve', 'approve')->name('borrow.approve');
             Route::get('/history', 'history')->name('borrow.history');
