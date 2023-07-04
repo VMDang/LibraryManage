@@ -65,13 +65,17 @@ class BorrowBookController extends Controller
      */
     public function store(Request $request)
     {
-        $message = [
-            'book_id.required' => 'Hãy chọn một cuốn sách'
-        ];
+         $message = [
+        'book-name.required' => 'Hãy chọn một cuốn sách',
+    ];
 
-        $validated = $request->validate([
-            'book_id' => 'required',
-        ], $message);
+    $validated = $request->validate([
+        'book-name' => 'required',
+    ], $message);
+
+    if (!$request->has('book-name')) {
+        return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
+    }
 
         $borrowing = new Borrowing;
         $borrowing->user_id = Auth::id();
@@ -87,11 +91,7 @@ class BorrowBookController extends Controller
         }
     }
 
-    public function history(){
-        $user = Auth::user();
-        $borrowings = Borrowing::with('user', 'book')->get();
-        return view('borrowbooks.history', compact('user', 'borrowings'));
-    }
+    
 
     public function getBorrowingOfInfoAjax($id){
         try{

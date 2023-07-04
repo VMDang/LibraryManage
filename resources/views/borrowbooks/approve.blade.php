@@ -35,15 +35,16 @@
                                             <th>Tên sách</th>
                                             <th>Trạng thái</th>
                                             <th>Hành động</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($borrowings as $index => $borrowing)
                                         <tr class="view-form" data-toggle="modal" data-target="#borrowing-click" data-index="{{$index}}">
                                             <td>{{date('H:m:s d/m/Y', strtotime($borrowing->created_at))}}</td>
-                                            <td>{{$borrowing->user->name}}</td>
-                                            <td>{{$borrowing->user->email}}</td>
-                                            <td>{{$borrowing->book->name}}</td>
+                                            <td>{{$borrowing->user->name ?? ''}}</td>
+                                            <td>{{$borrowing->user->email ?? ''}}</td>
+                                            <td>{{$borrowing->book->name ?? ''}}</td>
                                             <td>
                                                 @if($borrowing->status == 0)
                                                     <span style="color: blue;">Chưa duyệt</span>
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                <div class="modal fade" id="modalApprove">
+            <div class="modal fade" id="modalApprove">
                 <div class="modal-dialog modal-lg" style="width: 85%; max-width: 90%;">
                     <div class="modal-content">
                         <div class="modal-header">

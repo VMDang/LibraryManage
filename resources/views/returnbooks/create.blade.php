@@ -25,30 +25,21 @@
 
     <script src="/jquery.js"></script>
 <script src="/build/jquery.datetimepicker.full.min.js"></script>
-<!--
-</script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-            //Date picker
-            $('#birthdayDate').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true
-            });
-            $('#birthdayDate .input-group-prepend button').click(function () {
-            $('#birthdayDate').datepicker('show');
-        });
-
-        });
-    //     $(document).ready(function () {
-    //     $('#birthdayDate').datepicker({
-    //         format: 'dd/mm/yyyy',
-    //         autoclose: true
-    //     });
-    // });
-    </script> -->
-    <script>
+<script>
         flatpickr("#myID");
+    </script>
+    
+    <script>
+        // Sử dụng JavaScript để lắng nghe sự kiện khi chọn tên sách
+        document.getElementById('select-book-id').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var author = selectedOption.getAttribute('data-author');
+            var borrowId = selectedOption.getAttribute('data-borrow_id');
+    
+            // Thay đổi giá trị của trường tác giả và borrow_id
+            document.getElementById('input-author').value = author;
+            document.getElementById('input-borrow_id').value = borrowId;
+        });
     </script>
 @endsection
 
@@ -83,7 +74,7 @@
                     <form class="form-returnbook" action="{{route('return.store')}}" method="POST"
                                 id="form-id" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="borrow_id" value="{{$borrow_id}}">
+                    <input type="hidden" name="borrow_id" >
 
                     <div class="card-body">
                         <div class="row">
@@ -115,44 +106,58 @@
                                 <!-- /.form-group -->
                             </div>
                             <!-- /.col -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="book">Tên sách</label>
+                           
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="book">Tên sách</label>
+                                        <select class="form-control select2" id="select-book-id"  style="width: 100%;" name="book-name">
+                                            <option data-id="0" selected="selected">Tên sách</option>
+                                            @foreach($returnInfo as $info)
+                    <option value="{{$info->book_id}}" data-borrow_id="{{$info->borrow_id}}" data-author="{{$info->author}}">{{$info->book_name}}</option>
+                @endforeach
 
-                                    <input  class="form-control" style="background-color:white; color: black" value="{{$book->name}}" readonly>
-
-
+                                        </select>
+                                        @if ($errors->any())
+                                            {{--                                        <div class="form-control">--}}
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            {{--                                        </div>--}}
+                                        @endif
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="author">Tác giả</label>
+                                        <input class="form-control" id="input-author" type="text" value="" readonly >
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label>Vị trí</label>
+                                        <input type="text" class="form-control" id="quantity" value="Tầng 1 - Phòng 1 - Kệ 1" readonly />
+                                    </div>
+                                    <div class="form-group" style="display:none">
+                                        <label for="borrow_id">Borrow ID</label>
+                                        <input class="form-control" id="input-borrow_id" name="borrow_id" type="text" value="" readonly>
+                                    </div>
+                                    <!-- /.form-group -->
                                 </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <h5>Lời nhắn gửi đến người kiểm duyệt</h5>
+                            <div class="form-group">
+                                <textarea class="form-control" style="width: 100%;" name="message_user"></textarea>
                                 <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label for="author" >Tác giả</label>
-                                  <input class="form-control" style="background-color:white; color: black" value="{{$book->author}}" readonly>
-
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Vị trí</label>
-                                    <input type="text" class="form-control select2" id="bookId" placeholder="Tầng 1, phòng 1, kệ 1" style="background-color:white ; color:black;" readonly>
-                                </div>
-                                <!-- /.form-group -->
-
-                    </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-
-                        <h5>Lời nhắn gửi đến người kiểm duyệt</h5>
-                        <div class="form-group">
-                            <textarea class="form-control" name="message_user" placeholder="Bạn đọc gửi góp ý tại đây"  style="width: 100% ; background-color:white ; color:black;"></textarea>
-                            <!-- /.form-group -->
-                        </div>
-
+                            </div>
+                            <div class="card-footer" style="text-align: center;">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Gửi yêu cầu</button>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer" style="text-align: center;">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                    </form>
 
                 </div>
                 <!-- /.card -->
