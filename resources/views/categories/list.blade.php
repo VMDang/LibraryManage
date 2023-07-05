@@ -35,6 +35,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
   <script src="{{asset('js/category/category.js')}}" defer></script>  
+  <script>
+    function validateForm() {
+    var name = document.getElementById('input-name1');
+    var description = document.getElementById('input-description');
+    
+    // Kiểm tra xem các trường đã được chọn hết hay chưa
+    if (name.value === '' || description.value === '') {
+        alert('Vui lòng chọn đầy đủ các trường!');
+        return false; // Ngăn form được submit
+    }
+    return true; // Cho phép form được submit
+    }
+</script>
 @endsection
 
 @section('content')
@@ -77,7 +90,7 @@
             @endcannot
           </div>
           <div class="col-sm-6 " >
-            <form class="form-horizontal" method="post" action="{{route('category.search')}}" style="margin-left: 100px;">
+            <form class="form-horizontal" method="post" action="{{route('category.search')}}"  style="margin-left: 100px;">
               <div style="display: flex;">
                 <div class="card" style="display: inline-block;">
                   <input class="form-control" id="input-category-search" type="text" name="name" value="Nhập tên thể loại">
@@ -110,7 +123,9 @@
                           <th>ID</th>
                           <th>Tên thể loại</th>
                           <th>Mô tả</th>
+                          @cannot('isUser')
                           <th>Trạng thái</th>
+                          @endcannot
                           <th>Sách </th>
                           @cannot('isUser')
                             <th>Hành động</th>
@@ -123,7 +138,9 @@
                           <td>{{ $category->id }}</td>
                           <td>{{ $category->name }}</td>
                           <td>{{ $category->description }}</td>
-                          <td>{{ $category->status }}</td>
+                          @cannot('isUser')
+                          <td>{{ $category->status === 1 ? "Kích hoạt" : "Không kích hoạt" }}</td>
+                          @endcannot
                           <td>
                               <a class="open-books-modal" href="#" data-category-name="{{ $category->name }}" data-book-list="{{ $booksByCategory[$category->id] }}">Xem sách</a>
                           </td>
@@ -175,7 +192,7 @@
             <div id="updateModal" class="white-popup mfp-hide">
               <h2>Sửa thể loại </h2>
               <div class="card-body">
-                <form class="form-horizontal" method="post" action="{{route('category.update')}}">
+                <form class="form-horizontal" method="post" action="{{route('category.update')}}" onsubmit="return validateForm()">
                     @csrf
                     <input  id="input-id" type="hidden" name="category_id" value="">
                     <div class="row">
@@ -189,7 +206,10 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="status">Trạng thái</label>
-                                <input class="form-control" id="input-status" type="number" name="status"  >
+                                <select class="form-control select2" id="input-status"  style="width: 100%;" name="status">
+                                  <option value=1 >Kích hoạt</option>
+                                  <option value=0 >Không kích hoạt</option>
+                              </select>
                             </div>
                         </div>
                     </div>

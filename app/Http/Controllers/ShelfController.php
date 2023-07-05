@@ -77,7 +77,6 @@ class ShelfController extends Controller
     public function store(Request $request)
     {   
         $shelf = new Shelf;
-        $shelf->id = $request->name;
         $shelf->status = $request->status === 'đầy' ? 0 : 1 ;
         $shelf->location = $request->floor.' - '.$request->room.' - '.$request->shelf;
         $shelf->created_by = Auth::id();

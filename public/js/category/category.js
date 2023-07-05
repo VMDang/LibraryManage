@@ -81,5 +81,5 @@ $(document).ready(function() {
         let uri = '/category/list/delete';
         confirmAlert('Xóa Thể loại', 'Hành động này không thể khôi phục!', 'warning', uri, data);
     });
-        
+    
 });
