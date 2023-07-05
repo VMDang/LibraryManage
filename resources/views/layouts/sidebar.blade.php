@@ -79,28 +79,30 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('books.index')}}" class="nav-link">
+                                <a href="{{route('books.list')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Danh sách</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{route('books.create')}}" class="nav-link">
-                                    <i class="fas fa-book-reader nav-icon"></i>
-                                    <p>Thêm sách</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="fas fa-heart nav-icon"></i>
-                                    <p>Đã thích</p>
-                                </a>
-                            </li>
+                            @cannot('isUser')
+                                <li class="nav-item">
+                                    <a href="{{route('books.create')}}" class="nav-link">
+                                        <i class="fas fa-plus nav-icon"></i>
+                                        <p>Thêm mới</p>
+                                    </a>
+                                </li>
+                            @endcannot
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link">--}}
+{{--                                    <i class="fas fa-heart nav-icon"></i>--}}
+{{--                                    <p>Đã thích</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
+                            <i class="nav-icon fas fa-bible"></i>
                             <p>
                                 Mượn Sách
                                 <i class="fas fa-angle-left right"></i>
@@ -108,21 +110,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('borrow.history')}}" class="nav-link">
-                                    <i class="fas fa-list nav-icon"></i>
-                                    <p>Lịch sử</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{route('borrow.create')}}" class="nav-link">
-                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <i class="fas fa-file-export nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
                                     <a href="{{route('borrow.approve')}}" class="nav-link">
-                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <i class="fas fa-clipboard-check nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
                                 </li>
@@ -139,21 +135,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link" >
-                                    <i class="fas fa-list nav-icon"></i>
-                                    <p>Lịch sử</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{route('return.create')}}" class="nav-link">
-                                    <i class="fas fa-book-reader nav-icon"></i>
+                                    <i class="fas fa-file-export nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
                                     <a href="{{route('return.approve')}}" class="nav-link">
-                                        <i class="fas fa-book-reader nav-icon"></i>
+                                        <i class="fas fa-clipboard-check nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
                                 </li>
@@ -190,7 +180,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('category.add')}}" class="nav-link">
                                         <i class="fas nav-icon fa-regular fa-plus"></i>
-                                        <p>Thêm</p>
+                                        <p>Thêm mới</p>
                                     </a>
                                 </li>
                             </ul>
@@ -217,7 +207,7 @@
                             <li class="nav-item">
                                 <a href="{{route('shelf.add')}}" class="nav-link">
                                     <i class="fas nav-icon fa-regular fa-plus"></i>
-                                    <p>Thêm</p>
+                                    <p>Thêm mới</p>
                                 </a>
                             </li>
                         </ul>

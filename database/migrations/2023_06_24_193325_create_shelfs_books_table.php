@@ -17,8 +17,8 @@ class CreateShelfsBooksTable extends Migration
             $table->id();
             $table->integer('shelf_id');
             $table->integer('book_id');
-            $table->integer('created_by');
-            $table->integer('updated_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

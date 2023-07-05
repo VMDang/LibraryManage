@@ -1,7 +1,7 @@
 @extends("layouts.footer")
 
 @section('title-page')
-    <title>Book Detail  | Library Manage</title>
+    <title>Book Detail | Library Manage</title>
 @endsection
 
 
@@ -35,23 +35,22 @@
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
                                 <div class="text-center">
-                                    <img 
-                                         src="{{asset('img/123.webp')}}"
-                                         alt="Book Avatar"
-                                         style="max-width:100%;height:auto;">
-                                         
+                                    <img
+                                        src="{{asset('img/123.webp')}}"
+                                        alt="Book Avatar"
+                                        style="max-width:100%;height:auto;">
+
                                 </div>
 
                                 <h3 class="profile-username text-center">{{$book->name}}</h3>
 
                                 <p class="text-muted text-center">Book</p>
-                                
+
                             </div>
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
 
-                        
                     </div>
                     <!-- /.col -->
                     <div class="col-md-9">
@@ -60,8 +59,6 @@
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#infoUser" data-toggle="tab">Thông
                                             tin sách</a></li>
-                                    
-                                    
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
@@ -82,7 +79,7 @@
                                             <li class="list-group-item">
                                                 <div class="row">
                                                     <div class="col-sm-2"><i class="fas fa-user"
-                                                                             style="margin-left: 2px"></i><b> Tác 
+                                                                             style="margin-left: 2px"></i><b> Tác
 
                                                             giả : </b></div>
                                                     <div class="col-sm-10">{{$book->author}}</div>
@@ -92,33 +89,35 @@
                                                 <div class="row">
                                                     <div class="col-sm-2"><i class="fas fa-tags"
                                                                              style="margin-left: 2px"></i><b>
-                                                            Thể 
+                                                            Thể
                                                             loại : </b></div>
                                                     <div
                                                         class="col-sm-10">
                                                         @foreach ($book_categories as $book_category)
-                                                        @if ($book_category->book_id == $book->id)
-                                                           {{ $book_category->category->name }}<br>
-                                                        @endif
-                                                    @endforeach</div>
+                                                            @if ($book_category->book_id == $book->id)
+                                                                {{ $book_category->category->name }}<br>
+                                                            @endif
+                                                        @endforeach</div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="row">
-                                                    <div class="col-sm-2"><i class="fas fa-dollar-sign" style="margin-left: 2px"></i><b>
+                                                    <div class="col-sm-2"><i class="fas fa-dollar-sign"
+                                                                             style="margin-left: 2px"></i><b>
                                                             Giá : </b></div>
                                                     <div class="col-sm-10">{{$book->cost}}</div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="row">
-                                                    <div class="col-sm-2"><i class="fas fa-check" style="margin-left: 2px" ></i><b> Trạng
+                                                    <div class="col-sm-2"><i class="fas fa-check"
+                                                                             style="margin-left: 2px"></i><b> Trạng
                                                             thái: </b></div>
                                                     <div class="col-sm-10">
-                                                    @if($book->status==1)
-                                                           Có thể mượn 
+                                                        @if($book->status==1)
+                                                            Có thể mượn
                                                         @else
-                                                           Hết 
+                                                            Hết
                                                         @endif </div>
                                                 </div>
                                             </li>
@@ -128,35 +127,27 @@
                                                                              style="margin-left: 2px"></i><b>
                                                             Vị trí : </b></div>
                                                     <div class="col-sm-10">
-                                                    @foreach ($shelf_books as $shelf_book)
-                                                        @if ($shelf_book->book_id == $book->id)
-                                                           {{ $shelf_book->shelf->location }}<br>
-                                                        @endif
-                                                    @endforeach
+                                                        @foreach ($shelf_books as $shelf_book)
+                                                            @if ($shelf_book->book_id == $book->id)
+                                                                {{ $shelf_book->shelf->location }}<br>
+                                                            @endif
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                             </li>
-                                            
+
                                         </ul>
                                     </div>
-
-                                    
-                                        </div>
-                                    </div>
-                                    <!-- /.tab-pane -->
-
-                                    
-                                    <!-- /.tab-pane -->
                                 </div>
-                                <!-- /.tab-content -->
-                            </div><!-- /.card-body -->
+                            </div>
+                            <!-- /.tab-pane -->
                         </div>
-                        <!-- /.nav-tabs-custom -->
-                    </div>
-                    <!-- /.col -->
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
         </section>
         <!-- /.content -->
     </div>

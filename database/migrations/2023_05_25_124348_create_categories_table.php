@@ -18,8 +18,8 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 255);
             $table->text('description');
             $table->tinyInteger('status');
-            $table->integer('created_by');
-            $table->integer('updated_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

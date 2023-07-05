@@ -26,7 +26,7 @@ $(function () {
                 $('#message_approver').prop('readonly', true);
                 $('#due_date').prop('disabled', true);
                 $('#borrow_date').prop('disabled', true);
-            }else
+            }
 
             if (BorrowingInfo['gender']) {
                 modalApprove.find('#gender1').prop('checked', true);
