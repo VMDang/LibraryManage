@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shelf_Book;
 use BaseHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +24,30 @@ class BorrowBookController extends Controller
     {
         $user = Auth::user();
         $books = Book::all();
-
-
         return view("borrowbooks.create", compact('user', 'books'));
     }
+
+    public function updateIDforShowLocationAjax($id){
+        try {
+            $book_id = $id;
+            $shelfs = Shelf_Book::with('book', 'shelf')->get();
+            $array_shelf = [];
+
+            foreach($shelfs as $shelf){
+                if($book_id == $shelf->book->id){
+                    array_push($array_shelf, $shelf->shelf->location);
+                }
+            }
+
+            view("borrowbooks.create", compact('array_shelf'));
+            BaseHelper::ajaxResponse(config('app.messageSaveSuccess'), true, $array_shelf);
+        } catch (\Exception $e) {
+            print($e);
+            BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+        }
+        
+    }
+
     public function approve()
     {
         if(Gate::any(['isAdmin', 'isMod'])){
@@ -59,6 +80,7 @@ class BorrowBookController extends Controller
         $borrowing = new Borrowing;
         $borrowing->user_id = Auth::id();
         $borrowing->book_id = $request->book_id;
+        $borrowing->location = $request->book_location;
         $borrowing->message_user = $request->message_user;
         try{
             $borrowing->save();
@@ -79,7 +101,7 @@ class BorrowBookController extends Controller
                     ->where('borrowings.id', $id)
                     ->get(['users.name', 'users.gender', 'users.birthday', 'users.email', 'books.name as bookname', 'books.author',
                         'borrowings.borrow_date', 'borrowings.message_user', 'borrowings.id', 'borrowings.status',
-                        'borrowings.due_date', 'borrowings.message_approver' ]);
+                        'borrowings.due_date', 'borrowings.message_approver', 'borrowings.location' ]);
 
             $borrowInfo[0]->borrow_date = $this->changeFormatDateOutput($borrowInfo[0]->borrow_date);
             $borrowInfo[0]->due_date = $this->changeFormatDateOutput($borrowInfo[0]->due_date);
@@ -103,12 +125,17 @@ class BorrowBookController extends Controller
                 $borrowing->status = 1;
                 $borrowing->borrow_date =$this->changeFormatDateInput( $request->input('borrow_date'));
                 $borrowing->due_date = $this->changeFormatDateInput($request->input('due_date'));
+                $borrowing->book->number -= 1;
+                if($borrowing->book->number==0){
+                    $borrowing->book->status = 0;
+                } 
             }
 
             $borrowing->approved_by = Auth::id();
             $borrowing->message_approver = $request->message_approver;
 
             $borrowing->save();
+            $borrowing->book->save();
 
             BaseHelper::ajaxResponse(config('app.messageSaveSuccess'), true);
         }catch(\Exception $e){
