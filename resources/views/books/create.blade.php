@@ -14,10 +14,8 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <!-- <script src="{{ asset('themes/plugins/daterangepicker/moment.min.js') }}"></script>
-    <script src="{{ asset('themes/plugins/daterangepicker/daterangepicker.js') }}"></script> -->
-    <script src="{{asset('js/book/list.js')}}" defer></script>
-    
+    <script src="{{asset('js/book/create.js')}}" defer></script>
+
 @endsection
 
 @section('content')
@@ -27,12 +25,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Thêm sách</h1>
+                        <h1>Tạo một cuốn sách</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                            <li class="breadcrumb-item active">Thêm sách</li>
+                            <li class="breadcrumb-item active">Tạo một cuốn sách</li>
                         </ol>
                     </div>
                 </div>
@@ -57,44 +55,56 @@
                                     <div class="form-group">
                                         <label for="fullName">Tên sách</label>
                                         <input type="text" class="form-control" id="name" value="" name="name">
+                                        <p class="alert-danger">{{ $errors->first('name') }}</p>
                                     </div>
-                                    <!-- /.form-group -->
                                     <div class="form-group">
                                         <label for="gender">Tác giả</label>
                                         <input class="form-control" type="text" id="author" value="" name="author" >
+                                        <p class="alert-danger">{{ $errors->first('author') }}</p>
                                     </div>
-                                    <!-- /.form-group -->
-                                    <!-- Date -->
                                     <div class="form-group">
-                                      <label>Nhà xuất bản</label>
+                                      <label for="publisher">Nhà xuất bản</label>
                                       <input class="form-control" type="text" value="" name="publisher" id="publisher">
                                     </div>
-                                    <!-- /.form-group -->
-                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="date_publication">Ngày xuất bản</label>
+                                        <input type="date" class="form-control" id="date_publication" value="" name="date_publication">
+                                    </div>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email">Ngày xuất bản</label>
-                                        <input type="text" class="form-control" id="date_publication" value="" name="date_publication">
+                                        <label for="number">Số lượng</label>
+                                        <input class="form-control" type="number" value="number" name="number" id="number">
+                                        <p class="alert-danger">{{ $errors->first('number') }}</p>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cost">Giá tiền</label>
+                                        <input class="form-control" type="number" value="cost" name="cost" id="cost">
+                                        <p class="alert-danger">{{ $errors->first('cost') }}</p>
+
                                     </div>
                                     <div class="form-group">
                                         <label for="shelf">Vị trí</label>
-                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelf" >
+                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelfs[]" multiple="multiple" data-placeholder="--- Chọn vị trí ---">
                                             <option value="">-- Chọn vị trí --</option>
                                             @foreach ($shelfs as $shelf)
                                                 <option value="{{ $shelf->id }}">{{ $shelf->location }}</option>
                                             @endforeach
                                         </select>
+                                        <p class="alert-danger">{{ $errors->first('shelfs') }}</p>
+
                                     </div>
                                     <div class="form-group">
-                                        <label for="shelf">Thể loại</label>
-                                        <select class="form-control select2" style="width: 100%;" id="category" name="category" >
-                                            <option value="">-- Chọn thể loại --</option>
+                                        <label for="category">Thể loại</label>
+                                        <select class="form-control select2-blue" style="width: 100%;" id="category" name="categories[]" multiple="multiple" data-placeholder="--- Chọn thể loại ---">
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
+                                        <p class="alert-danger">{{ $errors->first('categories') }}</p>
+
                                     </div>
                                 </div>
                                 <!-- /.col -->
@@ -107,12 +117,14 @@
                                 <!-- /.form-group -->
                             </div>
                             <div class="card-footer" style="text-align: center;">
-                                <button type="submit" class="btn btn-primary">Add Book</button>
+                                <button type="submit" class="btn btn-primary" id="btnSave"><i class="fas fa-save mr-2"></i>
+                                    Lưu thông tin
+                                </button>
                             </div>
                         </form>
                     </div>
                     <!-- /.card-body -->
-                    
+
                 </div>
                 <!-- /.card -->
             </div>

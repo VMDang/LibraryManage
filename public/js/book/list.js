@@ -1,36 +1,69 @@
-// function addBook() {
-//     // Lấy giá trị từ các trường input
-//     var category = $('#category').val();
-//     var shelf = $('#shelf').val();
-//     var title = $('#title').val();
-//     var content = $('#content').val();
-//     var file = $('#file').val();
-//     var author = $('#author').val();
-//     var cost = $('#cost').val();
-//     var number = $('#number').val();
-  
-//     // Gửi yêu cầu AJAX đến server để thêm sách
-//     $.ajax({
-//         url: '/books/add', // Đường dẫn xử lý thêm sách
-//         method: 'POST',
-//         data: {
-//             category: category,
-//             shelf: shelf,
-//             title: title,
-//             content: content,
-//             file: file,
-//             author: author,
-//             cost: cost,
-//             number: number
-//         },
-//         success: function(response) {
-//             // Xử lý phản hồi từ server (nếu cần)
-//             // Sau khi thêm thành công, làm mới trang để hiển thị danh sách sách mới
-//             location.reload();
-//         },
-//         error: function(xhr) {
-//             // Xử lý lỗi (nếu có)
-//             console.log(xhr.responseText);
-//         }
-//     });
-//   }
+$(function () {
+    let tableBooks = $('#tableListBooks').DataTable();
+    tableBooks.destroy();
+    function exportDataTable(table) {
+        table.DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            "pageLength": 25,
+            "columnDefs": [
+                { "orderable": false, "targets": [2, 3, 4, 5, 7, 8] }
+            ]
+        }).buttons().container().appendTo('#' + table.attr('id') + '_wrapper .col-md-6:eq(0)');
+    }
+
+    exportDataTable($('#tableListBooks'));
+
+    let modalBorrowBook = $('#modalBorrowBook');
+    $('#tableListBooks').on('click', '.btnBorrowBook', function () {
+        let userId = $(this).attr('data-user-id');
+        callAjaxGet(BASE_URL + '/user/getInfoAjax/' + userId).done(function(res) {
+            if (!res.status) {
+                notifyMessage('Lỗi!', res.msg, 'error', 3000);
+                return;
+            }
+            let user = res.data;
+            /* set field value */
+            ['name', 'birthday', 'email', 'gender'].forEach(field => {
+                modalBorrowBook.find('#' + field).val(user[field]);
+            });
+
+            if (user['gender']) {
+                modalBorrowBook.find('#gender1').prop('checked', true);
+                modalBorrowBook.find('#gender2').attr("disabled",true);
+            } else {
+                modalBorrowBook.find('#gender2').prop('checked', true);
+                modalBorrowBook.find('#gender1').attr("disabled",true)
+            }
+
+            modalBorrowBook.modal('show');
+        });
+
+        let bookId = $(this).attr('data-book-id');
+
+        callAjaxGet(BASE_URL + '/books/getInfoAjax/' + bookId).done(function (res) {
+            if (!res.status) {
+                notifyMessage('Lỗi!', res.msg, 'error', 3000);
+                return;
+            }
+
+            let book = res.data;
+            modalBorrowBook.find('#book_id').val(book['id']);
+            modalBorrowBook.find('#book-name').val(book['name']);
+            modalBorrowBook.find('#author').val(book['author']);
+            modalBorrowBook.find('#book_location').val(book['author']);
+        })
+    })
+
+    $('[data-toggle="popover"]').popover();
+
+    $('.closeModal').on('click', function () {
+        eventCloseHiddenModal(modalBorrowBook);
+    })
+
+    modalBorrowBook.on('hidden.bs.modal', function () {
+        eventCloseHiddenModal(modalBorrowBook);
+    })
+})

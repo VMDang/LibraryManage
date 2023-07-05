@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowBookController;
-use App\Http\Controllers\ReturnBookController;     
+use App\Http\Controllers\ReturnBookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ShelfController;
+use App\Http\Controllers\HistoryController;
 
 
 /*
@@ -36,35 +39,39 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/deleteAccountAjax','deleteAccountAjax');
             Route::post('/updateRoleAjax','updateRoleAjax');
             Route::match(['post', 'get'],'/list','list')->name('user.list');
+            Route::get('/getInfoAjax/{id?}', 'getInfoAjax')->where('id', '[0-9]+');
         });
     });
-   
+
 
     // Route::resource('books', BookController::class)
     //     ->except(['create', 'edit']);
 
     Route::controller(BookController::class)->group(function (){
-        Route::prefix('books')->group(function () {
-            Route::get('list', [BookController::class, 'index'])->name('books.index');
-            Route::get('create', [BookController::class, 'create'])->name('books.create');
-            Route::post('create', [BookController::class, 'store'])->name('books.store');
-            Route::get('{id}/edit', [BookController::class, 'edit'])->name('books.edit');
-            Route::put('{id}', [BookController::class, 'update'])->name('books.update');
-            Route::delete('{id}', [BookController::class, 'destroy'])->name('books.destroy');
+        Route::prefix('/books')->group(function () {
+            Route::get('/list', 'index')->name('books.list');
+            Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('books.detail');
+            Route::get('/create', 'create')->name('books.create');
+            Route::post('/create', 'store')->name('books.store');
+            Route::get('/edit/{id}', 'edit')->where('id', '[0-9]+')->name('books.edit');
+            Route::post('update/{id}', 'update')->where('id', '[0-9]+')->name('books.update');
+            Route::post('/delete/{id}', 'destroy')->name('books.destroy');
+            Route::get('/getInfoAjax/{id}' ,'getInfoAjax')->where('id', '[0-9]+');
         });
     });
-   
-    
+
+
    Route::controller(BorrowBookController::class)->group(function (){
         Route::prefix('/borrow')->group(function(){
             Route::get('/create', 'create')->name('borrow.create');
             Route::get('/create/updateIDforShowLocationAjax/{id}', 'updateIDforShowLocationAjax')->where('id', '[0-9]+');
             Route::post('/create', 'store')->name('borrow.store');
             Route::get('/approve', 'approve')->name('borrow.approve');
-            Route::get('/history', 'history')->name('borrow.history');
+            Route::get('/approve/getBorrowingOfInfoAjax/{id}', 'getBorrowingOfInfoAjax');
+            Route::post('/approve/approveBorrowingAjax', 'approveBorrowingAjax');
         });
    });
-   
+
    Route::controller(ReturnBookController::class)->group(function (){
      Route::prefix('/return')->group(function (){
            Route::get('/create','create')->name('return.create');
@@ -73,17 +80,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::post('/approve','approveStore')->name('return.approveStore');
            Route::get('/getRequestReturnBookAjax/{id}', 'getRequestReturnBookAjax')->where('id', '[0-9]+');
         });
-
    });
 
     Route::controller(HistoryController::class)->group(function (){
         Route::get('/history', 'history')->name('history.history');
 
-    });
-
-    Route::controller(ViewBookController::class)->group(function (){
-       Route::match(['post', 'get'],'/viewbook', 'create')->name('viewbook.create');
-       Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('viewbook.detail');
     });
 
    Route::controller(CategoryController::class)->group(function (){

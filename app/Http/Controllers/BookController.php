@@ -2,42 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use BaseHelper;
 use App\Models\Book;
+use App\Models\Books_Category;
 use App\Models\Category;
 use App\Models\Shelf;
 use App\Models\Shelf_Book;
-use App\Models\Books_Category;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
-    
-    // public function shelf()
-    // {
-    //     return $this->belongsTo(Shelf::class);
-    // }
-
 
     public function index()
     {
-         $books = Book::all();
-         return view ('books.list')->with('books', $books);
+        $books = Book::all();
+        $categories = Category::all();
+        $book_categories = Books_Category::with('book','category')->get();
+        $books_shelf = Shelf_Book::with('book', 'shelf')->get();
+
+        return view('books.list', compact('book_categories','books', 'categories', 'books_shelf'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
 
     public function create()
@@ -45,150 +41,199 @@ class BookController extends Controller
         $categories = Category::all();
         $shelfs = Shelf::all();
         return view("books.create", compact('categories', 'shelfs'));
-             
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
 
     public function store(Request $request)
-{
-    $book = new Book;
-    $book->name = $request->name;
-    $book->author = $request->author;
-    $book->publisher = $request->publisher;
-    $book->date_publication = $request->date_publication;
-    $book->preview_content = $request->preview_content;
-    $book->save();
+    {
+        $message = [
+            'name.required' => 'Tên sách bắt buộc nhập',
+            'author.required' => 'Tên tác giả bắt buộc nhập',
+            'number.required' => 'Số lượng sách bắt buộc nhập ',
+            'number.integer' => 'Số lượng sách phải là số nguyên lớn hơn hoặc bằng 0',
+            'cost.required' => 'Số lượng sách bắt buộc nhập ',
+            'cost.integer' => 'Số lượng sách bắt buộc nhập ',
+            'shelfs.required' => 'Bắt buộc chọn vị trí',
+            'categories.required' => 'Bắt buộc chọn thể loại',
+        ];
+        $validated = $request->validate([
+            'name' => 'required',
+            'author' => 'required',
+            'number' => 'required|integer',
+            'cost' => 'required|integer',
+            'shelfs' => 'required',
+            'categories' => 'required',
+        ], $message);
 
-    $bookId = $book->id;
+        $book = new Book;
+        $book->name = $request->name;
+        $book->author = $request->author;
+        $book->publisher = $request->publisher;
+        $book->date_publication = $request->date_publication;
+        $book->preview_content = $request->preview_content;
+        $book->number = $request->number;
+        $book->cost = $request->cost;
+        $book->created_by = Auth::id();
+        $book->save();
 
-    $shelfs_book = new Shelf_Book;
-    $shelfs_book->book_id = $bookId;
-    $shelfs_book->shelf_id = $request->shelf;
-    $shelfs_book->created_by = Auth::id();
-    $shelfs_book->updated_by = Auth::id();
-    $shelfs_book->save();
+        $bookId = $book->id;
 
-    $category_book = new Books_Category;
-    $category_book->book_id = $bookId;
-    $category_book->category_id = $request->category;
-    $category_book->created_by = Auth::id();
-    $category_book->updated_by = Auth::id();
-    $category_book->save();
+        foreach ($request->input('shelfs') as $s){
+            $shelfs_book = new Shelf_Book;
+            $shelfs_book->book_id = $bookId;
+            $shelfs_book->shelf_id = $s;
+            $shelfs_book->created_by = Auth::id();
+            $shelfs_book->updated_by = Auth::id();
+            $shelfs_book->save();
+        }
 
-    return redirect()->route('books.create');
-}
+        foreach ($request->input('categories') as $c){
+            $category_book = new Books_Category;
+            $category_book->book_id = $bookId;
+            $category_book->category_id = $c;
+            $category_book->created_by = Auth::id();
+            $category_book->updated_by = Auth::id();
+            $category_book->save();
+        }
 
+        return redirect()->route('books.list');
+    }
 
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
 
     public function show($id)
     {
-        
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function edit($id)
     {
         $book = Book::find($id);
-        $book_categories = Books_Category::with('book','category')->get();
-        $shelf_books = Shelf_Book::with('book','shelf')->get(); 
-        if (empty($id)){
-            return ;
+        $categories = Category::all();
+        $shelfs = Shelf::all();
+        $book_categories = Books_Category::with('book', 'category')->get();
+        $shelf_books = Shelf_Book::with('book', 'shelf')->get();
+        if (empty($id)) {
+            return abort(404, 'Cuốn sách không tồn tại');
         }
 
-        // User cannot see the account being locked
-       
-
-        return view('books.edit', compact('book','book_categories','shelf_books'));
+        return view('books.edit', compact('book', 'book_categories', 'shelf_books', 'categories', 'shelfs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
+        $message = [
+            'name.required' => 'Tên sách bắt buộc nhập',
+            'author.required' => 'Tên tác giả bắt buộc nhập',
+            'number.required' => 'Số lượng sách bắt buộc nhập ',
+            'number.integer' => 'Số lượng sách phải là số nguyên lớn hơn hoặc bằng 0',
+            'cost.required' => 'Số lượng sách bắt buộc nhập ',
+            'cost.integer' => 'Số lượng sách bắt buộc nhập ',
+            'shelfs.required' => 'Bắt buộc chọn vị trí',
+            'categories.required' => 'Bắt buộc chọn thể loại',
+        ];
+        $validated = $request->validate([
+            'name' => 'required',
+            'author' => 'required',
+            'number' => 'required|integer',
+            'cost' => 'required|integer',
+            'shelfs' => 'required',
+            'categories' => 'required',
+        ], $message);
+
         $book = Book::find($id);
-    if (!$book) {
-        return redirect()->route('books.index')->with('error', 'Book not found');
-    }
-    
-    $book->name = $request->name;
-    $book->author = $request->author;
-    $book->publisher = $request->publisher;
-    $book->date_publication = $request->date_publication;
-    $book->preview_content = $request->preview_content;
+        if (!$book) {
+            abort('404', 'Cuốn sách không tồn tại');
+        }
 
-    // Lưu thông tin sách
-    $book->save();
+        $book->name = $request->name;
+        $book->author = $request->author;
+        $book->publisher = $request->publisher;
+        $book->date_publication = $request->date_publication;
+        $book->preview_content = $request->preview_content;
 
-    // Cập nhật thông tin vị trí sách
-    $shelfs = $request->input('shelfs', []);
-    $book->shelfs()->sync($shelfs);
+        $book->save();
 
-    // Cập nhật thông tin thể loại sách
-    $categories = $request->input('categories', []);
-    $book->categories()->sync($categories);
+        $shelfs = $request->input('shelfs', []);
+        $book->shelfs()->sync($shelfs);
 
-    return redirect()->route('books.index')->with('success', 'Book updated successfully');
+        $categories = $request->input('categories', []);
+        $book->categories()->sync($categories);
+
+        return redirect()->route('books.list')->with('success', 'Book updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    // public function destroy($id)
-    // // {
-    // //     $book = Book::find($id);
-    // // if ($book) {
-    // //     $book->delete();
-    // //     // Thực hiện các xử lý khác nếu cần
-    // //     return redirect()->route('books.index')->with('success', 'Book deleted successfully');
-    // // } else {
-    // //     return redirect()->route('books.index')->with('error', 'Book not found');
-    // // }
-    // // }
     public function destroy($id)
-{
-    $book = Book::find($id);
+    {
+        $book = Book::find($id);
 
-    if (!$book) {
-        return redirect()->route('books.index')->with('error', 'Book not found');
+        if (!$book) {
+            return redirect()->route('books.index')->with('error', 'Book not found');
+        }
+
+        $book->shelfs()->detach();
+
+        $book->categories()->detach();
+
+        $book->delete();
+
+        return redirect()->route('books.list')->with('success', 'Book deleted successfully');
     }
 
-    // Xóa thông tin vị trí sách trong bảng shelfs_books
-    $book->shelfs()->detach();
+    public function detail($id = null) {
+        $book = Book::find($id);
+        $book_categories = Books_Category::with('book','category')->get();
+        $shelf_books = Shelf_Book::with('book','shelf')->get();
+        if (empty($id)){
+            return ;
+        }
 
-    // Xóa thông tin thể loại sách trong bảng books_categories
-    $book->categories()->detach();
+        return view('books.detail', compact('book','book_categories','shelf_books'));
+    }
 
-    // Xóa sách
-    $book->delete();
+    public function getInfoAjax($id){
+        try {
+            $book = Book::find($id);
+            if ($book == null){
+                return \BaseHelper::ajaxResponse("Thông tin cuốn sách không tồn tại", false);
+            }
 
-    // Thực hiện các xử lý khác nếu cần
-    return redirect()->route('books.index')->with('success', 'Book deleted successfully');
-}
-    
+            return BaseHelper::ajaxResponse(config('app.messageSaveSuccess'),true, $book);
+        }
+        catch (\Exception $e){
+            return BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+        }
+    }
 }
