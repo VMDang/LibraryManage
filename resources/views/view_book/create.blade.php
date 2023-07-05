@@ -51,81 +51,81 @@
             </div><!-- /.container-fluid -->
         </section>
 
-        <section class="content-section">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- <div class="card-header">
-                            <h3 class="card-title">Tìm kiếm sách</h3>
-                        </div> -->
-                        <!-- <form action="" method="post" id="formFilterBook">
-                            @csrf
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label" style="text-align: right">Tên sách :
-                                                </label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" name="name" id="name"
-                                                       value="{{ isset($filters['name']) ? $filters['name'] : '' }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group row">
-                                            <label class="col-sm-5 col-form-label" style="text-align: right">Giá tiền :
-                                                </label>
-                                            <div class="col-sm-7">
-                                                <input class="form-control" name="cost" id="cost"
-                                                       value="{{ isset($filters['cost']) ? $filters['cost'] : '' }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label"
-                                                   style="text-align: right">Tác giả: </label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" name="author" id="author"
-                                                       value="{{ isset($filters['author']) ? $filters['author'] : '' }}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label" style="text-align: right">Thể loại :  </label>
-                                            <div class="col-sm-7">
-                                                <select class="form-control" name="category" id="category">
-                                                <option value="">Chọn thể loại</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+{{--        <section class="content-section">--}}
+{{--            <div class="container-fluid">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-12">--}}
+{{--                        <div class="card-header">--}}
+{{--                            <h3 class="card-title">Tìm kiếm sách</h3>--}}
+{{--                        </div> -->--}}
+{{--                        <form action="" method="post" id="formFilterBook">--}}
+{{--                            @csrf--}}
+{{--                            <div class="card-body">--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-lg-3">--}}
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label class="col-sm-3 col-form-label" style="text-align: right">Tên sách :--}}
+{{--                                                </label>--}}
+{{--                                            <div class="col-sm-9">--}}
+{{--                                                <input class="form-control" name="name" id="name"--}}
+{{--                                                       value="{{ isset($filters['name']) ? $filters['name'] : '' }}">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-lg-4">--}}
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label class="col-sm-5 col-form-label" style="text-align: right">Giá tiền :--}}
+{{--                                                </label>--}}
+{{--                                            <div class="col-sm-7">--}}
+{{--                                                <input class="form-control" name="cost" id="cost"--}}
+{{--                                                       value="{{ isset($filters['cost']) ? $filters['cost'] : '' }}">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-lg-5">--}}
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label class="col-sm-3 col-form-label"--}}
+{{--                                                   style="text-align: right">Tác giả: </label>--}}
+{{--                                            <div class="col-sm-9">--}}
+{{--                                                <input class="form-control" name="author" id="author"--}}
+{{--                                                       value="{{ isset($filters['author']) ? $filters['author'] : '' }}">--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="row">--}}
+{{--                                    <div class="col-lg-3">--}}
+{{--                                        <div class="form-group row">--}}
+{{--                                            <label class="col-sm-4 col-form-label" style="text-align: right">Thể loại :  </label>--}}
+{{--                                            <div class="col-sm-7">--}}
+{{--                                                <select class="form-control" name="category" id="category">--}}
+{{--                                                <option value="">Chọn thể loại</option>--}}
+{{--                                                @foreach($categories as $category)--}}
+{{--                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
 
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                    <div class="form-group row">
-                                        <label class="col-lg-1"></label>
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-primary" id="btnFilter"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="button" class="btn btn-default" id="btnReset"><i class="fa fa-undo mr-1"></i>Đặt lại</button>
-                                        </div>
-                                    </div>
-                            </div>
-                        </form> -->
-                    </div>
-                </div>
-            </div>
-        </section>
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="card-footer">--}}
+{{--                                    <div class="form-group row">--}}
+{{--                                        <label class="col-lg-1"></label>--}}
+{{--                                        <div class="col-sm-2">--}}
+{{--                                            <button type="submit" class="btn btn-primary" id="btnFilter"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-sm-2">--}}
+{{--                                            <button type="button" class="btn btn-default" id="btnReset"><i class="fa fa-undo mr-1"></i>Đặt lại</button>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                            </div>--}}
+{{--                        </form>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </section>--}}
 
         <!-- Main content -->
         <section class="content">
@@ -155,7 +155,7 @@
                                                 <th style="width: 17%">Tên sách</th>
                                                 <th style="width: 15%">Tác giả </th>
                                                 <th style="width: 20%">Thể loại</th>
-                                                <th style="width: 10%">Giá tiền</th>
+                                                <th style="width: 10%">Số lượng</th>
                                                 <th style="width: 10%">Tình trạng</th>
                                                 <th style="width: 15%">Hành động</th>
                                             </tr>
@@ -163,7 +163,7 @@
                                             <tbody>
                                             @foreach($books as $index => $book)
                                                 <tr>
-                                                    <td>{{$index}}</td>
+                                                    <td>{{++$index}}</td>
                                                     <td>{{$book->name}}</td>
                                                     <td>{{$book->author}}</td>
                                                     <td>
@@ -173,14 +173,12 @@
                                                         @endif
                                                     @endforeach
                                                     </td>
-                                                    <td>{{$book->cost}}</td>
-                                                    <td>
-                                                        @if($book->status==1)
-                                                           Có thể mượn
-                                                        @else
-                                                           Hết
-                                                        @endif
-                                                    </td>
+                                                    <td style="text-align: center">{{$book->number}}</td>
+                                                    @if($book->status==1 && $book->number > 0)
+                                                            <td style="color: blue">Có thể mượn</td>
+                                                    @elseif($book->status == 1  && $book->number = 0)
+                                                            <td style="color: red"> Đã hết</td>
+                                                    @endif
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-default"><a href="{{route('viewbook.detail', [$book->id, $book->name])}}">

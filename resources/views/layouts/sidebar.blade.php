@@ -125,7 +125,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-book" ></i>
+                            <i class="nav-icon fas fa-bible" ></i>
                             <p>
                                 Trả sách
                                 <i class="fas fa-angle-left right" ></i>
@@ -148,6 +148,14 @@
                                 </li>
                             @endcannot
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('history.history')}}" class="nav-link">
+                            <i class="nav-icon fas fa-stream"></i>
+                            <p>
+                                Lịch sử mượn trả
+                            </p>
+                        </a>
                     </li>
                     <li class="nav-item">
                             <a href="#" class="nav-link" id="categorySidebar">
@@ -204,14 +212,6 @@
                         </ul>
                     @endcannot
                 </li>
-                    <li class="nav-item">
-                        <a href="{{route('history.history')}}" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Lịch sử mượn trả
-                            </p>
-                        </a>
-                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

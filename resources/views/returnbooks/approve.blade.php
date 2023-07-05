@@ -1,103 +1,17 @@
-    @extends("layouts.footer")
+@extends("layouts.footer")
 
-    @section('title-page')
-        <title>Return Book | Library Manage</title>
-    @endsection
+@section('title-page')
+    <title>Return Book | Library Manage</title>
+@endsection
 
-    @section('style')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
-    @endsection
+@section('style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+@endsection
 
-    @section('script')
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        {{-- <script src="{{asset('js/return/return.js')}}" defer></script> --}}
-
-        <script>
-            $(document).ready(function() {
-                $('.btnDetail').on('click', function() {
-                    var index = $(this).closest('tr').data('index');
-                    var info = @json($returnInfo);
-                   
-    
-                    // Gán thông tin từ danh sách vào modal
-                    $('#id').val(info[index].id);
-                    $('#name').val(info[index].user_name);
-                    $('#gender' + info[index].gender).prop('checked', true);
-                    $('#birthday').val(info[index].birthday);
-                    $('#email').val(info[index].user_email);
-                    // Cập nhật trạng thái trong modal
-                        if(info[index].approve_status == 0)
-                        $('#approve_status').val("Chưa duyệt");
-                        else if(info[index].approve_status == 1)
-                        $('#approve_status').val("Đồng ý");
-                        else if(info[index].approve_status == 2)
-                        $('#approve_status').val("Từ chối");
-                    
-                    
-                    $('#message_user').val(info[index].message_user);
-                    $('#bookname').val(info[index].book_name);
-                    $('#author').val(info[index].author);
-                    $('#location').val('Tầng 1 Phòng 1 Kệ 1');
-                    $('#borrow_date').val(info[index].borrow_date);
-                    $('#date_return').val(info[index].date_return);
-                    $('#message_mod').val(info[index].message_mod);
-                     // Hiển thị modal
-                    $('#modalApprove').modal('show');
-                });
-    
-                $('.closeModal').on('click', function() {
-                    // Đóng modal
-                    $('#modalApprove').modal('hide');
-                });
-             //Thêm sự kiện click cho các button
-                $('#btnDeni, #btnSave').on('click', function() {
-                   var status = $(this).data('status');
-                   $('#approve_status').val(status);
-                  });
-
-                 //Cảnh báo nhập ngày trả trước khi phê duyệt
-                      $('#btnSave').on('click', function(event) {
-                     event.preventDefault();
-                          // Kiểm tra trạng thái của trường ngày trả
-                     var dateReturn = $('#date_return').val();
-                     if (dateReturn === '') {
-                         // Hiển thị thông báo cảnh báo
-                         $('#dateReturnError').show();
-                         return; // Dừng lại và không thực hiện phê duyệt
-                     } else {
-                         // Ẩn thông báo cảnh báo nếu ngày trả đã được nhập
-                         $('#dateReturnError').hide();
-                     }
-                     
-                     // Tiếp tục thực hiện phê duyệt
-                     var status = $(this).data('status');
-                     $('#approve_status').val(status);
-                     $('form').submit();
-                 });
-                 
-                 $('#btnDeni').on('click', function(event) {
-                 event.preventDefault();
-                 
-                 // Kiểm tra trạng thái của trường message_mod
-                 var messageMod = $('#message_mod').val();
-                 if (messageMod === '') {
-                     // Hiển thị thông báo cảnh báo lời nhắn đến người dùng
-                     $('#reasonError').show();
-                     return; // Dừng lại và không thực hiện phê duyệt
-                 } else {
-                     // Ẩn thông báo cảnh báo nếu lời nhắn đến người dùng đã được nhập
-                     $('#reasonError').hide();
-                 }
-                 
-                    // Tiếp tục thực hiện phê duyệt
-                    var status = $(this).data('status');
-                 $('#approve_status').val(status);
-                    $('form').submit();
-                });
-
-               });
-        </script>
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{asset('js/return/approve.js')}}" defer></script>
 @endsection
 
     @section('content')
@@ -119,8 +33,11 @@
                                                 <th>Họ tên</th>
                                                 <th>Email</th>
                                                 <th>Tên sách</th>
+                                                <th>Ngày mượn</th>
+                                                <th>Hạn trả</th>
+                                                <th>Ngày trả</th>
                                                 <th>Trạng thái</th>
-                                                <th>Hành động</th>
+                                                <th style="width: 5%">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -130,6 +47,13 @@
                                                 <td>{{$info->user_name ?? ''}}</td>
                                                 <td>{{$info->user_email ?? ''}}</td>
                                                 <td>{{$info->book_name ?? ''}}</td>
+                                                <td>{{date('d/m/Y', strtotime($info->borrow_date))}}</td>
+                                                <td>{{date('d/m/Y', strtotime($info->due_date))}}</td>
+                                                @if($info->date_return == null)
+                                                    <td>-</td>
+                                                @else
+                                                    <td>{{date('d/m/Y', strtotime($info->date_return))}}</td>
+                                                @endif
                                                 <td>
                                                     @if($info->approve_status == 0)
                                                         <span style="color: blue;">Chưa duyệt</span>
@@ -168,7 +92,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form class="form-horizontal" method="post" action="{{route('return.approve')}}">
+                            <form class="form-horizontal" method="post" action="">
                                 @csrf
                                 <div class="modal-body">
                                     <input type="hidden" id="id" class="form-control" name="id">
@@ -203,7 +127,7 @@
                                             <div class="row">
                                                 <label for="birthday" class="col-sm-3">Ngày sinh</label>
                                                 <div class="form-group col-lg-9">
-                                                    <input type="text" name="birthday" id="birthday" class="form-control" disabled>
+                                                    <input type="date" name="birthday" id="birthday" class="form-control" disabled>
                                                 </div>
                                             </div>
 
@@ -216,7 +140,7 @@
                                             <div class="row">
                                                 <label class="col-lg-3 col-form-label" for="status">Trạng thái</label>
                                                 <div class="form-group col-lg-9">
-                                                    <input type="text" name="approve_status" id="approve_status" class="form-control"     readonly>
+                                                    <input type="text" name="approve_status" id="approve_status" class="form-control" readonly>
                                              </div>
                                             </div>
 
@@ -250,15 +174,21 @@
                                                 </div>
                                             </div>
 
-                                            <div class=" row">
+                                            <div class="row">
                                                 <label class="col-lg-3 col-form-label" for="borrow_date">Ngày mượn</label>
                                                 <div class="form-group col-lg-9">
-                                                    <input type="date" name="borrow_date" id="borrow_date" class="form-control" readonly>
+                                                    <input type="date" name="borrow_date" id="borrow_date" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-lg-3 col-form-label" for="due_date">Ngày đến hạn</label>
+                                                <div class="form-group col-lg-9">
+                                                    <input type="date" name="due_date" id="due_date" class="form-control" disabled>
                                                 </div>
                                             </div>
 
-                                            <div class=" row">
-                                                <label class="col-lg-3 col-form-label" for="due_date">Ngày Trả</label>
+                                            <div class="row">
+                                                <label class="col-lg-3 col-form-label" for="date_return">Ngày Trả</label>
                                                 <div class="form-group col-lg-9">
                                                     <input type="date" name="date_return" id="date_return" class="form-control">
                                                     <span id="dateReturnError" style="color: red; display: none;">Nhập ngày trả trước khi phê duyệt</span>
@@ -266,7 +196,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class=" row">
+                                            <div class="row">
                                                 <label class="col-lg-3 col-form-label" for="message_mod">Lời nhắn đến người dùng</label>
                                                 <div class="form-group col-lg-9">
                                                     <textarea class="form-control" style="width: 100%;" name="message_mod" id="message_mod"></textarea>
@@ -282,13 +212,13 @@
                                     <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Đóng
                                     </button>
 
-                                    <button type="submit" class="btn btn-danger" id="btnDeni" data-status="2">
+                                    <button type="submit" class="btn btn-danger" id="btnDeni" value="2" name="btn">
                                         <i class="fas fa-handshake-slash"></i> Từ chối
                                     </button>
-                                    <button type="submit" class="btn btn-primary" id="btnSave" data-status="1">
+                                    <button type="submit" class="btn btn-primary" id="btnSave" value="1" name="btn">
                                         <i class="fas fa-save"></i> Phê duyệt
                                     </button>
-                                    
+
                                 </div>
                             </form>
 

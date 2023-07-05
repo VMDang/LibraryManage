@@ -45,7 +45,7 @@ class BorrowBookController extends Controller
             print($e);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
-        
+
     }
 
     public function approve()
@@ -65,17 +65,17 @@ class BorrowBookController extends Controller
      */
     public function store(Request $request)
     {
-         $message = [
-        'book-name.required' => 'Hãy chọn một cuốn sách',
-    ];
+        $message = [
+            'book_id.required' => 'Hãy chọn một cuốn sách'
+        ];
 
-    $validated = $request->validate([
-        'book-name' => 'required',
-    ], $message);
+        $validated = $request->validate([
+            'book_id' => 'required',
+        ], $message);
 
-    if (!$request->has('book-name')) {
-        return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
-    }
+        if (!$request->has('book-name')) {
+            return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
+        }
 
         $borrowing = new Borrowing;
         $borrowing->user_id = Auth::id();
@@ -84,14 +84,12 @@ class BorrowBookController extends Controller
         $borrowing->message_user = $request->message_user;
         try{
             $borrowing->save();
-            return redirect()->route('borrow.create');
+            return redirect()->route('history.history');
         }catch(\Exception $e){
             print($e);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
     }
-
-    
 
     public function getBorrowingOfInfoAjax($id){
         try{
@@ -100,12 +98,8 @@ class BorrowBookController extends Controller
                     ->join('books', 'borrowings.book_id', '=', 'books.id')
                     ->where('borrowings.id', $id)
                     ->get(['users.name', 'users.gender', 'users.birthday', 'users.email', 'books.name as bookname', 'books.author',
-                        'borrowings.borrow_date', 'borrowings.message_user', 'borrowings.id', 'borrowings.status',
+                        'borrowings.borrow_date', 'borrowings.message_user', 'borrowings.id', 'borrowings.status', 'borrowings.borrow_date',
                         'borrowings.due_date', 'borrowings.message_approver', 'borrowings.location' ]);
-
-            $borrowInfo[0]->borrow_date = $this->changeFormatDateOutput($borrowInfo[0]->borrow_date);
-            $borrowInfo[0]->due_date = $this->changeFormatDateOutput($borrowInfo[0]->due_date);
-            $borrowInfo[0]->birthday = $this->changeFormatDateOutput($borrowInfo[0]->birthday);
 
             BaseHelper::ajaxResponse(config('app.messageGetSuccess'), true, $borrowInfo[0]);
         }catch(\Exception $e){
@@ -119,16 +113,16 @@ class BorrowBookController extends Controller
 
         try{
             $borrowing = Borrowing::find($request->id);
-            if ($request->input('borrow_date') == null){
+            if ($request->input('btn') == 2){
                 $borrowing->status = 2;
-            }else {
+            }else if ($request->input('btn') == 1){
                 $borrowing->status = 1;
-                $borrowing->borrow_date =$this->changeFormatDateInput( $request->input('borrow_date'));
-                $borrowing->due_date = $this->changeFormatDateInput($request->input('due_date'));
+                $borrowing->borrow_date = $request->input('borrow_date');
+                $borrowing->due_date = $request->input('due_date');
                 $borrowing->book->number -= 1;
                 if($borrowing->book->number==0){
                     $borrowing->book->status = 0;
-                } 
+                }
             }
 
             $borrowing->approved_by = Auth::id();

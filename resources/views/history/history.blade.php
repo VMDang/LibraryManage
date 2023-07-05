@@ -10,11 +10,11 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('js/book/borrowing.js')}}" defer></script>
+    <script src="{{asset('js/history/history.js')}}" defer></script>
 @endsection
 
 @section('content')
-<div class="content-wrapper">
+    <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row">
@@ -27,45 +27,52 @@
                             <div class="card-body">
                                 <table id="tableListBorrowers" class="table table-bordered table-hover">
                                     <thead>
-                                        <tr>
-                                            <th>Tên sách</th>
-                                            <th>Ngày mượn</th>
-                                            <th>Ngày đến hạn </th>
-                                            <th>Trạng thái  </th>
-                                            <th>Ngày trả </th>
-                                        </tr>
+                                    <tr>
+                                        <th>Tên sách</th>
+                                        <th>Ngày mượn</th>
+                                        <th>Ngày đến hạn</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày trả</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($borrowings as  $borrowing) 
-                                    @if($borrowing->user->id==$user->id)
-                                        <tr>  
-                                            <td>{{$borrowing->book->name}}</td>
-                                            <td>{{$borrowing->borrow_date}}</td>
-                                            <td>{{$borrowing->due_date}}</td>
-                                            <td>
+                                    @foreach($borrowings as  $borrowing)
+                                        @if($borrowing->user->id==$user->id)
+                                            <tr>
+                                                <td>{{$borrowing->book->name}}</td>
+                                                @if($borrowing->borrow_date == null)
+                                                    <td>-</td>
+                                                @else
+                                                    <td>{{date('d/m/Y', strtotime($borrowing->borrow_date))}}</td>
+                                                @endif
+                                                @if($borrowing->borrow_date == null)
+                                                    <td>-</td>
+                                                @else
+                                                    <td>{{date('d/m/Y', strtotime($borrowing->due_date))}}</td>
+                                                @endif
                                                 @if($borrowing->status == 0)
-                                                   Đang chờ xác nhận mượn
-                                                @elseif($returns->where('borrow_id',$borrowing->id)->where('approve_status',0)->count()>0)
-                                                   Đang chờ xác nhận trả
+                                                    <td style="color: blue"> Đang chờ xác nhận mượn</td>
+                                                @elseif($borrowing->status == 1 && $returns->where('borrow_id',$borrowing->id)->where('approve_status', 0)->count() > 0)
+                                                    <td style="color: blue"> Đang chờ xác nhận trả</td>
+                                                @elseif($borrowing->status == 1 && $returns->where('borrow_id',$borrowing->id)->where('approve_status', 1)->count() > 0)
+                                                    <td style="color: green"> Đã trả</td>
+                                                @elseif($borrowing->status == 1 && $returns->where('borrow_id',$borrowing->id)->where('approve_status', 2)->count() > 0)
+                                                    <td style="color: red">Yêu cầu trả bị từ chối</td>
+                                                @elseif($borrowing->status == 1)
+                                                    <td style="color: orange"> Đang mượn</td>
+                                                @elseif($borrowing->status == 2)
+                                                    <td style="color: red"> Yêu cầu mượn bị từ chối</td>
+                                                @endif
+                                                <td>@if ($returns->where('borrow_id', $borrowing->id)->where('approve_status', 1)->count() > 0)
+                                                        {{date('d/m/Y', strtotime($returns->where('borrow_id', $borrowing->id)->where('approve_status', 1)->first()->date_return))}}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
 
-                                                @elseif($returns->where('borrow_id',$borrowing->id)->where('approve_status',1)->count()>0)
-                                                   Đã trả
-                                                @else
-                                                   Đang mượn
-                                                @endif
-                                            </td>
-                                            <td>@if ($returns->where('borrow_id', $borrowing->id)->where('approve_status', 1)->count() > 0)
-                                                   {{ $returns->where('borrow_id', $borrowing->id)->where('approve_status', 1)->first()->date_return }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    
-                                    @endif
-                                        @endforeach
-                                    
-                                       
+                                        @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -75,12 +82,8 @@
                     </div>
                 </div>
                 <!-- /.row -->
-                
-                        
-                   
-                </div>
-                <!-- /.modal -->
             </div>
+            <!-- /.modal -->
         </section>
     </div>
 @endsection

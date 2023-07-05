@@ -2,69 +2,56 @@ $(function () {
     let modalApprove = $('#modalApprove');
     let validator = null;
 
-
-    $('#tableListBorrowers').on('click', '.btnDetail', function() {
+    $('#tableListReturners').on('click', '.btnDetail', function() {
 
         let id = $(this).attr('data-id');
-        callAjaxGet(BASE_URL + '/borrow/approve/getBorrowingOfInfoAjax/' + id).done(function(res) {
+        callAjaxGet(BASE_URL + '/return/getRequestReturnBookAjax/' + id).done(function(res) {
             if (!res.status) {
                 notifyMessage('Lỗi!', res.msg, 'error', 3000);
                 return;
             }
-            let BorrowingInfo = res.data;
+            let aRequestReturnBook = res.data;
 
             /* set field value */
             ['id', 'name', 'birthday', 'email', 'gender',
-             'bookname', 'author', 'status', 'location', 'message_user', 'borrow_date',
-             'due_date', 'message_approver'].forEach(field => {
-                modalApprove.find('#' + field).val(BorrowingInfo[field]);
+                'bookname', 'author', 'location', 'message_user',
+                'borrow_date', 'due_date', 'approve_status', 'date_return', 'message_mod'].forEach(field => {
+                modalApprove.find('#' + field).val(aRequestReturnBook[field]);
             });
 
-            if(BorrowingInfo.status){
+            if(aRequestReturnBook['approve_status']){
                 $('#btnDeni').addClass('d-none');
                 $('#btnSave').addClass('d-none');
-                $('#message_approver').prop('readonly', true);
-                $('#due_date').prop('disabled', true);
+                $('#message_mod').prop('readonly', true);
                 $('#borrow_date').prop('disabled', true);
+                $('#date_return').prop('disabled', true);
             }else
 
-            if (BorrowingInfo['gender']) {
+            if (aRequestReturnBook['gender']) {
                 modalApprove.find('#gender1').prop('checked', true);
                 modalApprove.find('#gender2').attr("disabled",true);
             } else {
                 modalApprove.find('#gender2').prop('checked', true);
                 modalApprove.find('#gender1').attr("disabled",true)
             }
-
-            // $("#due_date").flatpickr({
-            //     dateFormat: "d/m/Y",
-            //     minDate: "today",
-            // });
-            //
-            // $('#borrow_date').flatpickr({
-            //     dateFormat: "d/m/Y",
-            //     // defaultDate: "today"
-            // });
-
-            if(BorrowingInfo['status'] == 0){
-                modalApprove.find('#status').val('Chưa duyệt').css("color", "blue");
-            } else if(BorrowingInfo['status'] == 1){
-                modalApprove.find('#status').val('Đồng ý').css("color", "green");
-            }else if (BorrowingInfo['status'] == 2){
-                modalApprove.find('#status').val('Từ ch́ối').css("color", "red");
+            if(aRequestReturnBook['approve_status'] === 0){
+                modalApprove.find('#approve_status').val('Chưa duyệt').css("color", "blue");
+            } else if(aRequestReturnBook['approve_status'] === 1){
+                modalApprove.find('#approve_status').val('Đồng ý').css("color", "green");
+            }else if (aRequestReturnBook['approve_status'] === 2){
+                modalApprove.find('#approve_status').val('Từ ch́ối').css("color", "red");
             }
 
             modalApprove.modal('show');
         });
     });
 
-    //Sự kiện Đóng modal
     $('.closeModal').on('click', function() {
         eventCloseHiddenModal(modalApprove);
         $('#btnDeni').removeClass('d-none');
         $('#btnSave').removeClass('d-none');
-        $('#message_approver').prop('readonly', false);
-        $('#due_date').prop('disabled', false);
+        $('#message_mod').prop('readonly', false);
+        $('#date_return').prop('disabled', false);
         validator.destroy();
         validator = null;
     });
@@ -74,18 +61,18 @@ $(function () {
         eventCloseHiddenModal(modalApprove);
         $('#btnDeni').removeClass('d-none');
         $('#btnSave').removeClass('d-none');
-        $('#message_approver').prop('readonly', false);
-        $('#due_date').prop('disabled', false);
+        $('#message_mod').prop('readonly', false);
+        $('#date_return').prop('disabled', false);
         validator.destroy();
         validator = null;
     });
 
     $('#btnSave').click(function(){
-        validator = modalApprove.find('form').validate({
+         validator = modalApprove.find('form').validate({
             submitHandler: function() {
                 let data = modalApprove.find('form').serialize();
 
-                callAjaxPost(BASE_URL + '/borrow/approve/approveBorrowingAjax', data).done(function(res) {
+                callAjaxPost(BASE_URL + '/return/approve', data).done(function(res) {
                     if (!res.status) {
                         notifyMessage('Lỗi!', res.msg, 'error', 3000);
                         return;
@@ -98,19 +85,13 @@ $(function () {
             },
 
             rules: {
-                borrow_date: {
-                    required: true
-                },
-                due_date: {
+                date_return: {
                     required: true
                 },
             },
             messages: {
-                borrow_date: {
-                    required: "Nhập ngày mượn trước khi phê duyệt"
-                },
-                due_date: {
-                    required: "Nhập hạn trả trước khi phê duyệt",
+                date_return: {
+                    required: "Nhập ngày trả trước khi phê duyệt"
                 },
             },
             errorElement: 'span',
@@ -132,7 +113,7 @@ $(function () {
             submitHandler: function() {
                 let data = modalApprove.find('form').serialize();
 
-                callAjaxPost(BASE_URL + '/borrow/approve/approveBorrowingAjax', data).done(function(res) {
+                callAjaxPost(BASE_URL + '/return/approve', data).done(function(res) {
                     if (!res.status) {
                         notifyMessage('Lỗi!', res.msg, 'error', 3000);
                         return;
@@ -143,14 +124,13 @@ $(function () {
 
                 });
             },
-
             rules: {
-                message_approver: {
+                message_mod: {
                     required: true
                 },
             },
             messages: {
-                message_approver: {
+                message_mod: {
                     required: "Nhập lời nhắn/lý do đến người yêu cầu trước khi từ chối",
                 },
             },
