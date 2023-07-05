@@ -43,7 +43,7 @@
             <div class="container-fluid">
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-default">
-                    <div class="card-header" style="text-align: center;">
+                    <div class="card-header" style="text-align: center; background-color:SteelBlue;">
                         <h3 class="card-title">Thông tin phiếu mượn sách</h3>
                     </div>
                     <!-- /.card-header -->

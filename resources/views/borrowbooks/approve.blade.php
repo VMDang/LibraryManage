@@ -117,7 +117,7 @@
                                         <div class="row">
                                             <label for="birthday" class="col-sm-3">Ngày sinh</label>
                                             <div class="form-group col-lg-9">
-                                                <input type="text" name="birthday" id="birthday" class="form-control" disabled>
+                                                <input type="date" name="birthday" id="birthday" class="form-control" disabled>
                                             </div>
                                         </div>
 
@@ -192,10 +192,10 @@
                                 <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Đóng
                                 </button>
 
-                                <button type="submit" class="btn btn-danger" id="btnDeni"><i class="fas fa-handshake-slash"></i>
+                                <button type="submit" class="btn btn-danger" id="btnDeni" name="btn" value="2"><i class="fas fa-handshake-slash"></i>
                                     Từ chối
                                 </button>
-                                <button type="submit" class="btn btn-primary" id="btnSave"><i class="fas fa-save"></i>
+                                <button type="submit" class="btn btn-primary" id="btnSave" name="btn" value="1"><i class="fas fa-save"></i>
                                     Phê duyệt
                                 </button>
                             </div>

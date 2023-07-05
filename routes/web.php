@@ -58,7 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::controller(BorrowBookController::class)->group(function (){
         Route::prefix('/borrow')->group(function(){
             Route::get('/create', 'create')->name('borrow.create');
-            Route::post('/create', 'store')->name('borrow.store'); 
+            Route::get('/create/updateIDforShowLocationAjax/{id}', 'updateIDforShowLocationAjax')->where('id', '[0-9]+');
+            Route::post('/create', 'store')->name('borrow.store');
             Route::get('/approve', 'approve')->name('borrow.approve');
             Route::get('/history', 'history')->name('borrow.history');
         });
@@ -69,8 +70,44 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/create','create')->name('return.create');
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
+           Route::post('/approve','approveStore')->name('return.approveStore');
+           Route::get('/getRequestReturnBookAjax/{id}', 'getRequestReturnBookAjax')->where('id', '[0-9]+');
+        });
+
+   });
+
+    Route::controller(HistoryController::class)->group(function (){
+        Route::get('/history', 'history')->name('history.history');
+
     });
-});
+
+    Route::controller(ViewBookController::class)->group(function (){
+       Route::match(['post', 'get'],'/viewbook', 'create')->name('viewbook.create');
+       Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('viewbook.detail');
+    });
+
+   Route::controller(CategoryController::class)->group(function (){
+        Route::prefix('/category')->group(function () {
+            Route::get('/list',  'showList')->name('category.list');
+            Route::get('/add',  'addCategory')->name('category.add');
+            Route::post('/add', 'store')->name('category.store');
+            Route::post('/list/search', 'search')->name('category.search');
+            Route::post('/list/delete', 'delete')->name('category.delete');
+            Route::post('/update', 'update')->name('category.update');
+        });
+    });
+
+    Route::controller(ShelfController::class)->group(function (){
+        Route::prefix('/shelf')->group(function () {
+            Route::get('/list',  'showList')->name('shelf.list');
+            Route::post('/list/search',  'search')->name('shelf.search');
+            Route::post('/list/update',  'update')->name('shelf.update');
+            Route::post('/list/delete',  'delete');
+            Route::get('/add',  'addShelf')->name('shelf.add');
+            Route::post('/add', 'store')->name('shelf.store');
+        });
+    });
+
 });
 
 require __DIR__.'/auth.php';
