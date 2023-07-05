@@ -19,4 +19,9 @@ class Shelf extends Model
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
 
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'shelf_books');
+    }
+
 }

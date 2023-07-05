@@ -79,15 +79,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('viewbook.create')}}" class="nav-link">
+                                <a href="{{route('books.index')}}" class="nav-link">
                                     <i class="fas fa-list nav-icon"></i>
                                     <p>Danh sách</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{route('books.create')}}" class="nav-link">
                                     <i class="fas fa-book-reader nav-icon"></i>
-                                    <p>Ebook</p>
+                                    <p>Thêm sách</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -100,7 +100,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-bible"></i>
+                            <i class="nav-icon fas fa-book"></i>
                             <p>
                                 Mượn Sách
                                 <i class="fas fa-angle-left right"></i>
@@ -108,15 +108,21 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <a href="{{route('borrow.history')}}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{route('borrow.create')}}" class="nav-link">
-                                    <i class="fas fa-file-export nav-icon"></i>
+                                    <i class="fas fa-book-reader nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
                                     <a href="{{route('borrow.approve')}}" class="nav-link">
-                                        <i class="fas fa-clipboard-check nav-icon"></i>
+                                        <i class="fas fa-book-reader nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
                                 </li>
@@ -132,17 +138,22 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" >
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Lịch sử</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{route('return.create')}}" class="nav-link">
-                                    <i class="fas fa-file-export nav-icon"></i>
+                                    <i class="fas fa-book-reader nav-icon"></i>
                                     <p>Tạo yêu cầu</p>
                                 </a>
                             </li>
                             @cannot('isUser')
                                 <li class="nav-item">
                                     <a href="{{route('return.approve')}}" class="nav-link">
-                                        <i class="fas fa-clipboard-check nav-icon"></i>
+                                        <i class="fas fa-book-reader nav-icon"></i>
                                         <p>Phê duyệt yêu cầu</p>
                                     </a>
                                 </li>
