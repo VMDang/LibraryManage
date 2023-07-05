@@ -117,13 +117,13 @@
                             @csrf
                             <div class="row">
                                 <!--cot 1-->
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="name">Mã vị trí</label>
                                         <input class="form-control" id="input-name" type="text" name="name" >
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                </div> --}}
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="status">Trạng thái</label>
                                         <select class="form-control select2" id="statusSelect"  style="width: 100%;" name="status">

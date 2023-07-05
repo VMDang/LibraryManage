@@ -178,7 +178,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{route('category.add')}}" class="nav-link">
-                                        <i class="fas fa-list nav-icon"></i>
+                                        <i class="fas nav-icon fa-regular fa-plus"></i>
                                         <p>Thêm</p>
                                     </a>
                                 </li>
@@ -187,7 +187,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" id="locationSidebar">
-                            <ion-icon name="location" class = "nav-icon fas"></ion-icon>
+                            <ion-icon name="location" class="fas nav-icon"></ion-icon>
                             <p>
                                 Vị trí
                                 <i class="fas fa-angle-left right"></i>
@@ -205,7 +205,7 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{route('shelf.add')}}" class="nav-link">
-                                    <i class="fas fa-list nav-icon"></i>
+                                    <i class="fas nav-icon fa-regular fa-plus"></i>
                                     <p>Thêm</p>
                                 </a>
                             </li>

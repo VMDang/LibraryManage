@@ -22,6 +22,19 @@
         $('#categorySidebar').addClass('active');
     });
     </script>
+    <script>
+        function validateForm() {
+        var name = document.getElementById('input-name');
+        var description = document.getElementById('description');
+        
+        // Kiểm tra xem các trường đã được chọn hết hay chưa
+        if (name.value === '' || description.value === '') {
+            alert('Vui lòng chọn đầy đủ các trường!');
+            return false; // Ngăn form được submit
+        }
+        return true; // Cho phép form được submit
+        }
+    </script>
 @endsection
 
 @section('content')
@@ -53,7 +66,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form class="form-horizontal" method="post" action="{{route('category.store')}}">
+                        <form class="form-horizontal" method="post" action="{{route('category.store')}}" onsubmit="return validateForm()">
                             @csrf
                             <div class="row">
                                 <!--cot 1-->
@@ -66,7 +79,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Trạng thái</label>
-                                        <input class="form-control" id="input-status" type="number" name="status"  >
+                                        <select class="form-control select2" id="input-status"  style="width: 100%;" name="status">
+                                            <option value=1 >Kích hoạt</option>
+                                            <option value=0 >Không kích hoạt</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
