@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Gate;
 class HistoryController extends Controller
 {
     /**
-     * Show the form for creating a new request borrow book.
+     * Show the table history borrow and return books.
      *
      * @return \Illuminate\Http\Response
      */

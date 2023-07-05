@@ -55,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
    Route::controller(BorrowBookController::class)->group(function (){
         Route::prefix('/borrow')->group(function(){
             Route::get('/create', 'create')->name('borrow.create');
-            Route::get('/create/updateIDforShowLocationAjax/{id}', 'updateIDforShowLocationAjax');
+            Route::get('/create/updateIDforShowLocationAjax/{id}', 'updateIDforShowLocationAjax')->where('id', '[0-9]+');
             Route::post('/create', 'store')->name('borrow.store');
             Route::get('/approve', 'approve')->name('borrow.approve');
 
@@ -69,7 +69,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
            Route::get('/create','create')->name('return.create');
            Route::get('/approve','approve')->name('return.approve');
            Route::post('/create','store')->name('return.store');
-            Route::post('/approve','approveStore')->name('return.approveStore');
+           Route::post('/approve','approveStore')->name('return.approveStore');
+           Route::get('/getRequestReturnBookAjax/{id}', 'getRequestReturnBookAjax')->where('id', '[0-9]+');
         });
 
    });
