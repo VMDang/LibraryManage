@@ -127,9 +127,9 @@
                                                                              style="margin-left: 2px"></i><b>
                                                             Vị trí : </b></div>
                                                     <div class="col-sm-10">
-                                                        @foreach ($shelf_books as $shelf_book)
-                                                            @if ($shelf_book->book_id == $book->id)
-                                                                {{ $shelf_book->shelf->location }}<br>
+                                                        @foreach ($books_shelves as $bs)
+                                                            @if ($bs->book_id == $book->id)
+                                                                {{ $bs->shelf->location }}<br>
                                                             @endif
                                                         @endforeach
                                                     </div>

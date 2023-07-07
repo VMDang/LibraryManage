@@ -53,7 +53,7 @@ $(function () {
             modalBorrowBook.find('#book_id').val(book['id']);
             modalBorrowBook.find('#book-name').val(book['name']);
             modalBorrowBook.find('#author').val(book['author']);
-            modalBorrowBook.find('#book_location').val(book['author']);
+            // modalBorrowBook.find('#book_location').val('N/A');
         })
     })
 

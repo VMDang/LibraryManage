@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+    protected $table = 'categories';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +22,6 @@ class Category extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'book_categories');
+        return $this->belongsToMany(Book::class, 'books_categories');
     }
 }

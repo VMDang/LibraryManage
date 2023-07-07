@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\book;
 
-use App\Models\Shelf_Book;
-use BaseHelper;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Borrowing;
+use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\BorrowBook;
+use App\Models\Books_Shelves;
+use BaseHelper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -30,10 +29,10 @@ class BorrowBookController extends Controller
     public function updateIDforShowLocationAjax($id){
         try {
             $book_id = $id;
-            $shelfs = Shelf_Book::with('book', 'shelf')->get();
+            $shelves = Books_Shelves::with('book', 'shelf')->get();
             $array_shelf = [];
 
-            foreach($shelfs as $shelf){
+            foreach($shelves as $shelf){
                 if($book_id == $shelf->book->id){
                     array_push($array_shelf, $shelf->shelf->location);
                 }
@@ -52,8 +51,8 @@ class BorrowBookController extends Controller
     {
         if(Gate::any(['isAdmin', 'isMod'])){
             $user = Auth::user();
-            $borrowings = Borrowing::with('user', 'book')->get();
-            return view("borrowbooks.approve", compact('user', 'borrowings'));
+            $borrowBooks = BorrowBook::with('user', 'book')->get();
+            return view("borrowbooks.approve", compact('user', 'borrowBooks'));
         }else{
             abort(403, 'Bạn không có quyền truy cập trang này.');
         }
@@ -65,19 +64,18 @@ class BorrowBookController extends Controller
      */
     public function store(Request $request)
     {
+
         $message = [
-            'book_id.required' => 'Hãy chọn một cuốn sách'
+            'book_id.required' => 'Hãy chọn một cuốn sách',
+            'book_location.required' => 'Hãy chọn một vị trí'
         ];
 
         $validated = $request->validate([
             'book_id' => 'required',
+            'book_location' => 'required'
         ], $message);
 
-        if (!$request->has('book-name')) {
-            return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
-        }
-
-        $borrowing = new Borrowing;
+        $borrowing = new BorrowBook;
         $borrowing->user_id = Auth::id();
         $borrowing->book_id = $request->book_id;
         $borrowing->location = $request->book_location;
@@ -93,13 +91,13 @@ class BorrowBookController extends Controller
 
     public function getBorrowingOfInfoAjax($id){
         try{
-            $borrowInfo = DB::table('borrowings')
-                    ->join('users', 'borrowings.user_id', '=', 'users.id')
-                    ->join('books', 'borrowings.book_id', '=', 'books.id')
-                    ->where('borrowings.id', $id)
+            $borrowInfo = DB::table('borrow_books')
+                    ->join('users', 'borrow_books.user_id', '=', 'users.id')
+                    ->join('books', 'borrow_books.book_id', '=', 'books.id')
+                    ->where('borrow_books.id', $id)
                     ->get(['users.name', 'users.gender', 'users.birthday', 'users.email', 'books.name as bookname', 'books.author',
-                        'borrowings.borrow_date', 'borrowings.message_user', 'borrowings.id', 'borrowings.status', 'borrowings.borrow_date',
-                        'borrowings.due_date', 'borrowings.message_approver', 'borrowings.location' ]);
+                        'borrow_books.borrow_date', 'borrow_books.message_user', 'borrow_books.id', 'borrow_books.status', 'borrow_books.borrow_date',
+                        'borrow_books.due_date', 'borrow_books.message_approver', 'borrow_books.location' ]);
 
             BaseHelper::ajaxResponse(config('app.messageGetSuccess'), true, $borrowInfo[0]);
         }catch(\Exception $e){
@@ -112,7 +110,7 @@ class BorrowBookController extends Controller
         $this->checkRequestAjax($request);
 
         try{
-            $borrowing = Borrowing::find($request->id);
+            $borrowing = BorrowBook::find($request->id);
             if ($request->input('btn') == 2){
                 $borrowing->status = 2;
             }else if ($request->input('btn') == 1){

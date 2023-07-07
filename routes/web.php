@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\BorrowBookController;
-use App\Http\Controllers\ReturnBookController;
+use App\Http\Controllers\book\BookController;
+use App\Http\Controllers\book\BorrowBookController;
+use App\Http\Controllers\book\ReturnBookController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\ShelfController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(BookController::class)->group(function (){
         Route::prefix('/books')->group(function () {
-            Route::get('/list', 'index')->name('books.list');
+            Route::get('/list', 'list')->name('books.list');
             Route::get('/detail/{id?}',  'detail')->where('id', '[0-9]+')->name('books.detail');
             Route::get('/create', 'create')->name('books.create');
             Route::post('/create', 'store')->name('books.store');

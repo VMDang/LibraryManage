@@ -85,15 +85,13 @@
                                                 <option data-id="{{$book->id}}" data-author="{{$book->author}}">{{$book->name}}</option>
                                             @endforeach
                                         </select>
+
                                         @if ($errors->any())
-                                            {{--                                        <div class="form-control">--}}
                                             <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
+                                                <li class="alert-danger">{{ $errors->first('book_id') }}</li>
                                             </ul>
-                                            {{--                                        </div>--}}
                                         @endif
+
                                     </div>
                                     <!-- /.form-group -->
                                     <div class="form-group">
@@ -106,6 +104,11 @@
                                         <select class="form-control select2" id="select-book-location"  style="width: 100%;" name="book_location">
 
                                         </select>
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('book_location') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <!-- /.form-group -->
                                 </div>

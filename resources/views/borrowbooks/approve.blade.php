@@ -39,7 +39,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($borrowings as $index => $borrowing)
+                                        @foreach($borrowBooks as $index => $borrowing)
                                         <tr class="view-form" data-toggle="modal" data-target="#borrowing-click" data-index="{{$index}}">
                                             <td>{{date('H:m:s d/m/Y', strtotime($borrowing->created_at))}}</td>
                                             <td>{{$borrowing->user->name ?? ''}}</td>

@@ -9,7 +9,7 @@ class Book extends Model
 {
     use HasFactory;
 
-
+    protected $table = 'books';
     /**
      * The attributes that are mass assignable.
      *
@@ -20,12 +20,12 @@ class Book extends Model
         'author', 'publisher', 'date_publication', 'cost', 'number', 'status',
         'created_by', 'updated_by', 'created_at', 'updated_at',
     ];
-   
-    public function shelfs()
+
+    public function shelves()
     {
-        return $this->belongsToMany(Shelf::class, 'shelfs_books');
+        return $this->belongsToMany(Shelf::class, 'books_shelves');
     }
-    
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'books_categories');

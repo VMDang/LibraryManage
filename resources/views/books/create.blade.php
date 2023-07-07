@@ -55,12 +55,20 @@
                                     <div class="form-group">
                                         <label for="fullName">Tên sách</label>
                                         <input type="text" class="form-control" id="name" value="" name="name">
-                                        <p class="alert-danger">{{ $errors->first('name') }}</p>
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('name') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Tác giả</label>
                                         <input class="form-control" type="text" id="author" value="" name="author" >
-                                        <p class="alert-danger">{{ $errors->first('author') }}</p>
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('author') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                       <label for="publisher">Nhà xuất bản</label>
@@ -76,25 +84,35 @@
                                     <div class="form-group">
                                         <label for="number">Số lượng</label>
                                         <input class="form-control" type="number" value="number" name="number" id="number">
-                                        <p class="alert-danger">{{ $errors->first('number') }}</p>
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('number') }}</li>
+                                            </ul>
+                                        @endif
 
                                     </div>
                                     <div class="form-group">
                                         <label for="cost">Giá tiền</label>
                                         <input class="form-control" type="number" value="cost" name="cost" id="cost">
-                                        <p class="alert-danger">{{ $errors->first('cost') }}</p>
-
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('cost') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label for="shelf">Vị trí</label>
-                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelfs[]" multiple="multiple" data-placeholder="--- Chọn vị trí ---">
+                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelves[]" multiple="multiple" data-placeholder="--- Chọn vị trí ---">
                                             <option value="">-- Chọn vị trí --</option>
-                                            @foreach ($shelfs as $shelf)
+                                            @foreach ($shelves as $shelf)
                                                 <option value="{{ $shelf->id }}">{{ $shelf->location }}</option>
                                             @endforeach
                                         </select>
-                                        <p class="alert-danger">{{ $errors->first('shelfs') }}</p>
-
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('shelves') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label for="category">Thể loại</label>
@@ -103,8 +121,11 @@
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
-                                        <p class="alert-danger">{{ $errors->first('categories') }}</p>
-
+                                        @if ($errors->any())
+                                            <ul class="alert-danger" style="border-radius: 4px; margin-bottom: 0px">
+                                                <li class="alert-danger">{{ $errors->first('categories') }}</li>
+                                            </ul>
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- /.col -->

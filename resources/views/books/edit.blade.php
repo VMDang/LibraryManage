@@ -88,13 +88,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="shelf">Vị trí</label>
-                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelfs[]" multiple="multiple" data-placeholder="--- Chọn vị trí ---">
+                                        <select class="form-control select2" style="width: 100%;" id="shelf" name="shelves[]" multiple="multiple" data-placeholder="--- Chọn vị trí ---">
                                             <option value="">-- Chọn vị trí --</option>
-                                            @foreach ($shelfs as $shelf)
+                                            @foreach ($shelves as $shelf)
                                                 <option value="{{ $shelf->id }}">{{ $shelf->location }}</option>
                                             @endforeach
                                         </select>
-                                        <p class="alert-danger">{{ $errors->first('shelfs') }}</p>
+                                        <p class="alert-danger">{{ $errors->first('shelves') }}</p>
 
                                     </div>
                                     <div class="form-group">

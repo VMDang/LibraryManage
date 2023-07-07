@@ -179,7 +179,7 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        @foreach ($books_shelf as $bs)
+                                                        @foreach ($books_shelves as $bs)
                                                             @if ($bs->book_id == $book->id)
                                                                 {{ $bs->shelf->location }}<br>
                                                             @endif
