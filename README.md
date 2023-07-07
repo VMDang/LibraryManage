@@ -1,61 +1,140 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<img src="./public/img/LibraryLogo.png" height="100"> 
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# LIBRARY MANAGE
 
-## About Laravel
+[![GitHub stars](https://img.shields.io/github/stars/VMDang/LibraryManage?style=social)](https://github.com/VMDang/LibraryManage/stargazers) [![GitHub forks](https://img.shields.io/github/forks/VMDang/LibraryManage?style=social)](https://github.com/VMDang/LibraryManage/stargazers)  [![GitHub license](https://img.shields.io/github/license/gothinkster/laravel-realworld-example-app.svg)](https://raw.githubusercontent.com/gothinkster/laravel-realworld-example-app/master/LICENSE)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> ### Library management project with feature such as Security, Authencation, Authorization, CRUD user, book, category,... supporting procedures for borrowing and returning books.
+>### See more features and details about the source code in [Library Manage](https://github.com/VMDang/LibraryManage).
+### In this project, i used HTML, CSS, jQuery, AdminLTE 3.2, PHP, Laravel 8, MySQL, Docker
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This repo is functionality complete — PRs and issues welcome!
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+----------
 
-## Learning Laravel
+# Getting started
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Please check the official laravel installation guide for server requirements before you start [Laravel 8 Documentation](https://laravel.com/docs/8.x). Necessary settings before starting as PHP >= 7.3, NodeJS, Composer
 
-## Laravel Sponsors
+Alternative installation is possible without local dependencies relying on [Docker](#docker). 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Clone the repository
 
-### Premium Partners
+        git clone https://github.com/VMDang/LibraryManage.git
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+2. Switch to the repo folder
 
-## Contributing
+        cd LibraryManage
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Install all the dependencies using composer and npm
 
-## Code of Conduct
+        composer install
+        npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. Copy the example env file and make the required configuration changes in the .env file
 
-## Security Vulnerabilities
+        cp .env.example .env
+> Please contact me via [Mail](mailto:dang.vm205063@sis.hust.edu.vn) to know more about the content in the .env file
+5. Generate a new application key
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+        php artisan key:generate
+
+6. Run the database migrations (**Set the database connection in .env before migrating**)
+
+        php artisan migrate
+
+7. Run database seeders
+   
+        php artisan db:seed     
+8. Start the local development server
+
+        php artisan serve
+
+You can now access the server at http://localhost:8000
+
+## Database seeding
+
+**Populate the database with seed data with relationships which includes users, roles, permission, books, category,... This can help you to quickly start testing the api or couple a frontend and start using it with ready content.**
+
+Run the database seeder and you're done
+
+    php artisan db:seed
+
+***Note*** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
+
+    php artisan migrate:refresh
+    
+## Docker
+> Docker is not complete, I will be back to update when the project is done
+> 
+To install with [Docker](https://www.docker.com), run following commands:
+
+```
+git clone https://github.com/VMDang/LibraryManage.git
+cd LibraryManage
+cp .env.example.docker .env
+docker run -v $(pwd):/app composer install
+cd ./docker
+docker-compose up -d
+docker-compose exec php php artisan key:generate
+docker-compose exec php php artisan migrate
+docker-compose exec php php artisan db:seed
+docker-compose exec php php artisan serve --host=0.0.0.0
+```
+
+
+## Main Folders
+***Note***: Only the main folders containing important code are mentioned, there are still a few folders that have not been mentioned
+- `app/Models` - Contains all the Eloquent models
+- `app/Http/Controllers` - Contains all the controllers
+- `app/Http/Middleware` - Contains the auth middleware
+- `app/Http/Requests` - Contains all the api form requests
+- `app/Providers` - Contains all the providers
+- `app/BaseHelper.php` - Contains all the function self-defining to help code Controller
+- `config` - Contains all the application configuration files
+- `database/factories` - Contains the model factory for all the models
+- `database/migrations` - Contains all the database migrations
+- `database/seeds` - Contains the database seeder
+- `public/themes` - Contains source code AdminLTE 3.2
+- `public/img` - Contains all the images project
+- `public/js` - Contains all the files javascript
+- `resources/views` - Contains all the filw view blade
+- `routes/auth.php` - Contains route with auth feature
+- `routes/web.php` - Contains all route feature
+- `storage` - Storage all file in here
+- `tests` - Contains all the application tests
+
+## Environment variables
+
+- `.env` - Environment variables can be set in this file
+
+***Note*** : You can quickly set the database information and other variables in this file and have the application fully working.
+
+----------
 
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+-------
+# Developed team information
+
+## About project
+Initially the project was developed for personal purposes. But then I had a lot more teammates to do the same. It became the project of one of my subjects at HUST
+> Thanks to the whole team for helping me complete this project. It's an honor to be your leader.
+### This is my team
+|       Name        | University    | Role   | Contact  |
+|-------------------|    :----:     |--------|----------|
+| Vu Minh Dang      | HUST          | Leader |          |
+| Nguyen Duy Hung   | HUST          | Member |          |
+| Ngo Viet Bach     | HUST          | Member |          |
+| Ta Van Hoan       | HUST          | Member |          |
+| Mac Van Khanh     | HUST          | Member |          |
+| Nguyen The Thuong | HUST          | Member |          |
+---------
+## About me
+### **Vu Minh Dang**
+#### Hanoi University of Science and Technology - HEDSPI
+Mail : [dang.vm205063@sis.hust.edu.vn](mailto:dang.vm205063@sis.hust.edu.vn)

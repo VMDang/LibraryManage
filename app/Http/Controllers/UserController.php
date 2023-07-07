@@ -64,10 +64,13 @@ class UserController extends Controller
             $user->gender = $request->gender;
             $user->phone = $request->phone;
             $user->address = $request->address;
+
             $user->save();
         }
+
             BaseHelper::ajaxResponse(config('app.messageSaveSuccess'),true, $user);
         }catch (\Exception $exception){
+            print_r($exception);
             BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
         }
     }
@@ -226,5 +229,22 @@ class UserController extends Controller
             ->get(['id', 'name', 'role_id', 'gender', 'birthday', 'email', 'phone', 'address', 'status']);
 
         return view('users.list', compact('users', 'usersTrashed', 'admins', 'mods', 'filters'));
+    }
+
+    public function getInfoAjax($id){
+        try {
+            if ($id == null || $id == 0){
+                $user = Auth::user();
+            }else {
+                $user = User::find($id);
+                if ($user == null){
+                    return BaseHelper::ajaxResponse("Người dùng không tồn tại", false);
+                }
+            }
+            return BaseHelper::ajaxResponse(config('app.messageSaveSuccess'),true, $user);
+        }catch (\Exception $e){
+            return BaseHelper::ajaxResponse(config('app.messageSaveError'), false);
+        }
+
     }
 }

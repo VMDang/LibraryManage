@@ -35,11 +35,12 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset("themes/dist/css/adminlte.min.css")}}">
     <!-- CSRF Token -->
+    
     <meta name="csrf_token" content="{{ csrf_token() }}" />
-
+    
     @yield('style')
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">">
 <div class="wrapper">
 
     <!-- Preloader -->
@@ -71,6 +72,7 @@
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{{asset("themes/plugins/jquery/jquery.min.js")}}"></script>
+<script src="{{asset("themes/plugins/jquery-ui/jquery-ui.min.js")}}"></script>
 <!-- Bootstrap -->
 <script src="{{asset("themes/plugins/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
 <!-- ChartJS -->
@@ -114,6 +116,10 @@
     const datetimepickerFormat = '{{config('app.datetimepickerFormat')}}';
     let currentMaxDate = '{{date("d/m/Y")}}';
 </script>
+<script  type = "module"  src = "https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" > </script> 
+<script  nomodule  src = "https://unpkg .com/ionicons@7.1.0/dist/ionicons/ionicons.js" > </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 @yield('script')
 </body>
 </html>
