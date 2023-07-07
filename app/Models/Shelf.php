@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Shelf extends Model
 {
     use HasFactory;
+
+    protected $table = 'shelves';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $table = 'shelfs';
     protected $fillable = [
         'id', 'location', 'status',
         'created_by', 'updated_by', 'created_at', 'updated_at',
@@ -21,7 +23,7 @@ class Shelf extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'shelf_books');
+        return $this->belongsToMany(Book::class, 'books_shelves');
     }
 
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\book;
 
+use App\Http\Controllers\Controller;
 use App\Models\ReturnBook;
 use BaseHelper;
 use Exception;
@@ -21,23 +22,23 @@ class ReturnBookController extends Controller
     {
         $user = Auth::user();
 
-        $returnInfo = DB::table('borrowings')
-            ->join('books', 'borrowings.book_id', '=', 'books.id')
-            ->join('users', 'borrowings.user_id', '=', 'users.id')
+        $returnInfo = DB::table('borrow_books')
+            ->join('books', 'borrow_books.book_id', '=', 'books.id')
+            ->join('users', 'borrow_books.user_id', '=', 'users.id')
             ->where('users.id', '=', Auth::id())
-            ->where('borrowings.status', '=', 1)
+            ->where('borrow_books.status', '=', 1)
             ->select(
                 'books.name as book_name',
                 'books.author',
                 'books.id as book_id',
-                'borrowings.id as borrow_id',
+                'borrow_books.id as borrow_id',
             )
             ->get();
 
-        $returned = DB::table('borrowings')
-            ->join('return_books', 'return_books.borrow_id', '=', 'borrowings.id')
+        $returned = DB::table('borrow_books')
+            ->join('return_books', 'return_books.borrow_id', '=', 'borrow_books.id')
             ->where('return_books.approve_status', '=', 1)
-            ->get('borrowings.id as borrow_id');
+            ->get('borrow_books.id as borrow_id');
 
         foreach ($returnInfo as $key => $info){
             $borrowId = $info->borrow_id;
@@ -54,32 +55,35 @@ class ReturnBookController extends Controller
 
     public function approve()
     {
-        $returnInfo = DB::table('borrowings')
-            ->join('books', 'borrowings.book_id', '=', 'books.id')
-            ->join('users', 'borrowings.user_id', '=', 'users.id')
-            ->join('return_books', 'borrowings.id', '=', 'return_books.borrow_id')
-            ->where('users.id', '=', Auth::id())
+        $returnInfo = DB::table('borrow_books')
+            ->join('books', 'borrow_books.book_id', '=', 'books.id')
+            ->join('users', 'borrow_books.user_id', '=', 'users.id')
+            ->join('return_books', 'borrow_books.id', '=', 'return_books.borrow_id')
             ->select(
                 'users.name as user_name',
                 'users.email as user_email',
                 'return_books.created_at',
-                'return_books.approve_status as approve_status',
+                'return_books.approve_status',
                 'return_books.id',
                 'return_books.date_return',
                 'books.name as book_name',
-                'borrowings.borrow_date as borrow_date',
-                'borrowings.due_date as due_date',
-            )
-            ->get();
+                'borrow_books.borrow_date as borrow_date',
+                'borrow_books.due_date as due_date',
+            )->get();
 
         return view("returnbooks.approve", compact('returnInfo'));
     }
 
     public function store(Request $request)
     {
-        if (!$request->has('book-name')) {
-            return redirect()->back()->withInput()->withErrors(['book-name' => 'Hãy chọn một cuốn sách']);
-        }
+        $message = [
+            'book_id.required' => 'Hãy chọn một cuốn sách'
+        ];
+
+        $validated = $request->validate([
+            'book_id' => 'required',
+        ], $message);
+
         $Returnbook = new ReturnBook;
         $Returnbook->borrow_id = $request->input('borrow_id');
         $Returnbook->message_user = $request->input('message_user');
@@ -121,7 +125,7 @@ class ReturnBookController extends Controller
     {
         try {
             $requestReturnBook = DB::table('return_books as r')
-                ->join('borrowings as br', 'r.borrow_id', '=', 'br.id')
+                ->join('borrow_books as br', 'r.borrow_id', '=', 'br.id')
                 ->join('users as u', 'u.id', '=', 'br.user_id')
                 ->join('books as b', 'b.id', '=', 'br.book_id')
                 ->where('r.id', '=', $id)

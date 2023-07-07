@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShelfsBooksTable extends Migration
+class CreateBooksShelvesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateShelfsBooksTable extends Migration
      */
     public function up()
     {
-        Schema::create('shelfs_books', function (Blueprint $table) {
+        Schema::create('books_shelves', function (Blueprint $table) {
             $table->id();
             $table->integer('shelf_id');
             $table->integer('book_id');
@@ -30,6 +30,6 @@ class CreateShelfsBooksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shelfs_books');
+        Schema::dropIfExists('books_shelves');
     }
 }

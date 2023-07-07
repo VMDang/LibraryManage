@@ -18,8 +18,8 @@ class ShelfController extends Controller
      */
     static function getAllBookByShelfID(Shelf $shelf)
     {
-        $books = Book::join('shelfs_books', 'books.id', '=', 'shelfs_books.book_id')
-            ->where('shelfs_books.shelf_id', $shelf->id)
+        $books = Book::join('books_shelves', 'books.id', '=', 'books_shelves.book_id')
+            ->where('books_shelves.shelf_id', $shelf->id)
             ->get();
 
         return $books;
@@ -27,7 +27,7 @@ class ShelfController extends Controller
 
     public function showList()
     {
-        $allShelfs = Shelf::all();
+        $allShelves = Shelf::all();
         $booksByShelf = [];
         $statusOption = ['Đầy', 'Còn trống'];
         $floors = ['Tầng 01', 'Tầng 02', 'Tầng 03', 'Tầng 04', 'Tầng 05', 'Tầng 06'];
@@ -46,15 +46,15 @@ class ShelfController extends Controller
             $rooms[$floor] = $floorRooms;
         }
         // Lặp qua từng category và lấy danh sách các book
-        foreach ($allShelfs as $shelf) {
+        foreach ($allShelves as $shelf) {
             $books = self::getAllBookByShelfID($shelf);
             $booksByShelf[$shelf->id] = $books;
         }
 
-        return view("shelfs.list", compact('allShelfs', 'booksByShelf','statusOption','rooms'));
+        return view("shelves.list", compact('allShelves', 'booksByShelf','statusOption','rooms'));
     }
     public function addShelf()
-    {   
+    {
         $statusOption = ['đầy', 'còn trống'];
         $floors = ['Tầng 01', 'Tầng 02', 'Tầng 03', 'Tầng 04', 'Tầng 05', 'Tầng 06'];
 
@@ -72,10 +72,10 @@ class ShelfController extends Controller
             }
             $rooms[$floor] = $floorRooms;
         }
-        return view("shelfs.add", compact('rooms','statusOption'));
+        return view("shelves.add", compact('rooms','statusOption'));
     }
     public function store(Request $request)
-    {   
+    {
         $shelf = new Shelf;
         $shelf->status = $request->status === 'đầy' ? 0 : 1 ;
         $shelf->location = $request->floor.' - '.$request->room.' - '.$request->shelf;
@@ -90,7 +90,7 @@ class ShelfController extends Controller
         }
     }
     public function search(){
-        
+
     }
     public function update(Request $request){
         $shelfId = $request->input('shelfID');
@@ -98,7 +98,7 @@ class ShelfController extends Controller
         $location = $request->floor.' - '.$request->room.' - '.$request->shelf;
         $currentDateTime = date_create();
         $currentDateTimeString = date_format($currentDateTime, 'Y-m-d H:i:s');
-        $updateTimestamp = strtotime($currentDateTimeString); 
+        $updateTimestamp = strtotime($currentDateTimeString);
         $shelf = Shelf::find($shelfId);
         if($shelf){
             $shelf->id = $shelfId;
@@ -118,9 +118,9 @@ class ShelfController extends Controller
             $errorMessage = "Không tìm thấy đối tượng shelf.";
 
             // Lưu thông báo thất bại vào session
-            Session::flash('error', $errorMessage); 
+            Session::flash('error', $errorMessage);
             return redirect()->route('shelf.list');
-        
+
         }
 
     }

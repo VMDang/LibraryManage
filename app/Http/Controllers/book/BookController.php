@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\book;
 
-use BaseHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Book;
-use App\Models\Books_Category;
+use App\Models\Books_Categories;
 use App\Models\Category;
 use App\Models\Shelf;
-use App\Models\Shelf_Book;
+use App\Models\Books_Shelves;
+use BaseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,14 +21,14 @@ class BookController extends Controller
      * @return Response
      */
 
-    public function index()
+    public function list()
     {
         $books = Book::all();
         $categories = Category::all();
-        $book_categories = Books_Category::with('book','category')->get();
-        $books_shelf = Shelf_Book::with('book', 'shelf')->get();
+        $book_categories = Books_Categories::with('book','category')->get();
+        $books_shelves = Books_Shelves::with('book', 'shelf')->get();
 
-        return view('books.list', compact('book_categories','books', 'categories', 'books_shelf'));
+        return view('books.list', compact('book_categories','books', 'categories', 'books_shelves'));
     }
 
     /**
@@ -38,9 +39,9 @@ class BookController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        $shelfs = Shelf::all();
-        return view("books.create", compact('categories', 'shelfs'));
+        $categories = Category::where('status', '=', 1)->get();
+        $shelves = Shelf::where('status', '=', 1)->get();
+        return view("books.create", compact('categories', 'shelves'));
 
     }
 
@@ -58,9 +59,9 @@ class BookController extends Controller
             'author.required' => 'Tên tác giả bắt buộc nhập',
             'number.required' => 'Số lượng sách bắt buộc nhập ',
             'number.integer' => 'Số lượng sách phải là số nguyên lớn hơn hoặc bằng 0',
-            'cost.required' => 'Số lượng sách bắt buộc nhập ',
-            'cost.integer' => 'Số lượng sách bắt buộc nhập ',
-            'shelfs.required' => 'Bắt buộc chọn vị trí',
+            'cost.required' => 'Giá sách bắt buộc nhập',
+            'cost.integer' => 'Giá sách bắt buộc là số nguyên lớn hơn hoặc bằng 0',
+            'shelves.required' => 'Bắt buộc chọn vị trí',
             'categories.required' => 'Bắt buộc chọn thể loại',
         ];
         $validated = $request->validate([
@@ -68,7 +69,7 @@ class BookController extends Controller
             'author' => 'required',
             'number' => 'required|integer',
             'cost' => 'required|integer',
-            'shelfs' => 'required',
+            'shelves' => 'required',
             'categories' => 'required',
         ], $message);
 
@@ -85,17 +86,17 @@ class BookController extends Controller
 
         $bookId = $book->id;
 
-        foreach ($request->input('shelfs') as $s){
-            $shelfs_book = new Shelf_Book;
-            $shelfs_book->book_id = $bookId;
-            $shelfs_book->shelf_id = $s;
-            $shelfs_book->created_by = Auth::id();
-            $shelfs_book->updated_by = Auth::id();
-            $shelfs_book->save();
+        foreach ($request->input('shelves') as $s){
+            $books_shelves = new Books_Shelves;
+            $books_shelves->book_id = $bookId;
+            $books_shelves->shelf_id = $s;
+            $books_shelves->created_by = Auth::id();
+            $books_shelves->updated_by = Auth::id();
+            $books_shelves->save();
         }
 
         foreach ($request->input('categories') as $c){
-            $category_book = new Books_Category;
+            $category_book = new Books_Categories;
             $category_book->book_id = $bookId;
             $category_book->category_id = $c;
             $category_book->created_by = Auth::id();
@@ -128,15 +129,15 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::find($id);
-        $categories = Category::all();
-        $shelfs = Shelf::all();
-        $book_categories = Books_Category::with('book', 'category')->get();
-        $shelf_books = Shelf_Book::with('book', 'shelf')->get();
+        $categories = Category::where('status', '=', 1)->get();
+        $shelves = Shelf::where('status', '=', 1)->get();
+        $book_categories = Books_Categories::with('book', 'category')->get();
+        $shelf_books = Books_Shelves::with('book', 'shelf')->get();
         if (empty($id)) {
             return abort(404, 'Cuốn sách không tồn tại');
         }
 
-        return view('books.edit', compact('book', 'book_categories', 'shelf_books', 'categories', 'shelfs'));
+        return view('books.edit', compact('book', 'book_categories', 'shelf_books', 'categories', 'shelves'));
     }
 
     /**
@@ -154,8 +155,8 @@ class BookController extends Controller
             'number.required' => 'Số lượng sách bắt buộc nhập ',
             'number.integer' => 'Số lượng sách phải là số nguyên lớn hơn hoặc bằng 0',
             'cost.required' => 'Số lượng sách bắt buộc nhập ',
-            'cost.integer' => 'Số lượng sách bắt buộc nhập ',
-            'shelfs.required' => 'Bắt buộc chọn vị trí',
+            'cost.integer' => 'Số tiền sách bắt buộc nhập ',
+            'shelves.required' => 'Bắt buộc chọn vị trí',
             'categories.required' => 'Bắt buộc chọn thể loại',
         ];
         $validated = $request->validate([
@@ -163,7 +164,7 @@ class BookController extends Controller
             'author' => 'required',
             'number' => 'required|integer',
             'cost' => 'required|integer',
-            'shelfs' => 'required',
+            'shelves' => 'required',
             'categories' => 'required',
         ], $message);
 
@@ -180,8 +181,8 @@ class BookController extends Controller
 
         $book->save();
 
-        $shelfs = $request->input('shelfs', []);
-        $book->shelfs()->sync($shelfs);
+        $shelves = $request->input('shelves', []);
+        $book->shelves()->sync($shelves);
 
         $categories = $request->input('categories', []);
         $book->categories()->sync($categories);
@@ -203,7 +204,7 @@ class BookController extends Controller
             return redirect()->route('books.index')->with('error', 'Book not found');
         }
 
-        $book->shelfs()->detach();
+        $book->shelfves()->detach();
 
         $book->categories()->detach();
 
@@ -214,13 +215,13 @@ class BookController extends Controller
 
     public function detail($id = null) {
         $book = Book::find($id);
-        $book_categories = Books_Category::with('book','category')->get();
-        $shelf_books = Shelf_Book::with('book','shelf')->get();
+        $book_categories = Books_Categories::with('book','category')->get();
+        $books_shelves = Books_Shelves::with('book','shelf')->get();
         if (empty($id)){
             return ;
         }
 
-        return view('books.detail', compact('book','book_categories','shelf_books'));
+        return view('books.detail', compact('book','book_categories','books_shelves'));
     }
 
     public function getInfoAjax($id){

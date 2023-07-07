@@ -27,19 +27,19 @@
       .deleteBtn:hover ion-icon {
           color: white;
       }
-      
+
     </style>
 @endsection
 
 @section('script')
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-  <script src="{{asset('js/category/category.js')}}" defer></script>  
+  <script src="{{asset('js/category/category.js')}}" defer></script>
   <script>
     function validateForm() {
     var name = document.getElementById('input-name1');
     var description = document.getElementById('input-description');
-    
+
     // Kiểm tra xem các trường đã được chọn hết hay chưa
     if (name.value === '' || description.value === '') {
         alert('Vui lòng chọn đầy đủ các trường!');
@@ -61,9 +61,9 @@
   <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6"> 
+          <div class="col-sm-6">
             <div class="card-header">
-                <h2 class="card-title">Danh sách thể loại</h3>
+                <h2 class="card-title">Danh sách thể loại</h2>
             </div>
           </div>
           <div class="col-sm-6">
@@ -74,14 +74,14 @@
           </div>
           <div class="running-line" style="width: 100%; height: 1px; background-color: rgb(204, 204, 204);"></div>
         </div>
-    </div>  
-  </section>  
-  <!--End header-->   
+    </div>
+  </section>
+  <!--End header-->
    <!--search+create-->
    <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6"> 
+          <div class="col-sm-6">
             @cannot('isUser')
             <a href="{{route('category.add')}}" class=" btn btn-block btn-primary" style="max-width:130px; max-height:40px; margin-left : 30px; display: flex;" id="addBtn">
               <ion-icon name="add" style="color: white; margin-top:5px;display: inline-block;" class="fa "></ion-icon>
@@ -102,13 +102,13 @@
                   </button>
                 </div>
               </div>
-            
+
             </form>
           </div>
         </div>
-    </div>  
-  </section>  
-  <!--End search+create-->  
+    </div>
+  </section>
+  <!--End search+create-->
   <!-- main content-->
   <section class="content">
     <div class="container-fluid">
@@ -139,7 +139,11 @@
                           <td>{{ $category->name }}</td>
                           <td>{{ $category->description }}</td>
                           @cannot('isUser')
-                          <td>{{ $category->status === 1 ? "Kích hoạt" : "Không kích hoạt" }}</td>
+                              @if($category->status == 1 )
+                                  <td style="color: blue;"> Kích hoạt</td>
+                              @elseif($category->status == 0 )
+                                  <td style="color: red">Không kích hoạt</td>
+                              @endif
                           @endcannot
                           <td>
                               <a class="open-books-modal" href="#" data-category-name="{{ $category->name }}" data-book-list="{{ $booksByCategory[$category->id] }}">Xem sách</a>
@@ -152,7 +156,7 @@
                               <i class="fas fa-edit"></i>
                               </button>
                               <button type="button" class="btn btn-outline-danger deleteBtn" style="color: blue;" data-category = "{{ $category->id }}">
-                                  <ion-icon name="trash" class="fas"></ion-icon> 
+                                  <ion-icon name="trash" class="fas"></ion-icon>
                               </button>
                             </div>
                           </td>
@@ -163,7 +167,7 @@
               </table>
             </div>
             <!-- /.card-body -->
-          
+
             <!-- Books Modal -->
             <div id="booksModal" class="white-popup mfp-hide">
               <h2>Danh sách các sách của thể loại: <span id="modalCategoryName"></span></h2>
@@ -186,8 +190,8 @@
                   </tbody>
               </table>
             </div>
-            <!-- End Books Modal --> 
-            
+            <!-- End Books Modal -->
+
             <!-- Update modal -->
             <div id="updateModal" class="white-popup mfp-hide">
               <h2>Sửa thể loại </h2>
@@ -222,7 +226,7 @@
                     </div>
                 </form>
               </div>
-              
+
             </div>
             <!-- ./Update modal-->
           </div>

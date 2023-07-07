@@ -1,7 +1,7 @@
 @extends("layouts.footer")
 
 @section('title-page')
-    <title> Shelfs </title>
+    <title> List Shelves || Library Manage</title>
 @endsection
 
 @section('style')
@@ -29,7 +29,7 @@
 
 @section('script')
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
   <script>
     function handleFloorChange(selectElement) {
          // Lấy giá trị floor được chọn
@@ -55,7 +55,7 @@
     function handleRoomChange(selectElement) {
         // Lấy giá trị room được chọn
         var selectedRoom = selectElement.value;
-        
+
         // Lấy danh sách shelf tương ứng với room từ biến $rooms
         var selectedFloor = document.getElementById('floorSelectUpdate').value;
         var shelvesInSelectedRoom = {!! json_encode($rooms) !!}[selectedFloor][selectedRoom];
@@ -97,9 +97,9 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6"> 
+          <div class="col-sm-6">
             <div class="card-header">
-                <h2 class="card-title">Danh sách vị trí </h3>
+                <h2 class="card-title">Danh sách vị trí </h2>
             </div>
           </div>
           <div class="col-sm-6">
@@ -109,14 +109,14 @@
             </ol>
           </div>
         </div>
-      </div>  
-    </section>  
-    <!--End header-->  
+      </div>
+    </section>
+    <!--End header-->
     <!--search+create-->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6"> 
+          <div class="col-sm-6">
             @cannot('isUser')
             <a href="{{route('shelf.add')}}" class=" btn btn-block btn-primary" style="max-width:130px; max-height:40px; margin-left : 30px; display: flex;" id="addBtn">
               <ion-icon name="add" style="color: white; margin-top:5px;display: inline-block;" class="fa "></ion-icon>
@@ -140,9 +140,9 @@
             </form>
           </div>
         </div>
-      </div>  
-    </section>  
-    <!--End search+create-->   
+      </div>
+    </section>
+    <!--End search+create-->
     <!-- main content-->
     <section class="content">
       <div class="container-fluid">
@@ -164,7 +164,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($allShelfs as $shelf)
+                        @foreach($allShelves as $shelf)
                         <tr>
                             <td>{{ $shelf->id }}</td>
                             <td>{{ $shelf->location  }}</td>
@@ -186,7 +186,7 @@
                                 <i class="fas fa-edit"></i>
                                 </button>
                                 <button type="button" class="btn btn-outline-danger deleteBtn" style="color: blue;" data-shelf="{{ $shelf->id }}">
-                                    <ion-icon name="trash" class="fas"></ion-icon> 
+                                    <ion-icon name="trash" class="fas"></ion-icon>
                                 </button>
                               </div>
                             </td>
@@ -197,7 +197,7 @@
                 </table>
               </div>
               <!-- /.card-body -->
-            </div>  
+            </div>
             <!-- Books Modal -->
             <div id="booksModal" class="white-popup mfp-hide">
               <h2>Books for shelf: <span id="modalShelfID"></span></h2>
@@ -287,7 +287,7 @@
           </div>
         </div>
       </div>
-    
+
     </section>
     <!--End main content-->
   </div>

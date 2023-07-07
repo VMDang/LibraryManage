@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Borrowing;
+use App\Models\BorrowBook;
 use App\Models\Book;
 use App\Models\ReturnBook;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +22,8 @@ class HistoryController extends Controller
      */
     public function history(){
         $user = Auth::user();
-        $borrowings = Borrowing::with('user', 'book')->get();
+        $borrowBooks = BorrowBook::with('user', 'book')->get();
         $returns = ReturnBook::with('borrow_id')->get();
-        return view('history.history', compact('user', 'borrowings','returns'));
+        return view('history.history', compact('user', 'borrowBooks','returns'));
     }
 }

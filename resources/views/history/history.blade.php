@@ -36,7 +36,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($borrowings as  $borrowing)
+                                    @foreach($borrowBooks as  $borrowing)
                                         @if($borrowing->user->id==$user->id)
                                             <tr>
                                                 <td>{{$borrowing->book->name}}</td>
