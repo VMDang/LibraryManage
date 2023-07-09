@@ -154,8 +154,8 @@ class BookController extends Controller
             'author.required' => 'Tên tác giả bắt buộc nhập',
             'number.required' => 'Số lượng sách bắt buộc nhập ',
             'number.integer' => 'Số lượng sách phải là số nguyên lớn hơn hoặc bằng 0',
-            'cost.required' => 'Số lượng sách bắt buộc nhập ',
-            'cost.integer' => 'Số tiền sách bắt buộc nhập ',
+            'cost.required' => 'Giá sách bắt buộc nhập',
+            'cost.integer' => 'Giá sách bắt buộc là số nguyên lớn hơn hoặc bằng 0',
             'shelves.required' => 'Bắt buộc chọn vị trí',
             'categories.required' => 'Bắt buộc chọn thể loại',
         ];
